@@ -157,7 +157,11 @@ void CDriverBase::CommonFinalize() {
   delete[] nInst;
 }
 
-unsigned short CDriverBase::GetNumberDesignVariables() const { return main_config->GetnDV(); }
+unsigned short CDriverBase::GetNumberDesignVariables() const 
+{
+   std::cout << " Number of design vars:"  << main_config->GetnDV() << std::endl;
+   return main_config->GetnDV(); 
+}
 
 unsigned short CDriverBase::GetNumberFFDBoxes() const { return main_config->GetnFFDBox(); }
 

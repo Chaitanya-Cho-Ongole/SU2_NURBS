@@ -288,6 +288,11 @@ vector<vector<su2double> > CSurfaceMovement::SetSurface_Deformation(CGeometry* g
 
             MaxDiff = SetCartesianCoord(geometry, config, FFDBox[iFFDBox], iFFDBox, false);
 
+            if (rank == MASTER_NODE)
+            {
+              std::cout <<"Maximum coordinate deformation: " << MaxDiff << std::endl;
+            }
+            
             if ((MaxDiff > BoundLimit) && (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF)) {
               if (rank == MASTER_NODE)
                 cout << "Out-of-bounds, re-adjusting scale factor to safisfy line search limit." << endl;
@@ -1555,8 +1560,18 @@ void CSurfaceMovement::ApplyDesignVariables(CGeometry* geometry, CConfig* config
                                             unsigned short iFFDBox) {
   unsigned short iDV;
 
-  for (iDV = 0; iDV < config->GetnDV(); iDV++) {
-    switch (config->GetDesign_Variable(iDV)) {
+  if (rank == MASTER_NODE)
+  {
+    std::cout << "Updating position of FFD control points  using ApplyDesignVariables(..)" <<std::endl;
+    std::cout << "Number of ACTIVE in (DV PARAM) design variables: " << config->GetnDV() <<std::endl;
+  }
+
+  for (iDV = 0; iDV < config->GetnDV(); iDV++) 
+  {
+
+    switch (config->GetDesign_Variable(iDV)) 
+    {
+      
       case FFD_CONTROL_POINT_2D:
         SetFFDCPChange_2D(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
@@ -1567,6 +1582,12 @@ void CSurfaceMovement::ApplyDesignVariables(CGeometry* geometry, CConfig* config
         SetFFDThickness_2D(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
       case FFD_CONTROL_POINT:
+
+        if (rank == MASTER_NODE)
+        {
+          std::cout <<"Case: FFD_CONTROL_POINT" <<std::endl;
+          std::cout <<"Calling setFFDCPChange(..)" <<std::endl;
+        }
         SetFFDCPChange(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
       case FFD_NACELLE:
@@ -2532,6 +2553,8 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
 bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFreeFormDefBox* FFDBox,
                                       CFreeFormDefBox** ResetFFDBox, unsigned short iDV, bool ResetDef) const {
   unsigned short iOrder, jOrder, kOrder;
+
+  std::cout << "Calling setFFDRotation " << std::endl;
   su2double movement[3] = {0.0, 0.0, 0.0}, x, y, z;
   unsigned short index[3], iFFDBox;
   string design_FFDBox;
@@ -2574,7 +2597,8 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
     su2double l = sqrt(l2);
 
     /*--- Change the value of the control point if move is true ---*/
-
+    /* Iterate over all control points in the FFD box using nested loops over iOrder
+        jOrder, kOrder */
     for (iOrder = 0; iOrder < FFDBox->GetlOrder(); iOrder++)
       for (jOrder = 0; jOrder < FFDBox->GetmOrder(); jOrder++)
         for (kOrder = 0; kOrder < FFDBox->GetnOrder(); kOrder++) {
@@ -2585,6 +2609,8 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
           x = coord[0];
           y = coord[1];
           z = coord[2];
+
+          std::cout << "lOrder: " << FFDBox->GetlOrder() <<" jOrder: " << FFDBox->GetmOrder() << " kOrder: " << FFDBox->GetnOrder() << std::endl;
           movement[0] = a * (v2 + w2) + u * (-b * v - c * w + u * x + v * y + w * z) +
                         (-a * (v2 + w2) + u * (b * v + c * w - v * y - w * z) + (v2 + w2) * x) * cosT +
                         l * (-c * v + b * w - w * y + v * z) * sinT;
@@ -2602,7 +2628,10 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
 
           FFDBox->SetControlPoints(index, movement);
         }
-  } else {
+  } 
+  else 
+  { 
+    std::cout << "Found no control point close to the axis of rotation " <<std::endl;
     return false;
   }
 
