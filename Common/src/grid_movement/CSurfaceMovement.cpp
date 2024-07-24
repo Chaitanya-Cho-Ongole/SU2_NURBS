@@ -285,7 +285,10 @@ vector<vector<su2double> > CSurfaceMovement::SetSurface_Deformation(CGeometry* g
             ApplyDesignVariables(geometry, config, FFDBox, iFFDBox);
 
             /*--- Recompute cartesian coordinates using the new control point location ---*/
-
+            if (rank == MASTER_NODE)
+            {
+              std::cout <<"Recompute cartesian coordinates using new control point location SetCartesianCoord(...)" << std::endl;
+            }
             MaxDiff = SetCartesianCoord(geometry, config, FFDBox[iFFDBox], iFFDBox, false);
 
             if (rank == MASTER_NODE)
@@ -293,7 +296,10 @@ vector<vector<su2double> > CSurfaceMovement::SetSurface_Deformation(CGeometry* g
               std::cout <<"Maximum coordinate deformation: " << MaxDiff << std::endl;
             }
             
-            if ((MaxDiff > BoundLimit) && (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF)) {
+
+            /* Re-deform the geometry incase the deformation is out of bounds */
+            if ((MaxDiff > BoundLimit) && (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF)) 
+            {
               if (rank == MASTER_NODE)
                 cout << "Out-of-bounds, re-adjusting scale factor to safisfy line search limit." << endl;
 
@@ -310,12 +316,17 @@ vector<vector<su2double> > CSurfaceMovement::SetSurface_Deformation(CGeometry* g
               MaxDiff = SetCartesianCoord(geometry, config, FFDBox[iFFDBox], iFFDBox, false);
             }
 
+            /*----END----*/
+
             /*--- Set total deformation values in config ---*/
-            if (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF) {
+            if (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF) 
+            {
               totaldeformation.resize(config->GetnDV());
-              for (iDV = 0; iDV < config->GetnDV(); iDV++) {
+              for (iDV = 0; iDV < config->GetnDV(); iDV++) 
+              {
                 totaldeformation[iDV].resize(config->GetnDV_Value(iDV));
-                for (auto iDV_Value = 0u; iDV_Value < config->GetnDV_Value(iDV); iDV_Value++) {
+                for (auto iDV_Value = 0u; iDV_Value < config->GetnDV_Value(iDV); iDV_Value++) 
+                {
                   totaldeformation[iDV][iDV_Value] = config->GetDV_Value(iDV, iDV_Value);
                 }
               }
@@ -2675,6 +2686,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
             //std::cout << "lOrder: " << FFDBox->GetlOrder() <<" jOrder: " << FFDBox->GetmOrder() << " kOrder: " << FFDBox->GetnOrder() << std::endl;
           }
 
+          /* Update the coordinate of the FFD control point */
           FFDBox->SetControlPoints(index, movement);
         }
   } 

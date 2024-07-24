@@ -109,6 +109,11 @@ void CVolumetricMovement::SetVolume_Deformation(CGeometry* geometry, CConfig* co
   unsigned long Tot_Iter = 0;
   su2double MinVolume, MaxVolume;
 
+  if (rank == MASTER_NODE)
+  {
+    std::cout <<" I am in CVolumetricMovement::SetVolume_Deformation()" <<std::endl;
+  }
+
   /*--- Retrieve number or iterations, tol, output, etc. from config ---*/
 
   auto Screen_Output = config->GetDeform_Output();
@@ -1660,50 +1665,72 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
   VarIncrement = 1.0 / ((su2double)config->GetGridDef_Nonlinear_Iter());
 
   /*--- As initialization, set to zero displacements of all the surfaces except the symmetry
-   plane (which is treated specially, see below), internal and the send-receive boundaries ---*/
+   plane + fuselage surface (which is treated specially, see below), internal and the send-receive boundaries ---*/
 
-  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) {
-    if (((config->GetMarker_All_KindBC(iMarker) != SYMMETRY_PLANE) &&
-         (config->GetMarker_All_KindBC(iMarker) != SEND_RECEIVE) &&
-         (config->GetMarker_All_KindBC(iMarker) != INTERNAL_BOUNDARY))) {
-      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) {
-        iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
-        for (iDim = 0; iDim < nDim; iDim++) {
-          total_index = iPoint * nDim + iDim;
-          LinSysRes[total_index] = 0.0;
-          LinSysSol[total_index] = 0.0;
-          StiffMatrix.DeleteValsRowi(total_index);
-        }
-      }
+
+  if (rank == MASTER_NODE)
+  {
+    std::cout << "Total number of markers " << config->GetnMarker_All() << std::endl;
+
+    for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker ++)
+    {
+      std::cout << config->GetMarker_All_KindBC(iMarker) << std::endl;
     }
   }
+
+  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
+  {
+    if (((config->GetMarker_All_KindBC(iMarker) != SYMMETRY_PLANE) &&
+         (config->GetMarker_All_KindBC(iMarker) != SEND_RECEIVE) &&
+         (config->GetMarker_All_KindBC(iMarker) != INTERNAL_BOUNDARY) &&
+         (config->GetMarker_All_KindBC(iMarker) != FUSELAGE_WALL))) 
+        {
+          for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) 
+          {
+            iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
+            for (iDim = 0; iDim < nDim; iDim++) 
+            {
+              total_index = iPoint * nDim + iDim;
+              LinSysRes[total_index] = 0.0;
+              LinSysSol[total_index] = 0.0;
+              StiffMatrix.DeleteValsRowi(total_index);
+            }
+          }
+        }
+    }
 
   /*--- Set the known displacements, note that some points of the moving surfaces
    could be on on the symmetry plane, we should specify DeleteValsRowi again (just in case) ---*/
 
-  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) {
+  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
+  {
     if (((config->GetMarker_All_Moving(iMarker) == YES) && (Kind_SU2 == SU2_COMPONENT::SU2_CFD)) ||
         ((config->GetMarker_All_DV(iMarker) == YES) && (Kind_SU2 == SU2_COMPONENT::SU2_DEF)) ||
         ((config->GetDirectDiff() == D_DESIGN) && (Kind_SU2 == SU2_COMPONENT::SU2_CFD) &&
          (config->GetMarker_All_DV(iMarker) == YES)) ||
-        ((config->GetMarker_All_DV(iMarker) == YES) && (Kind_SU2 == SU2_COMPONENT::SU2_DOT))) {
-      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) {
-        iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
-        VarCoord = geometry->vertex[iMarker][iVertex]->GetVarCoord();
-        for (iDim = 0; iDim < nDim; iDim++) {
-          total_index = iPoint * nDim + iDim;
-          LinSysRes[total_index] = SU2_TYPE::GetValue(VarCoord[iDim] * VarIncrement);
-          LinSysSol[total_index] = SU2_TYPE::GetValue(VarCoord[iDim] * VarIncrement);
-          StiffMatrix.DeleteValsRowi(total_index);
+        ((config->GetMarker_All_DV(iMarker) == YES) && (Kind_SU2 == SU2_COMPONENT::SU2_DOT))) 
+        {
+          for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) 
+          {
+            iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
+            VarCoord = geometry->vertex[iMarker][iVertex]->GetVarCoord();
+            for (iDim = 0; iDim < nDim; iDim++) 
+            {
+              total_index = iPoint * nDim + iDim;
+              LinSysRes[total_index] = SU2_TYPE::GetValue(VarCoord[iDim] * VarIncrement);
+              LinSysSol[total_index] = SU2_TYPE::GetValue(VarCoord[iDim] * VarIncrement);
+              StiffMatrix.DeleteValsRowi(total_index);
+            }
+          }
         }
-      }
     }
-  }
 
   /*--- Set to zero displacements of the normal component for the symmetry plane condition ---*/
 
-  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) {
-    if ((config->GetMarker_All_KindBC(iMarker) == SYMMETRY_PLANE)) {
+  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
+  {
+    if ((config->GetMarker_All_KindBC(iMarker) == SYMMETRY_PLANE)) 
+    {
       su2double* Coord_0 = nullptr;
 
       for (iDim = 0; iDim < nDim; iDim++) MeanCoord[iDim] = 0.0;
@@ -1713,23 +1740,81 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
       iPoint = geometry->vertex[iMarker][0]->GetNode();
       Coord_0 = geometry->nodes->GetCoord(iPoint);
 
-      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) {
+      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) 
+      {
         iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
         VarCoord = geometry->nodes->GetCoord(iPoint);
         for (iDim = 0; iDim < nDim; iDim++)
           MeanCoord[iDim] += (VarCoord[iDim] - Coord_0[iDim]) * (VarCoord[iDim] - Coord_0[iDim]);
       }
+
       for (iDim = 0; iDim < nDim; iDim++) MeanCoord[iDim] = sqrt(MeanCoord[iDim]);
-      if (nDim == 3) {
+
+      if (nDim == 3) 
+      {
         if ((MeanCoord[0] <= MeanCoord[1]) && (MeanCoord[0] <= MeanCoord[2])) axis = 0;
         if ((MeanCoord[1] <= MeanCoord[0]) && (MeanCoord[1] <= MeanCoord[2])) axis = 1;
         if ((MeanCoord[2] <= MeanCoord[0]) && (MeanCoord[2] <= MeanCoord[1])) axis = 2;
-      } else {
+      } 
+      else 
+      {
         if ((MeanCoord[0] <= MeanCoord[1])) axis = 0;
         if ((MeanCoord[1] <= MeanCoord[0])) axis = 1;
       }
 
-      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) {
+      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) 
+      {
+        iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
+        total_index = iPoint * nDim + axis;
+        LinSysRes[total_index] = 0.0;
+        LinSysSol[total_index] = 0.0;
+        StiffMatrix.DeleteValsRowi(total_index);
+      }
+    }
+  }
+
+  /*--- Set to zero displacements of the normal component for the FUSELAGE WALL ---*/
+  if (rank == MASTER_NODE)
+  {
+    std::cout <<"Setting zero displacement of the normal component of FUSELAGE WALL" << std::endl;
+  }
+  for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
+  {
+    if ((config->GetMarker_All_KindBC(iMarker) == FUSELAGE_WALL)) 
+    {
+      su2double* Coord_0 = nullptr;
+
+      for (iDim = 0; iDim < nDim; iDim++) MeanCoord[iDim] = 0.0;
+
+      /*--- Store the coord of the first point to help identify the axis. ---*/
+
+      iPoint = geometry->vertex[iMarker][0]->GetNode();
+      Coord_0 = geometry->nodes->GetCoord(iPoint);
+
+      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) 
+      {
+        iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
+        VarCoord = geometry->nodes->GetCoord(iPoint);
+        for (iDim = 0; iDim < nDim; iDim++)
+          MeanCoord[iDim] += (VarCoord[iDim] - Coord_0[iDim]) * (VarCoord[iDim] - Coord_0[iDim]);
+      }
+
+      for (iDim = 0; iDim < nDim; iDim++) MeanCoord[iDim] = sqrt(MeanCoord[iDim]);
+
+      if (nDim == 3) 
+      {
+        if ((MeanCoord[0] <= MeanCoord[1]) && (MeanCoord[0] <= MeanCoord[2])) axis = 0;
+        if ((MeanCoord[1] <= MeanCoord[0]) && (MeanCoord[1] <= MeanCoord[2])) axis = 1;
+        if ((MeanCoord[2] <= MeanCoord[0]) && (MeanCoord[2] <= MeanCoord[1])) axis = 2;
+      } 
+      else 
+      {
+        if ((MeanCoord[0] <= MeanCoord[1])) axis = 0;
+        if ((MeanCoord[1] <= MeanCoord[0])) axis = 1;
+      }
+
+      for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) 
+      {
         iPoint = geometry->vertex[iMarker][iVertex]->GetNode();
         total_index = iPoint * nDim + axis;
         LinSysRes[total_index] = 0.0;
@@ -1740,7 +1825,6 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
   }
 
   /*--- Don't move the nearfield plane ---*/
-
   for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) {
     if (config->GetMarker_All_KindBC(iMarker) == NEARFIELD_BOUNDARY) {
       for (iVertex = 0; iVertex < geometry->nVertex[iMarker]; iVertex++) {

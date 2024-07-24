@@ -171,6 +171,7 @@ private:
   su2double Current_UnstTime,     /*!< \brief Global time of the unsteady simulation. */
   Current_UnstTimeND;             /*!< \brief Global time of the unsteady simulation. */
   unsigned short nMarker_Euler,   /*!< \brief Number of Euler wall markers. */
+  nMarker_Fuselage,               /*!< \brief Number of Fuselage wall markers. */
   nMarker_FarField,               /*!< \brief Number of far-field markers. */
   nMarker_Custom,                 /*!< \brief Number of custom markers. */
   nMarker_SymWall,                /*!< \brief Number of symmetry wall markers. */
@@ -227,6 +228,7 @@ private:
   string ActDisk_FileName;      /*!< \brief Filename specifying an actuator disk. */
 
   string *Marker_Euler,           /*!< \brief Euler wall markers. */
+  *Marker_Fuselage,               /*!< \brief Fuselage wall markers. */
   *Marker_FarField,               /*!< \brief Far field markers. */
   *Marker_Custom,
   *Marker_SymWall,                /*!< \brief Symmetry wall markers. */

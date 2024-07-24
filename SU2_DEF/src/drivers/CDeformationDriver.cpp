@@ -379,9 +379,12 @@ void CDeformationDriver::DeformLegacy() {
         /*--- Surface grid deformation. ---*/
 
         if (rank == MASTER_NODE) cout << "Performing the deformation of the surface grid using legacy solver." << endl;
+
         auto TotalDeformation = surface_movement[iZone]->SetSurface_Deformation(
             geometry_container[iZone][INST_0][MESH_0], config_container[iZone]);
 
+
+        /* Incase of FFD SETTING, we do not do any volume deformation */
         if (config_container[iZone]->GetDesign_Variable(0) != FFD_SETTING) 
         {
           if (rank == MASTER_NODE)
@@ -389,6 +392,7 @@ void CDeformationDriver::DeformLegacy() {
                  << "------------------- Volumetric grid deformation (ZONE " << iZone << ") ----------------" << endl;
 
           if (rank == MASTER_NODE) cout << "Performing the deformation of the volumetric grid." << endl;
+          
           grid_movement[iZone][INST_0]->SetVolume_Deformation(geometry_container[iZone][INST_0][MESH_0],
                                                               config_container[iZone], false);
 
