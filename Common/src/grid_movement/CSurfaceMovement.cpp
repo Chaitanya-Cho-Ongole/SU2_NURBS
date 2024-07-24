@@ -2596,6 +2596,15 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
     //su2double b = config->GetParamDV(iDV, 2);
     //su2double c = config->GetParamDV(iDV, 3);
 
+    if (rank == MASTER_NODE)
+    {
+      std::cout << config->GetParamDV(iDV, 1) << std::endl;
+      std::cout << config->GetParamDV(iDV, 2) << std::endl;
+      std::cout << config->GetParamDV(iDV, 3) << std::endl;
+
+    }
+
+    /* Center of rotation for the tail */
     su2double a = 0.25;
     su2double b = 0.0;
     su2double c = 0.0;
@@ -2614,9 +2623,9 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
     //su2double w = config->GetParamDV(iDV, 6) - config->GetParamDV(iDV, 3);
 
     /* Assume rotation along the spanwise (Y axis) */
-    su2double u = 0.0;
-    su2double v = 1.0;
-    su2double w = 0.0;
+    su2double u = config->GetParamDV(iDV, 4);
+    su2double v = config->GetParamDV(iDV, 5);
+    su2double w = config->GetParamDV(iDV, 6);
     
 
     if (rank==MASTER_NODE)
