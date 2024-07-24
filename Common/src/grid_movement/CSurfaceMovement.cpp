@@ -2581,21 +2581,32 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
   if (design_FFDBox.compare(FFDBox->GetTag()) == 0) {
     /*--- xyz-coordinates of a point on the line of rotation. ---*/
 
-    su2double a = config->GetParamDV(iDV, 1);
-    su2double b = config->GetParamDV(iDV, 2);
-    su2double c = config->GetParamDV(iDV, 3);
+    //su2double a = config->GetParamDV(iDV, 1);
+    //su2double b = config->GetParamDV(iDV, 2);
+    //su2double c = config->GetParamDV(iDV, 3);
+
+    su2double a = 0.25;
+    su2double b = 0.0;
+    su2double c = 0.0;
+
+
 
     if (rank==MASTER_NODE)
     {
-      std::cout << "xyz-coordinates of a point on the line of rotation " << std::endl;
-      std::cout << "coo_x: " << a << " coo_y: " << b << " coo_z: " << c << std::endl;
+      std::cout << "Coordinates of the rotation point (x,y,z): " <<"  "<< a <<"  "<< b <<" "<< c << std::endl;
     }
 
-    /*--- xyz-coordinate of the line's direction vector. ---*/
+    /*--- xyz-coordinate of axis of rotation. ---*/
 
-    su2double u = config->GetParamDV(iDV, 4) - config->GetParamDV(iDV, 1);
-    su2double v = config->GetParamDV(iDV, 5) - config->GetParamDV(iDV, 2);
-    su2double w = config->GetParamDV(iDV, 6) - config->GetParamDV(iDV, 3);
+    //su2double u = config->GetParamDV(iDV, 4) - config->GetParamDV(iDV, 1);
+    //su2double v = config->GetParamDV(iDV, 5) - config->GetParamDV(iDV, 2);
+    //su2double w = config->GetParamDV(iDV, 6) - config->GetParamDV(iDV, 3);
+
+    /* Assume rotation along the spanwise (Y axis) */
+    su2double u = 0.0;
+    su2double v = 1.0;
+    su2double w = 0.0;
+    
 
     if (rank==MASTER_NODE)
     {
@@ -2631,6 +2642,11 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
           y = coord[1];
           z = coord[2];
 
+          if (rank == MASTER_NODE)
+          {
+            std::cout << "Coordinates of the FFD control point (x,y,z): " <<"  "<< x <<"  "<< y <<" "<< z << std::endl;
+          }
+
 
           movement[0] = a * (v2 + w2) + u * (-b * v - c * w + u * x + v * y + w * z) +
                         (-a * (v2 + w2) + u * (b * v + c * w - v * y - w * z) + (v2 + w2) * x) * cosT +
@@ -2641,7 +2657,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
                         (-b * (u2 + w2) + v * (a * u + c * w - u * x - w * z) + (u2 + w2) * y) * cosT +
                         l * (c * u - a * w + w * x - u * z) * sinT;
           movement[1] = movement[1] / l2 - y;
-          movement[1] = 0.0;
+          
 
           movement[2] = c * (u2 + v2) + w * (-a * u - b * v + u * x + v * y + w * z) +
                         (-c * (u2 + v2) + w * (a * u + b * v - u * x - v * y) + (u2 + v2) * z) * cosT +
