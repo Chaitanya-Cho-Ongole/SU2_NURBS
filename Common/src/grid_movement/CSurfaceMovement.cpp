@@ -1759,6 +1759,7 @@ bool CSurfaceMovement::SetFFDCPChange_2D(CGeometry* geometry, CConfig* config, C
     if (config->GetnDV_Value(iDV) == 1) {
       Ampl = config->GetDV_Value(iDV) * Scale;
 
+
       if (polar) {
         movement[0] = config->GetParamDV(iDV, 3) * Ampl;
         movement[1] = 0.0;
@@ -1895,6 +1896,11 @@ bool CSurfaceMovement::SetFFDCPChange(CGeometry* geometry, CConfig* config, CFre
 
     /*--- If we have only design value, than this value is the amplitude,
      * otherwise we have a general movement. ---*/
+
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "Deformation amplitude for current DV: " << config->GetDV_Value(iDV) * Scale << std::endl;
+    }
 
     if (config->GetnDV_Value(iDV) == 1) {
       Ampl = config->GetDV_Value(iDV) * Scale;
@@ -2554,7 +2560,10 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
                                       CFreeFormDefBox** ResetFFDBox, unsigned short iDV, bool ResetDef) const {
   unsigned short iOrder, jOrder, kOrder;
 
-  std::cout << "Calling setFFDRotation " << std::endl;
+  if (rank ==  MASTER_NODE)
+  {
+    std::cout << "Calling setFFDRotation " << std::endl;
+  }
   su2double movement[3] = {0.0, 0.0, 0.0}, x, y, z;
   unsigned short index[3], iFFDBox;
   string design_FFDBox;
@@ -2576,11 +2585,23 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
     su2double b = config->GetParamDV(iDV, 2);
     su2double c = config->GetParamDV(iDV, 3);
 
+    if (rank==MASTER_NODE)
+    {
+      std::cout << "xyz-coordinates of a point on the line of rotation " << std::endl;
+      std::cout << "coo_x: " << a << " coo_y: " << b << " coo_z: " << c << std::endl;
+    }
+
     /*--- xyz-coordinate of the line's direction vector. ---*/
 
     su2double u = config->GetParamDV(iDV, 4) - config->GetParamDV(iDV, 1);
     su2double v = config->GetParamDV(iDV, 5) - config->GetParamDV(iDV, 2);
     su2double w = config->GetParamDV(iDV, 6) - config->GetParamDV(iDV, 3);
+
+    if (rank==MASTER_NODE)
+    {
+      std::cout << " xyz-coordinates of the line's direction vector " << std::endl;
+      std::cout << "u: " << u << " v: " << v << " w: " << w << std::endl;
+    }
 
     /*--- The angle of rotation. ---*/
 
@@ -2610,7 +2631,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
           y = coord[1];
           z = coord[2];
 
-          std::cout << "lOrder: " << FFDBox->GetlOrder() <<" jOrder: " << FFDBox->GetmOrder() << " kOrder: " << FFDBox->GetnOrder() << std::endl;
+
           movement[0] = a * (v2 + w2) + u * (-b * v - c * w + u * x + v * y + w * z) +
                         (-a * (v2 + w2) + u * (b * v + c * w - v * y - w * z) + (v2 + w2) * x) * cosT +
                         l * (-c * v + b * w - w * y + v * z) * sinT;
@@ -2625,6 +2646,16 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
                         (-c * (u2 + v2) + w * (a * u + b * v - u * x - v * y) + (u2 + v2) * z) * cosT +
                         l * (-b * u + a * v - v * x + u * y) * sinT;
           movement[2] = movement[2] / l2 - z;
+
+          if (rank == MASTER_NODE)
+          {
+            std::cout <<"\n";
+            std::cout << "Current FFD control point index: " << iOrder <<" "<< jOrder <<" "<< kOrder << std::endl;
+            std::cout << "Current FFD control point coo (x, y, z): " << x <<" "<< y <<" "<< z << std::endl;
+            std::cout << "Current FFD control point movement (x, y, z): " << movement[0] <<" "<<movement[1]<<" "<< movement[2] << std::endl;
+            std::cout <<"\n";
+            //std::cout << "lOrder: " << FFDBox->GetlOrder() <<" jOrder: " << FFDBox->GetmOrder() << " kOrder: " << FFDBox->GetnOrder() << std::endl;
+          }
 
           FFDBox->SetControlPoints(index, movement);
         }
