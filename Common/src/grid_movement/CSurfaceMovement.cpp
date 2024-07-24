@@ -2605,7 +2605,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
 
     /*--- The angle of rotation. ---*/
 
-    su2double theta = config->GetDV_Value(iDV) * Scale * PI_NUMBER / 180.0;
+    su2double theta = config->GetDV_Value(iDV) * 1 * PI_NUMBER / 180.0;
 
     /*--- An intermediate value used in computations. ---*/
 
@@ -2641,6 +2641,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
                         (-b * (u2 + w2) + v * (a * u + c * w - u * x - w * z) + (u2 + w2) * y) * cosT +
                         l * (c * u - a * w + w * x - u * z) * sinT;
           movement[1] = movement[1] / l2 - y;
+          movement[1] = 0.0;
 
           movement[2] = c * (u2 + v2) + w * (-a * u - b * v + u * x + v * y + w * z) +
                         (-c * (u2 + v2) + w * (a * u + b * v - u * x - v * y) + (u2 + v2) * z) * cosT +
@@ -2650,6 +2651,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
           if (rank == MASTER_NODE)
           {
             std::cout <<"\n";
+            std::cout << "Rotation angle (deg): " << config->GetDV_Value(iDV) << std::endl;
             std::cout << "Current FFD control point index: " << iOrder <<" "<< jOrder <<" "<< kOrder << std::endl;
             std::cout << "Current FFD control point coo (x, y, z): " << x <<" "<< y <<" "<< z << std::endl;
             std::cout << "Current FFD control point movement (x, y, z): " << movement[0] <<" "<<movement[1]<<" "<< movement[2] << std::endl;
