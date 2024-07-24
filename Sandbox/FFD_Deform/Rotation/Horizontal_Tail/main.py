@@ -1,5 +1,13 @@
 import numpy as np
 
+# A sandbox script to define an FFD box and rotate it about an arbitrary center of rotation and around a unit vector
+# using Rodrigues rotation formula
+
+# Basic steps involved:  1) Translate the vertices so that center of rotation becomes the origin
+#                        2) Perform the rotation around a unit vector (For example Y axis ) 
+#                        3) Translate the vertices back to their original position relative to the specified center
+
+
 def ffd_box(vertices):
 
     # Define the faces of the parallelepiped (using vertex indices)
@@ -67,12 +75,12 @@ def rotate_vertices(vertices, axis, theta_degrees, center):
 vertices = np.array([
     [0.0, 0.0, 0.0],  # Lower root LE
     [1.0, 0.0, 0.0],  # Lower root TE
-    [1.0, 1.0, 0.0],  # Lower tip TE
-    [0.0, 1.0, 0.0],  # Lower tip LE
+    [1.0, 4.0, 0.0],  # Lower tip TE
+    [0.0, 4.0, 0.0],  # Lower tip LE
     [0.0, 0.0, 1.0],  # Upper root LE
     [1.0, 0.0, 1.0],  # Upper root TE
-    [1.0, 1.0, 1.0],  # Upper tip TE
-    [0.0, 1.0, 1.0]   # Upper tip LE
+    [1.0, 4.0, 1.0],  # Upper tip TE
+    [0.0, 4.0, 1.0]   # Upper tip LE
 ], dtype=np.float32)
 
 # Generate the FFD box
