@@ -1778,6 +1778,7 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
   {
     std::cout <<"Setting zero displacement of the normal component of FUSELAGE WALL" << std::endl;
   }
+  
   for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
   {
     if ((config->GetMarker_All_KindBC(iMarker) == FUSELAGE_WALL)) 
@@ -1786,7 +1787,7 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
 
       for (iDim = 0; iDim < nDim; iDim++) MeanCoord[iDim] = 0.0;
 
-      /*--- Store the coord of the first point to help identify the axis. ---*/
+      ///--- Store the coord of the first point to help identify the axis. ---///
 
       iPoint = geometry->vertex[iMarker][0]->GetNode();
       Coord_0 = geometry->nodes->GetCoord(iPoint);

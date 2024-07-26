@@ -2605,10 +2605,9 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
     }
 
     /* Center of rotation for the tail */
-    su2double a = 0.25;
-    su2double b = 0.0;
-    su2double c = 0.0;
-
+    su2double a = config->GetParamDV(iDV, 1);
+    su2double b = config->GetParamDV(iDV, 2);
+    su2double c = config->GetParamDV(iDV, 3);
 
 
     if (rank==MASTER_NODE)
