@@ -73,14 +73,14 @@ def rotate_vertices(vertices, axis, theta_degrees, center):
 # Define the vertices of the parallelepiped in counter-clockwise order starting from the lower surface
 
 vertices = np.array([
-    [0.0, 0.0, 0.0],  # Lower root LE
-    [1.0, 0.0, 0.0],  # Lower root TE
-    [1.0, 4.0, 0.0],  # Lower tip TE
-    [0.0, 4.0, 0.0],  # Lower tip LE
-    [0.0, 0.0, 1.0],  # Upper root LE
-    [1.0, 0.0, 1.0],  # Upper root TE
-    [1.0, 4.0, 1.0],  # Upper tip TE
-    [0.0, 4.0, 1.0]   # Upper tip LE
+    [55.908682, -0.12398897, 6.0529183],  # Lower root LE
+    [62.5, -0.12398897, 6.0529183],  # Lower root TE
+    [67.694004, 11.707975, 6.0529183],  # Lower tip TE
+    [60.0, 11.707975, 6.0529183],  # Lower tip LE
+    [55.908682, -0.12398897, 7.9522074],  # Upper root LE
+    [62.5, -0.12398897, 7.9522074],  # Upper root TE
+    [67.694004, 11.707975, 7.9522074],  # Upper tip TE
+    [60.0, 11.707975, 7.9522074]   # Upper tip LE
 ], dtype=np.float32)
 
 # Generate the FFD box
@@ -93,9 +93,8 @@ write_ffd_box(faces, vertices, 'ffd_box_0.dat')
 # Rotate the vertices by an angle theta around the Y-axis
 
 theta = 5
-
 rotation_vector = np.array([0.0, 1.0, 0.0])  # Rotate around the Y-axis
-center_of_rotation = np.array([0.5, 0.0, 0.5])  # Center of rotation
+center_of_rotation = np.array([60.071, 0.0, 6.477])  # Center of rotation
 
 
 
