@@ -29,7 +29,7 @@
 
 int main(int argc, char* argv[]) {
 
-  std::cout << " Entering SU2_DEF " << std::endl;
+
   char config_file_name[MAX_STRING_SIZE];
 
   /*--- MPI initialization ---*/

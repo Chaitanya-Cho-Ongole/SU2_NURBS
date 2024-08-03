@@ -1593,12 +1593,6 @@ void CSurfaceMovement::ApplyDesignVariables(CGeometry* geometry, CConfig* config
         SetFFDThickness_2D(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
       case FFD_CONTROL_POINT:
-
-        if (rank == MASTER_NODE)
-        {
-          std::cout <<"Case: FFD_CONTROL_POINT" <<std::endl;
-          std::cout <<"Calling setFFDCPChange(..)" <<std::endl;
-        }
         SetFFDCPChange(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
       case FFD_NACELLE:
@@ -2682,8 +2676,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
         }
   } 
   else 
-  { 
-    std::cout << "Found no control point close to the axis of rotation " <<std::endl;
+  {
     return false;
   }
 
