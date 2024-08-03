@@ -285,10 +285,21 @@ vector<vector<su2double> > CSurfaceMovement::SetSurface_Deformation(CGeometry* g
             ApplyDesignVariables(geometry, config, FFDBox, iFFDBox);
 
             /*--- Recompute cartesian coordinates using the new control point location ---*/
-
+            if (rank == MASTER_NODE)
+            {
+              std::cout <<"Recompute cartesian coordinates using new control point location SetCartesianCoord(...)" << std::endl;
+            }
             MaxDiff = SetCartesianCoord(geometry, config, FFDBox[iFFDBox], iFFDBox, false);
 
-            if ((MaxDiff > BoundLimit) && (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF)) {
+            if (rank == MASTER_NODE)
+            {
+              std::cout <<"Maximum coordinate deformation: " << MaxDiff << std::endl;
+            }
+            
+
+            /* Re-deform the geometry incase the deformation is out of bounds */
+            if ((MaxDiff > BoundLimit) && (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF)) 
+            {
               if (rank == MASTER_NODE)
                 cout << "Out-of-bounds, re-adjusting scale factor to safisfy line search limit." << endl;
 
@@ -305,12 +316,17 @@ vector<vector<su2double> > CSurfaceMovement::SetSurface_Deformation(CGeometry* g
               MaxDiff = SetCartesianCoord(geometry, config, FFDBox[iFFDBox], iFFDBox, false);
             }
 
+            /*----END----*/
+
             /*--- Set total deformation values in config ---*/
-            if (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF) {
+            if (config->GetKind_SU2() == SU2_COMPONENT::SU2_DEF) 
+            {
               totaldeformation.resize(config->GetnDV());
-              for (iDV = 0; iDV < config->GetnDV(); iDV++) {
+              for (iDV = 0; iDV < config->GetnDV(); iDV++) 
+              {
                 totaldeformation[iDV].resize(config->GetnDV_Value(iDV));
-                for (auto iDV_Value = 0u; iDV_Value < config->GetnDV_Value(iDV); iDV_Value++) {
+                for (auto iDV_Value = 0u; iDV_Value < config->GetnDV_Value(iDV); iDV_Value++) 
+                {
                   totaldeformation[iDV][iDV_Value] = config->GetDV_Value(iDV, iDV_Value);
                 }
               }
@@ -1555,8 +1571,18 @@ void CSurfaceMovement::ApplyDesignVariables(CGeometry* geometry, CConfig* config
                                             unsigned short iFFDBox) {
   unsigned short iDV;
 
-  for (iDV = 0; iDV < config->GetnDV(); iDV++) {
-    switch (config->GetDesign_Variable(iDV)) {
+  if (rank == MASTER_NODE)
+  {
+    std::cout << "Updating position of FFD control points  using ApplyDesignVariables(..)" <<std::endl;
+    std::cout << "Number of ACTIVE in (DV PARAM) design variables: " << config->GetnDV() <<std::endl;
+  }
+
+  for (iDV = 0; iDV < config->GetnDV(); iDV++) 
+  {
+
+    switch (config->GetDesign_Variable(iDV)) 
+    {
+      
       case FFD_CONTROL_POINT_2D:
         SetFFDCPChange_2D(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
@@ -1567,6 +1593,12 @@ void CSurfaceMovement::ApplyDesignVariables(CGeometry* geometry, CConfig* config
         SetFFDThickness_2D(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
       case FFD_CONTROL_POINT:
+
+        if (rank == MASTER_NODE)
+        {
+          std::cout <<"Case: FFD_CONTROL_POINT" <<std::endl;
+          std::cout <<"Calling setFFDCPChange(..)" <<std::endl;
+        }
         SetFFDCPChange(geometry, config, FFDBox[iFFDBox], FFDBox, iDV, false);
         break;
       case FFD_NACELLE:
@@ -1738,6 +1770,7 @@ bool CSurfaceMovement::SetFFDCPChange_2D(CGeometry* geometry, CConfig* config, C
     if (config->GetnDV_Value(iDV) == 1) {
       Ampl = config->GetDV_Value(iDV) * Scale;
 
+
       if (polar) {
         movement[0] = config->GetParamDV(iDV, 3) * Ampl;
         movement[1] = 0.0;
@@ -1874,6 +1907,11 @@ bool CSurfaceMovement::SetFFDCPChange(CGeometry* geometry, CConfig* config, CFre
 
     /*--- If we have only design value, than this value is the amplitude,
      * otherwise we have a general movement. ---*/
+
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "Deformation amplitude for current DV: " << config->GetDV_Value(iDV) * Scale << std::endl;
+    }
 
     if (config->GetnDV_Value(iDV) == 1) {
       Ampl = config->GetDV_Value(iDV) * Scale;
@@ -2532,6 +2570,11 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
 bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFreeFormDefBox* FFDBox,
                                       CFreeFormDefBox** ResetFFDBox, unsigned short iDV, bool ResetDef) const {
   unsigned short iOrder, jOrder, kOrder;
+
+  if (rank ==  MASTER_NODE)
+  {
+    std::cout << "Calling setFFDRotation" << std::endl;
+  }
   su2double movement[3] = {0.0, 0.0, 0.0}, x, y, z;
   unsigned short index[3], iFFDBox;
   string design_FFDBox;
@@ -2547,21 +2590,40 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
   design_FFDBox = config->GetFFDTag(iDV);
 
   if (design_FFDBox.compare(FFDBox->GetTag()) == 0) {
-    /*--- xyz-coordinates of a point on the line of rotation. ---*/
+    /*--- xyz-coordinates of center of rotation for the tail. ---*/
 
+    /* Center of rotation for the tail */
     su2double a = config->GetParamDV(iDV, 1);
     su2double b = config->GetParamDV(iDV, 2);
     su2double c = config->GetParamDV(iDV, 3);
 
-    /*--- xyz-coordinate of the line's direction vector. ---*/
 
-    su2double u = config->GetParamDV(iDV, 4) - config->GetParamDV(iDV, 1);
-    su2double v = config->GetParamDV(iDV, 5) - config->GetParamDV(iDV, 2);
-    su2double w = config->GetParamDV(iDV, 6) - config->GetParamDV(iDV, 3);
+    if (rank==MASTER_NODE)
+    {
+      std::cout << "Coordinates of the rotation point (x,y,z): " <<"  "<< a <<"  "<< b <<" "<< c << std::endl;
+    }
+
+    /*--- xyz-coordinate of axis of rotation. ---*/
+
+    //su2double u = config->GetParamDV(iDV, 4) - config->GetParamDV(iDV, 1);
+    //su2double v = config->GetParamDV(iDV, 5) - config->GetParamDV(iDV, 2);
+    //su2double w = config->GetParamDV(iDV, 6) - config->GetParamDV(iDV, 3);
+
+    /* Assume rotation along the spanwise (Y axis) */
+    su2double u = config->GetParamDV(iDV, 4);
+    su2double v = config->GetParamDV(iDV, 5);
+    su2double w = config->GetParamDV(iDV, 6);
+    
+
+    if (rank==MASTER_NODE)
+    {
+      std::cout << "Rotation vector definition" << std::endl;
+      std::cout << "u: " << u << " v: " << v << " w: " << w << std::endl;
+    }
 
     /*--- The angle of rotation. ---*/
 
-    su2double theta = config->GetDV_Value(iDV) * Scale * PI_NUMBER / 180.0;
+    su2double theta = config->GetDV_Value(iDV) * 1 * PI_NUMBER / 180.0;
 
     /*--- An intermediate value used in computations. ---*/
 
@@ -2574,7 +2636,8 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
     su2double l = sqrt(l2);
 
     /*--- Change the value of the control point if move is true ---*/
-
+    /* Iterate over all control points in the FFD box using nested loops over iOrder
+        jOrder, kOrder */
     for (iOrder = 0; iOrder < FFDBox->GetlOrder(); iOrder++)
       for (jOrder = 0; jOrder < FFDBox->GetmOrder(); jOrder++)
         for (kOrder = 0; kOrder < FFDBox->GetnOrder(); kOrder++) {
@@ -2585,6 +2648,8 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
           x = coord[0];
           y = coord[1];
           z = coord[2];
+
+
           movement[0] = a * (v2 + w2) + u * (-b * v - c * w + u * x + v * y + w * z) +
                         (-a * (v2 + w2) + u * (b * v + c * w - v * y - w * z) + (v2 + w2) * x) * cosT +
                         l * (-c * v + b * w - w * y + v * z) * sinT;
@@ -2594,15 +2659,31 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
                         (-b * (u2 + w2) + v * (a * u + c * w - u * x - w * z) + (u2 + w2) * y) * cosT +
                         l * (c * u - a * w + w * x - u * z) * sinT;
           movement[1] = movement[1] / l2 - y;
+          
 
           movement[2] = c * (u2 + v2) + w * (-a * u - b * v + u * x + v * y + w * z) +
                         (-c * (u2 + v2) + w * (a * u + b * v - u * x - v * y) + (u2 + v2) * z) * cosT +
                         l * (-b * u + a * v - v * x + u * y) * sinT;
           movement[2] = movement[2] / l2 - z;
 
+          if (rank == MASTER_NODE)
+          {
+            std::cout <<"\n";
+            std::cout << "Rotation angle (deg): " << config->GetDV_Value(iDV) << std::endl;
+            std::cout << "Current FFD control point index: " << iOrder <<" "<< jOrder <<" "<< kOrder << std::endl;
+            std::cout << "Current FFD control point coo (x, y, z): " << x <<" "<< y <<" "<< z << std::endl;
+            std::cout << "Current FFD control point movement (x, y, z): " << movement[0] <<" "<<movement[1]<<" "<< movement[2] << std::endl;
+            std::cout <<"\n";
+            //std::cout << "lOrder: " << FFDBox->GetlOrder() <<" jOrder: " << FFDBox->GetmOrder() << " kOrder: " << FFDBox->GetnOrder() << std::endl;
+          }
+
+          /* Update the coordinate of the FFD control point */
           FFDBox->SetControlPoints(index, movement);
         }
-  } else {
+  } 
+  else 
+  { 
+    std::cout << "Found no control point close to the axis of rotation " <<std::endl;
     return false;
   }
 

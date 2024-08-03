@@ -875,7 +875,8 @@ void CConfig::SetPointersNull() {
   Marker_CfgFile_KindBC       = nullptr;    Marker_All_SendRecv         = nullptr;    Marker_All_PerBound        = nullptr;
   Marker_ZoneInterface        = nullptr;    Marker_All_ZoneInterface    = nullptr;    Marker_Riemann             = nullptr;
   Marker_Fluid_InterfaceBound = nullptr;    Marker_CHTInterface         = nullptr;    Marker_Damper              = nullptr;
-  Marker_Emissivity           = nullptr;    Marker_HeatTransfer         = nullptr;
+  Marker_Emissivity           = nullptr;    Marker_HeatTransfer         = nullptr;    Marker_Fuselage            = nullptr;
+
 
     /*--- Boundary Condition settings ---*/
 
@@ -1485,6 +1486,9 @@ void CConfig::SetConfig_Options() {
   addStringListOption("GEO_MARKER", nMarker_GeoEval, Marker_GeoEval);
   /*!\brief MARKER_EULER\n DESCRIPTION: Euler wall boundary marker(s) \ingroup Config*/
   addStringListOption("MARKER_EULER", nMarker_Euler, Marker_Euler);
+
+  /*!\brief MARKER_EULER\n DESCRIPTION: Fuselage wall boundary marker(s) \ingroup Config*/
+  addStringListOption("MARKER_FUSELAGE", nMarker_Fuselage, Marker_Fuselage);
   /*!\brief MARKER_FAR\n DESCRIPTION: Far-field boundary marker(s) \ingroup Config*/
   addStringListOption("MARKER_FAR", nMarker_FarField, Marker_FarField);
   /*!\brief MARKER_SYM\n DESCRIPTION: Symmetry boundary condition \ingroup Config*/
@@ -5565,7 +5569,7 @@ void CConfig::SetMarkers(SU2_COMPONENT val_software) {
   iMarker_Clamped, iMarker_ZoneInterface, iMarker_CHTInterface, iMarker_Load_Dir, iMarker_Disp_Dir,
   iMarker_Fluid_Load, iMarker_Deform_Mesh, iMarker_Deform_Mesh_Sym_Plane,
   iMarker_ActDiskInlet, iMarker_ActDiskOutlet,
-  iMarker_Turbomachinery, iMarker_MixingPlaneInterface;
+  iMarker_Turbomachinery, iMarker_MixingPlaneInterface, iMarker_Fuselage;  /* For tail rotation */
 
   int size = SINGLE_NODE;
   SU2_MPI::Comm_size(SU2_MPI::GetComm(), &size);
@@ -5582,7 +5586,7 @@ void CConfig::SetMarkers(SU2_COMPONENT val_software) {
   nMarker_Clamped + nMarker_Load_Dir + nMarker_Disp_Dir +
   nMarker_ActDiskInlet + nMarker_ActDiskOutlet +
   nMarker_ActDiskBemInlet_CG + nMarker_ActDiskBemOutlet_CG +
-  nMarker_ZoneInterface;
+  nMarker_ZoneInterface + nMarker_Fuselage;  /* Added to enable tail rotation */
 
   /*--- Add the possible send/receive domains ---*/
 
@@ -5674,6 +5678,18 @@ void CConfig::SetMarkers(SU2_COMPONENT val_software) {
   for (iMarker_Euler = 0; iMarker_Euler < nMarker_Euler; iMarker_Euler++) {
     Marker_CfgFile_TagBound[iMarker_CfgFile] = Marker_Euler[iMarker_Euler];
     Marker_CfgFile_KindBC[iMarker_CfgFile] = EULER_WALL;
+    iMarker_CfgFile++;
+  }
+
+  if (rank == MASTER_NODE)
+  {
+    std::cout <<"Populating MARKER FUSELAGE..." << std::endl;
+  }
+  
+  for (iMarker_Fuselage = 0; iMarker_Fuselage < nMarker_Fuselage; iMarker_Fuselage++) 
+  {
+    Marker_CfgFile_TagBound[iMarker_CfgFile] = Marker_Fuselage[iMarker_Fuselage];
+    Marker_CfgFile_KindBC[iMarker_CfgFile] = FUSELAGE_WALL;
     iMarker_CfgFile++;
   }
 
@@ -6072,7 +6088,7 @@ void CConfig::SetMarkers(SU2_COMPONENT val_software) {
 
 void CConfig::SetOutput(SU2_COMPONENT val_software, unsigned short val_izone) {
 
-  unsigned short iMarker_Euler, iMarker_Custom, iMarker_FarField,
+  unsigned short iMarker_Euler, iMarker_Fuselage, iMarker_Custom, iMarker_FarField,
   iMarker_SymWall, iMarker_PerBound, iMarker_NearFieldBound,
   iMarker_Fluid_InterfaceBound, iMarker_Inlet, iMarker_Riemann,
   iMarker_Deform_Mesh, iMarker_Deform_Mesh_Sym_Plane, iMarker_Fluid_Load,

@@ -266,6 +266,10 @@ void CDeformationDriver::Run() {
 
   /*--- Surface grid deformation using design variables. ---*/
 
+  if (rank == MASTER_NODE)
+  {
+    std::cout << "Running defromMesh() in CDeformationDriver.cpp" << std::endl;
+  }
   DeformMesh();
 
   /*--- Synchronization point after a single solver iteration. Compute the wall clock time required. ---*/
@@ -287,10 +291,24 @@ void CDeformationDriver::Run() {
   OutputFiles();
 }
 
-void CDeformationDriver::DeformMesh() {
-  if (!driver_config->GetDeform_Mesh()) return DeformLegacy();
+void CDeformationDriver::DeformMesh() 
+{
+  if (!driver_config->GetDeform_Mesh())
+  {   
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "Running Legacy mesh deformer CDeformationDriver.cpp" << std::endl; 
+    }
+      return DeformLegacy();
+  }
 
-  for (iZone = 0; iZone < nZone; iZone++) {
+  if (rank == MASTER_NODE)
+  {
+    std::cout << "Deforming mesh using new mesh solver" << std::endl;
+  }
+
+  for (iZone = 0; iZone < nZone; iZone++) 
+  {
     /*--- Set the stiffness of each element mesh into the mesh numerics. ---*/
 
     solver_container[iZone][INST_0][MESH_0][MESH_SOL]->SetMesh_Stiffness(
@@ -345,7 +363,9 @@ void CDeformationDriver::DeformLegacy() {
         grid_movement[iZone][INST_0]->SetVolume_Rotation(geometry_container[iZone][INST_0][MESH_0],
                                                          config_container[iZone], false);
 
-      } else {
+      }
+      else 
+      {
         /*--- If no volume-type deformations are requested, then this is a
          * surface-based deformation or FFD set up. ---*/
 
@@ -364,16 +384,21 @@ void CDeformationDriver::DeformLegacy() {
 
         /*--- Surface grid deformation. ---*/
 
-        if (rank == MASTER_NODE) cout << "Performing the deformation of the surface grid." << endl;
+        if (rank == MASTER_NODE) cout << "Performing the deformation of the surface grid using legacy solver." << endl;
+
         auto TotalDeformation = surface_movement[iZone]->SetSurface_Deformation(
             geometry_container[iZone][INST_0][MESH_0], config_container[iZone]);
 
-        if (config_container[iZone]->GetDesign_Variable(0) != FFD_SETTING) {
+
+        /* Incase of FFD SETTING, we do not do any volume deformation */
+        if (config_container[iZone]->GetDesign_Variable(0) != FFD_SETTING) 
+        {
           if (rank == MASTER_NODE)
             cout << endl
                  << "------------------- Volumetric grid deformation (ZONE " << iZone << ") ----------------" << endl;
 
           if (rank == MASTER_NODE) cout << "Performing the deformation of the volumetric grid." << endl;
+          
           grid_movement[iZone][INST_0]->SetVolume_Deformation(geometry_container[iZone][INST_0][MESH_0],
                                                               config_container[iZone], false);
 

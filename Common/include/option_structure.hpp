@@ -1543,6 +1543,7 @@ enum BC_TYPE {
   EULER_WALL = 1,             /*!< \brief Boundary Euler wall definition. */
   FAR_FIELD = 2,              /*!< \brief Boundary far-field definition. */
   SYMMETRY_PLANE = 3,         /*!< \brief Boundary symmetry plane definition. */
+  FUSELAGE_WALL = 31,         /*!< \brief Boundary fuselage plane definition (for tail rotation). */
   INLET_FLOW = 4,             /*!< \brief Boundary inlet flow definition. */
   OUTLET_FLOW = 5,            /*!< \brief Boundary outlet flow definition. */
   PERIODIC_BOUNDARY = 6,      /*!< \brief Periodic boundary definition. */

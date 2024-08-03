@@ -28,6 +28,8 @@
 #include "../include/drivers/CDeformationDriver.hpp"
 
 int main(int argc, char* argv[]) {
+
+  std::cout << " Entering SU2_DEF " << std::endl;
   char config_file_name[MAX_STRING_SIZE];
 
   /*--- MPI initialization ---*/
@@ -53,10 +55,13 @@ int main(int argc, char* argv[]) {
 
   CDeformationDriver driver(config_file_name, comm);
 
+
   /*--- Launch the main external loop of the solver. ---*/
 
-  driver.Run();
 
+  
+  driver.Run();
+  
   /*--- Postprocess all the containers, close history file, and exit SU2. ---*/
 
   driver.Finalize();
