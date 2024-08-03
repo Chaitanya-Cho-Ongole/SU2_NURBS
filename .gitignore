@@ -105,3 +105,4 @@ su2preconfig.timestamp
 .cache
 
 *.su2
+*.zip
