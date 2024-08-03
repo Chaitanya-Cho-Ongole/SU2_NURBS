@@ -266,7 +266,10 @@ void CDeformationDriver::Run() {
 
   /*--- Surface grid deformation using design variables. ---*/
 
-  std::cout << "Running defromMesh() in CDeformationDriver.cpp" << std::endl;
+  if (rank == MASTER_NODE)
+  {
+    std::cout << "Running defromMesh() in CDeformationDriver.cpp" << std::endl;
+  }
   DeformMesh();
 
   /*--- Synchronization point after a single solver iteration. Compute the wall clock time required. ---*/
@@ -292,7 +295,10 @@ void CDeformationDriver::DeformMesh()
 {
   if (!driver_config->GetDeform_Mesh())
   {   
+    if (rank == MASTER_NODE)
+    {
       std::cout << "Running Legacy mesh deformer CDeformationDriver.cpp" << std::endl; 
+    }
       return DeformLegacy();
   }
 
