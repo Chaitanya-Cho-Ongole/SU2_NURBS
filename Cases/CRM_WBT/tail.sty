@@ -18,10 +18,22 @@ $!GlobalTime
   SolutionTime = 2
 $!ActiveFieldMaps  =  [1]
 $!GlobalRGB 
+  RedChannelVar = 3
+  GreenChannelVar = 3
+  BlueChannelVar = 3
   RangeMin = 0
   RangeMax = 1
 $!GlobalContour  1
-  ColorMapName = 'Sequential - Viridis'
+  Var = 3
+  ColorMapName = 'cmocean - balance'
+  Labels
+    {
+    Show = Yes
+    TextShape
+      {
+      Height = 2.5
+      }
+    }
   Legend
     {
     Show = Yes
@@ -30,15 +42,38 @@ $!GlobalContour  1
       X = 95
       }
     }
+  ColorCutoff
+    {
+    RangeMin = 3.9117358923
+    RangeMax = 7.11455929279
+    }
   ColorMapFilter
     {
     ContinuousColor
       {
-      CMin = 0
-      CMax = 1
+      CMin = 2.31032419205
+      CMax = 8.71597099304
       }
     }
+$!ContourLevels New
+  ContourGroup = 1
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  2
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -56,7 +91,25 @@ $!GlobalContour  2
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 2
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  3
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -74,7 +127,25 @@ $!GlobalContour  3
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 3
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  4
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -92,7 +163,25 @@ $!GlobalContour  4
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 4
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  5
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -110,7 +199,25 @@ $!GlobalContour  5
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 5
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  6
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -128,7 +235,25 @@ $!GlobalContour  6
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 6
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  7
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -146,7 +271,25 @@ $!GlobalContour  7
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 7
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalContour  8
+  Var = 3
   ColorMapName = 'Sequential - Viridis'
   Legend
     {
@@ -164,6 +307,23 @@ $!GlobalContour  8
       CMax = 1
       }
     }
+$!ContourLevels New
+  ContourGroup = 8
+  RawData
+13
+2.5
+3
+3.5
+4
+4.5
+5
+5.5
+6
+6.5
+7
+7.5
+8
+8.5
 $!GlobalScatter 
   Legend
     {
@@ -181,12 +341,13 @@ $!FieldMap  [1]
   Mesh
     {
     Color = Black
+    LineThickness = 0.02
     }
   Contour
     {
-    ContourType = Flood
-    Color = Black
-    UseLightingEffect = Yes
+    ContourType = BothLinesAndFlood
+    Color = Custom1
+    LineThickness = 0.02
     }
   Vector
     {
@@ -254,8 +415,8 @@ $!ThreeDAxis
   XDetail
     {
     ShowAxis = No
-    RangeMin = -0.86820080280303990605
-    RangeMax = 69.929990792274480782
+    RangeMin = -0.86353747844696071567
+    RangeMax = 70.00076787471770956
     GRSpacing = 10
     AxisLine
       {
@@ -266,8 +427,8 @@ $!ThreeDAxis
   YDetail
     {
     ShowAxis = No
-    RangeMin = -1.4730074968963038362
-    RangeMax = 30.93315525550231726
+    RangeMin = -1.4730076876311670731
+    RangeMax = 30.933159260934445456
     GRSpacing = 5
     AxisLine
       {
@@ -278,8 +439,8 @@ $!ThreeDAxis
   ZDetail
     {
     ShowAxis = No
-    RangeMin = 1.9898149371147155762
-    RangeMax = 9.036261141300201416
+    RangeMin = 1.9900418519973754883
+    RangeMax = 9.0362533330917358398
     GRSpacing = 5
     AxisLine
       {
@@ -288,6 +449,9 @@ $!ThreeDAxis
     }
 $!IsoSurfaceAttributes  1
   IsoSurfaceSelection = OneSpecificValue
+  Isovalue1 = 3.9117358923
+  Isovalue2 = 5.51314759254
+  Isovalue3 = 7.11455929279
   Effects
     {
     LightingEffect = Gouraud
@@ -512,9 +676,9 @@ $!GlobalThreeD
     }
   RotateOrigin
     {
-    X = 34.53089499473572
-    Y = 14.73007387930301
-    Z = 5.513038039207458
+    X = 34.56861519813538
+    Y = 14.73007578665164
+    Z = 5.513147592544556
     }
   LightSource
     {
@@ -535,15 +699,19 @@ $!GlobalThreeD
   VectorLiftFraction = 0.7
   NearPlaneFraction = 0.1
 $!ThreeDView 
-  ThetaAngle = 240
+  Projection = Perspective
+  PSIAngle = 58.5533
+  ThetaAngle = -122.481
+  AlphaAngle = 1.26695
   ViewerPosition
     {
-    X = 338.1628997377541
-    Y = 162.5713516547548
-    Z = 192.8032401680153
+    X = 328.0849598033936
+    Y = 173.3472730605035
+    Z = 199.1842901552064
     }
-  ViewWidth = 7.21178
+  FieldOfView = 1.64625
 $!FieldLayers 
+  ShowContour = Yes
   ShowShade = Yes
   ShowEdge = No
 $!StreamtraceLayers 

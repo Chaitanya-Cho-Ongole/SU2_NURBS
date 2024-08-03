@@ -2573,7 +2573,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
 
   if (rank ==  MASTER_NODE)
   {
-    std::cout << "Calling setFFDRotation " << std::endl;
+    std::cout << "Calling setFFDRotation" << std::endl;
   }
   su2double movement[3] = {0.0, 0.0, 0.0}, x, y, z;
   unsigned short index[3], iFFDBox;
@@ -2590,19 +2590,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
   design_FFDBox = config->GetFFDTag(iDV);
 
   if (design_FFDBox.compare(FFDBox->GetTag()) == 0) {
-    /*--- xyz-coordinates of a point on the line of rotation. ---*/
-
-    //su2double a = config->GetParamDV(iDV, 1);
-    //su2double b = config->GetParamDV(iDV, 2);
-    //su2double c = config->GetParamDV(iDV, 3);
-
-    if (rank == MASTER_NODE)
-    {
-      std::cout << config->GetParamDV(iDV, 1) << std::endl;
-      std::cout << config->GetParamDV(iDV, 2) << std::endl;
-      std::cout << config->GetParamDV(iDV, 3) << std::endl;
-
-    }
+    /*--- xyz-coordinates of center of rotation for the tail. ---*/
 
     /* Center of rotation for the tail */
     su2double a = config->GetParamDV(iDV, 1);
@@ -2629,7 +2617,7 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
 
     if (rank==MASTER_NODE)
     {
-      std::cout << " xyz-coordinates of the line's direction vector " << std::endl;
+      std::cout << "Rotation vector definition" << std::endl;
       std::cout << "u: " << u << " v: " << v << " w: " << w << std::endl;
     }
 
@@ -2660,11 +2648,6 @@ bool CSurfaceMovement::SetFFDRotation(CGeometry* geometry, CConfig* config, CFre
           x = coord[0];
           y = coord[1];
           z = coord[2];
-
-          if (rank == MASTER_NODE)
-          {
-            std::cout << "Coordinates of the FFD control point (x,y,z): " <<"  "<< x <<"  "<< y <<" "<< z << std::endl;
-          }
 
 
           movement[0] = a * (v2 + w2) + u * (-b * v - c * w + u * x + v * y + w * z) +

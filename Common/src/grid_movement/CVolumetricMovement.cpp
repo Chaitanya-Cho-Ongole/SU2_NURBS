@@ -109,11 +109,6 @@ void CVolumetricMovement::SetVolume_Deformation(CGeometry* geometry, CConfig* co
   unsigned long Tot_Iter = 0;
   su2double MinVolume, MaxVolume;
 
-  if (rank == MASTER_NODE)
-  {
-    std::cout <<" I am in CVolumetricMovement::SetVolume_Deformation()" <<std::endl;
-  }
-
   /*--- Retrieve number or iterations, tol, output, etc. from config ---*/
 
   auto Screen_Output = config->GetDeform_Output();
@@ -1667,16 +1662,6 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
   /*--- As initialization, set to zero displacements of all the surfaces except the symmetry
    plane + fuselage surface (which is treated specially, see below), internal and the send-receive boundaries ---*/
 
-
-  if (rank == MASTER_NODE)
-  {
-    std::cout << "Total number of markers " << config->GetnMarker_All() << std::endl;
-
-    for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker ++)
-    {
-      std::cout << config->GetMarker_All_KindBC(iMarker) << std::endl;
-    }
-  }
 
   for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
   {
