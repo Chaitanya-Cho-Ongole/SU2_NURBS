@@ -1759,10 +1759,6 @@ void CVolumetricMovement::SetBoundaryDisplacements(CGeometry* geometry, CConfig*
   }
 
   /*--- Set to zero displacements of the normal component for the FUSELAGE WALL ---*/
-  if (rank == MASTER_NODE)
-  {
-    std::cout <<"Setting zero displacement of the normal component of FUSELAGE WALL" << std::endl;
-  }
   
   for (iMarker = 0; iMarker < config->GetnMarker_All(); iMarker++) 
   {
