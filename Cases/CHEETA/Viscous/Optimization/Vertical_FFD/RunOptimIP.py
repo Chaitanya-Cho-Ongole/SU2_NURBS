@@ -12,12 +12,12 @@ import ipyopt
 from numpy import ones, array, zeros
 
 # Design Variables-----#
-nDV = 311
+nDV = 473
 x0 = np.zeros((nDV,))
 
 # Define InputVariable class object: ffd
 ffd = InputVariable(0.0, PreStringHandler("DV_VALUE="), nDV)
-ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -0.07,0.07)
+ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -0.1,0.1)
 
 # Replace %__DIRECT__% with an empty string when using enable_direct
 enable_direct = Parameter([""], LabelReplacer("%__DIRECT__"))
