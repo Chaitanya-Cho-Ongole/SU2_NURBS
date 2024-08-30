@@ -17,7 +17,7 @@ x0 = np.zeros((nDV,))
 
 # Define InputVariable class object: ffd
 ffd = InputVariable(0.0, PreStringHandler("DV_VALUE="), nDV)
-ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -100.0,100.0)
+ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -0.01,0.01)
 
 # Replace %__DIRECT__% with an empty string when using enable_direct
 enable_direct = Parameter([""], LabelReplacer("%__DIRECT__"))
@@ -44,7 +44,8 @@ func_mom = Parameter(["OBJECTIVE_FUNCTION= MOMENT_Y"],\
 # EVALUATIONS---------------------------------------#
 
 #Number of of available cores
-ncores = "48"
+ncores1 = "48"
+ncores2 = "96"
 
 # Master cfg file used for DIRECT and ADJOINT calculations
 configMaster="turb_CRMWS_FADO.cfg"
@@ -56,16 +57,16 @@ geoMasterWing = "CRMWS_geo.cfg"
 meshName="CRMWS_M0_FFD.su2"
 
 # Mesh deformation
-def_command = "mpirun -n " + ncores + " SU2_DEF " + configMaster
+def_command = "mpirun -n " + ncores1 + " SU2_DEF " + configMaster
 
 # Geometry evaluation
-geo_commandWing = "mpirun -n " + ncores +  " SU2_GEO " + geoMasterWing
+geo_commandWing = "mpirun -n " + ncores1 +  " SU2_GEO " + geoMasterWing
 
 # Forward analysis
-cfd_command = "mpirun -n " + ncores + " SU2_CFD " + configMaster
+cfd_command = "mpirun -n " + ncores2 + " SU2_CFD " + configMaster
 
 # Adjoint analysis -> AD + projection
-adjoint_command = "mpirun -n " + ncores + " SU2_CFD_AD " + configMaster + " && mpirun -n " + ncores + " SU2_DOT_AD " + geoMasterWing
+adjoint_command = "mpirun -n " + ncores1 + " SU2_CFD_AD " + configMaster + " && mpirun -n " + ncores1 + " SU2_DOT_AD " + geoMasterWing
 
 # Define the sequential steps for shape-optimization
 max_tries = 1
