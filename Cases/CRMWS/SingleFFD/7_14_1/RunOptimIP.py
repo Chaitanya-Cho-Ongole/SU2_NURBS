@@ -12,12 +12,12 @@ import ipyopt
 from numpy import ones, array, zeros
 
 # Design Variables-----#
-nDV = 352
+nDV = 224
 x0 = np.zeros((nDV,))
 
 # Define InputVariable class object: ffd
 ffd = InputVariable(0.0, PreStringHandler("DV_VALUE="), nDV)
-ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -1.0,1.0)
+ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -100.0,100.0)
 
 # Replace %__DIRECT__% with an empty string when using enable_direct
 enable_direct = Parameter([""], LabelReplacer("%__DIRECT__"))
@@ -44,7 +44,7 @@ func_mom = Parameter(["OBJECTIVE_FUNCTION= MOMENT_Y"],\
 # EVALUATIONS---------------------------------------#
 
 #Number of of available cores
-ncores = "40"
+ncores = "48"
 
 # Master cfg file used for DIRECT and ADJOINT calculations
 configMaster="turb_CRMWS_FADO.cfg"
@@ -321,15 +321,15 @@ ST30_TH.addValueEvalStep(deform)
 ST30_TH.addValueEvalStep(geometryW)
 ST30_TH.setDefaultValue(0.0)
 
-# SCALING PARAMETERS ------------------------------------------------------------ #
+# SCALING PARGAMETERS ------------------------------------------------------------ #
 GlobalScale = 1
 ConScale = 1
 FtolCr = 1E-12
 Ftol = FtolCr * GlobalScale
-OptIter = 0
+OptIter = 100
 
 
-BSL_WING_VOL = 0.260356    # 40 cores
+BSL_WING_VOL = 0.260356    # 96 cores
 FACTOR_WV = 1
 TRG_WING_VOL = BSL_WING_VOL * FACTOR_WV
 
@@ -408,42 +408,42 @@ driver.addObjective("min", drag, GlobalScale)
 
 
 # Wing pitching moment constraint
-driver.addLowerBound(mom, -0.17, GlobalScale , ConScale)
+#driver.addLowerBound(mom, -0.17, GlobalScale , ConScale)
 
 # Wing volume constraint
-driver.addLowerBound(WingVol, TRG_WING_VOL, GlobalScale)
+#driver.addLowerBound(WingVol, TRG_WING_VOL, GlobalScale)
 
 # Span-wise thickness constraints
-driver.addLowerBound(ST1_TH, ST1_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST2_TH, ST2_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST3_TH, ST3_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST4_TH, ST4_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST5_TH, ST5_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST6_TH, ST6_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST7_TH, ST7_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST8_TH, ST8_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST9_TH, ST9_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST10_TH, ST10_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST11_TH, ST11_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST12_TH, ST12_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST13_TH, ST13_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST14_TH, ST14_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST15_TH, ST15_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST16_TH, ST16_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST17_TH, ST17_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST18_TH, ST18_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST19_TH, ST19_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST20_TH, ST20_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST21_TH, ST21_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST22_TH, ST22_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST23_TH, ST23_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST24_TH, ST24_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST25_TH, ST25_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST26_TH, ST26_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST27_TH, ST27_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST28_TH, ST28_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST29_TH, ST29_T* THK_BND, GlobalScale)
-driver.addLowerBound(ST30_TH, ST30_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST1_TH, ST1_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST2_TH, ST2_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST3_TH, ST3_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST4_TH, ST4_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST5_TH, ST5_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST6_TH, ST6_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST7_TH, ST7_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST8_TH, ST8_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST9_TH, ST9_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST10_TH, ST10_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST11_TH, ST11_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST12_TH, ST12_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST13_TH, ST13_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST14_TH, ST14_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST15_TH, ST15_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST16_TH, ST16_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST17_TH, ST17_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST18_TH, ST18_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST19_TH, ST19_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST20_TH, ST20_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST21_TH, ST21_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST22_TH, ST22_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST23_TH, ST23_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST24_TH, ST24_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST25_TH, ST25_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST26_TH, ST26_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST27_TH, ST27_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST28_TH, ST28_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST29_TH, ST29_T* THK_BND, GlobalScale)
+#driver.addLowerBound(ST30_TH, ST30_T* THK_BND, GlobalScale)
 
 
 
@@ -460,7 +460,8 @@ nlp = driver.getNLP()
 x0 = driver.getInitial()
 
 # Warm start parameters
-ncon = 32
+#ncon = 32
+ncon = 0
 lbMult = np.zeros(nDV)
 ubMult= np.zeros(nDV)
 conMult = np.zeros(ncon)
@@ -482,15 +483,17 @@ print(x0)
 nlp.set(warm_start_init_point = "no",
             nlp_scaling_method = "none",    # we are already doing some scaling
             accept_every_trial_step = "yes", # can be used to force single ls per iteration
-            limited_memory_max_history = 15,# the "L" in L-BFGS
+            limited_memory_max_history = 50,# the "L" in L-BFGS
             max_iter = OptIter,
             tol = Ftol,                     # this and max_iter are the main stopping criteria
             acceptable_iter = OptIter,
             acceptable_tol = Ftol,
             acceptable_obj_change_tol=1e-12, # Cauchy-type convergence over "acceptable_iter"
-            dual_inf_tol=1e-07,             # Tolerance for optimality criteria
-            mu_min = 1e-8,                  # for very low values (e-10) the problem "flip-flops"
-            recalc_y_feas_tol = 0.1,
+            dual_inf_tol=1e-07,
+            mu_strategy = "adaptive",
+            mu_oracle = "probing",          # Tolerance for optimality criteria
+            mu_min = 1e-8,
+            adaptive_mu_globalization="never-monotone-mode",  # for very low values (e-10) the problem "flip-flops"
             output_file = 'ipopt_output.txt')        # helps converging the dual problem with L-BFGS
 
 x, obj, status = nlp.solve(x0, mult_g = conMult, mult_x_L = lbMult, mult_x_U = ubMult)
