@@ -12,12 +12,12 @@ import ipyopt
 from numpy import ones, array, zeros
 
 # Design Variables-----#
-nDV = 224
+nDV = 138    #138Red Space
 x0 = np.zeros((nDV,))
 
 # Define InputVariable class object: ffd
 ffd = InputVariable(0.0, PreStringHandler("DV_VALUE="), nDV)
-ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -0.01,0.01)
+ffd = InputVariable(x0,ArrayLabelReplacer("__FFD_PTS__"), 0, np.ones(nDV), -0.04,0.04)
 
 # Replace %__DIRECT__% with an empty string when using enable_direct
 enable_direct = Parameter([""], LabelReplacer("%__DIRECT__"))
@@ -45,7 +45,7 @@ func_mom = Parameter(["OBJECTIVE_FUNCTION= MOMENT_Y"],\
 
 #Number of of available cores
 ncores1 = "48"
-ncores2 = "96"
+ncores2 = "48"
 
 # Master cfg file used for DIRECT and ADJOINT calculations
 configMaster="turb_CRMWS_FADO.cfg"
@@ -338,7 +338,7 @@ TRG_WING_VOL = BSL_WING_VOL * FACTOR_WV
 THK_BND = 0.25
 
 # Spanwise thickness values
-ST1_T = 0.232115
+ST1_T = 0.231963
 
 ST2_T = 0.211534
 
@@ -392,11 +392,11 @@ ST26_T = 0.0489757
 
 ST27_T = 0.045947
 
-ST28_T = 0.0428368
+ST28_T = 0.042837
 
-ST29_T = 0.0398202
+ST29_T = 0.039820
 
-ST30_T = 0.00128828
+ST30_T = 0.037256
 
 
 # DRIVER IPOPT-------------------------------------------------------#
@@ -412,39 +412,39 @@ driver.addObjective("min", drag, GlobalScale)
 #driver.addLowerBound(mom, -0.17, GlobalScale , ConScale)
 
 # Wing volume constraint
-#driver.addLowerBound(WingVol, TRG_WING_VOL, GlobalScale)
+driver.addLowerBound(WingVol, TRG_WING_VOL, GlobalScale)
 
 # Span-wise thickness constraints
-#driver.addLowerBound(ST1_TH, ST1_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST2_TH, ST2_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST3_TH, ST3_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST4_TH, ST4_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST5_TH, ST5_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST6_TH, ST6_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST7_TH, ST7_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST8_TH, ST8_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST9_TH, ST9_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST10_TH, ST10_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST11_TH, ST11_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST12_TH, ST12_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST13_TH, ST13_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST14_TH, ST14_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST15_TH, ST15_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST16_TH, ST16_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST17_TH, ST17_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST18_TH, ST18_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST19_TH, ST19_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST20_TH, ST20_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST21_TH, ST21_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST22_TH, ST22_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST23_TH, ST23_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST24_TH, ST24_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST25_TH, ST25_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST26_TH, ST26_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST27_TH, ST27_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST28_TH, ST28_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST29_TH, ST29_T* THK_BND, GlobalScale)
-#driver.addLowerBound(ST30_TH, ST30_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST1_TH, ST1_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST2_TH, ST2_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST3_TH, ST3_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST4_TH, ST4_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST5_TH, ST5_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST6_TH, ST6_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST7_TH, ST7_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST8_TH, ST8_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST9_TH, ST9_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST10_TH, ST10_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST11_TH, ST11_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST12_TH, ST12_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST13_TH, ST13_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST14_TH, ST14_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST15_TH, ST15_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST16_TH, ST16_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST17_TH, ST17_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST18_TH, ST18_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST19_TH, ST19_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST20_TH, ST20_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST21_TH, ST21_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST22_TH, ST22_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST23_TH, ST23_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST24_TH, ST24_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST25_TH, ST25_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST26_TH, ST26_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST27_TH, ST27_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST28_TH, ST28_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST29_TH, ST29_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST30_TH, ST30_T* THK_BND, GlobalScale)
 
 
 
@@ -462,7 +462,7 @@ x0 = driver.getInitial()
 
 # Warm start parameters
 #ncon = 32
-ncon = 0
+ncon = 31
 lbMult = np.zeros(nDV)
 ubMult= np.zeros(nDV)
 conMult = np.zeros(ncon)

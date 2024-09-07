@@ -7,7 +7,7 @@
 #SBATCH -e FAILURE.ERR
 #SBATCH --mail-type=BEGIN,END #Mail when job starts and ends
 #SBATCH --mail-user=prateekr@mit.edu
-#SBATCH --job-name=CRM_100
+#SBATCH --job-name=FS_0.03
 #SBATCH  --reservation=prateekr
 
 
