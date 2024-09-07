@@ -92,7 +92,7 @@ def reynolds_number(mach_number, altitude_feet, length_scale):
     # Calculate Reynolds number
     reynolds = (density * flight_speed_at_mach * length_scale) / viscosity
     
-    return reynolds
+    return reynolds, temperature, viscosity
 
 def atmospheric_pressure_at_altitude(feet):
     # Get temperature and pressure at the altitude
@@ -102,15 +102,17 @@ def atmospheric_pressure_at_altitude(feet):
     return pressure
 
 # Example usage
-altitude_feet = 10000  # Example altitude in feet
-mach_number = 0.85     # Example Mach number
-length_scale = 4       # Example length scale in meters
+altitude_feet = 35000  # Example altitude in feet
+mach_number = 0.78     # Example Mach number
+length_scale = 4.178       # Example length scale in meters
 
-# Calculate Reynolds number
-reynolds = reynolds_number(mach_number, altitude_feet, length_scale)
+# Calculate Reynolds number, temperature, and viscosity
+reynolds, temperature, viscosity = reynolds_number(mach_number, altitude_feet, length_scale)
 
 # Calculate atmospheric pressure
 pressure = atmospheric_pressure_at_altitude(altitude_feet)
 
 print(f"The Reynolds number at {altitude_feet} feet, Mach {mach_number}, and a length scale of {length_scale} meters is {reynolds:.2e}.")
 print(f"The atmospheric pressure at {altitude_feet} feet is {pressure:.2f} Pa.")
+print(f"The temperature at {altitude_feet} feet is {temperature:.2f} K.")
+print(f"The dynamic viscosity at {altitude_feet} feet is {viscosity:.2e} Pa·s.")
