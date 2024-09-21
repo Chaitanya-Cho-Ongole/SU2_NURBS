@@ -204,6 +204,128 @@ ST10_TH.addValueEvalStep(deform)
 ST10_TH.addValueEvalStep(geometryW)
 ST10_TH.setDefaultValue(0.0)
 
+ST11_TH = Function("ST11_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION11_THICKNESS"'))
+ST11_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION11_THICKNESS"',',',(0,None)))
+ST11_TH.addValueEvalStep(deform)
+ST11_TH.addValueEvalStep(geometryW)
+ST11_TH.setDefaultValue(0.0)
+
+ST12_TH = Function("ST12_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION12_THICKNESS"'))
+ST12_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION12_THICKNESS"',',',(0,None)))
+ST12_TH.addValueEvalStep(deform)
+ST12_TH.addValueEvalStep(geometryW)
+ST12_TH.setDefaultValue(0.0)
+
+ST13_TH = Function("ST13_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION13_THICKNESS"'))
+ST13_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION13_THICKNESS"',',',(0,None)))
+ST13_TH.addValueEvalStep(deform)
+ST13_TH.addValueEvalStep(geometryW)
+ST13_TH.setDefaultValue(0.0)
+
+ST14_TH = Function("ST14_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION14_THICKNESS"'))
+ST14_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION14_THICKNESS"',',',(0,None)))
+ST14_TH.addValueEvalStep(deform)
+ST14_TH.addValueEvalStep(geometryW)
+ST14_TH.setDefaultValue(0.0)
+
+ST15_TH = Function("ST15_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION15_THICKNESS"'))
+ST15_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION15_THICKNESS"',',',(0,None)))
+ST15_TH.addValueEvalStep(deform)
+ST15_TH.addValueEvalStep(geometryW)
+ST15_TH.setDefaultValue(0.0)
+
+ST16_TH = Function("ST16_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION16_THICKNESS"'))
+ST16_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION16_THICKNESS"',',',(0,None)))
+ST16_TH.addValueEvalStep(deform)
+ST16_TH.addValueEvalStep(geometryW)
+ST16_TH.setDefaultValue(0.0)
+
+ST17_TH = Function("ST17_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION17_THICKNESS"'))
+ST17_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION17_THICKNESS"',',',(0,None)))
+ST17_TH.addValueEvalStep(deform)
+ST17_TH.addValueEvalStep(geometryW)
+ST17_TH.setDefaultValue(0.0)
+
+ST18_TH = Function("ST18_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION18_THICKNESS"'))
+ST18_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION18_THICKNESS"',',',(0,None)))
+ST18_TH.addValueEvalStep(deform)
+ST18_TH.addValueEvalStep(geometryW)
+ST18_TH.setDefaultValue(0.0)
+
+ST19_TH = Function("ST19_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION19_THICKNESS"'))
+ST19_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION19_THICKNESS"',',',(0,None)))
+ST19_TH.addValueEvalStep(deform)
+ST19_TH.addValueEvalStep(geometryW)
+ST19_TH.setDefaultValue(0.0)
+
+ST20_TH = Function("ST20_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION20_THICKNESS"'))
+ST20_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION20_THICKNESS"',',',(0,None)))
+ST20_TH.addValueEvalStep(deform)
+ST20_TH.addValueEvalStep(geometryW)
+ST20_TH.setDefaultValue(0.0)
+
+ST21_TH = Function("ST21_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION21_THICKNESS"'))
+ST21_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION21_THICKNESS"',',',(0,None)))
+ST21_TH.addValueEvalStep(deform)
+ST21_TH.addValueEvalStep(geometryW)
+ST21_TH.setDefaultValue(0.0)
+
+ST22_TH = Function("ST22_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION22_THICKNESS"'))
+ST22_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION22_THICKNESS"',',',(0,None)))
+ST22_TH.addValueEvalStep(deform)
+ST22_TH.addValueEvalStep(geometryW)
+ST22_TH.setDefaultValue(0.0)
+
+ST23_TH = Function("ST23_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION23_THICKNESS"'))
+ST23_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION23_THICKNESS"',',',(0,None)))
+ST23_TH.addValueEvalStep(deform)
+ST23_TH.addValueEvalStep(geometryW)
+ST23_TH.setDefaultValue(0.0)
+
+ST24_TH = Function("ST24_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION24_THICKNESS"'))
+ST24_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION24_THICKNESS"',',',(0,None)))
+ST24_TH.addValueEvalStep(deform)
+ST24_TH.addValueEvalStep(geometryW)
+ST24_TH.setDefaultValue(0.0)
+
+ST25_TH = Function("ST25_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION25_THICKNESS"'))
+ST25_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION25_THICKNESS"',',',(0,None)))
+ST25_TH.addValueEvalStep(deform)
+ST25_TH.addValueEvalStep(geometryW)
+ST25_TH.setDefaultValue(0.0)
+
+ST26_TH = Function("ST26_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION26_THICKNESS"'))
+ST26_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION26_THICKNESS"',',',(0,None)))
+ST26_TH.addValueEvalStep(deform)
+ST26_TH.addValueEvalStep(geometryW)
+ST26_TH.setDefaultValue(0.0)
+
+ST27_TH = Function("ST27_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION27_THICKNESS"'))
+ST27_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION27_THICKNESS"',',',(0,None)))
+ST27_TH.addValueEvalStep(deform)
+ST27_TH.addValueEvalStep(geometryW)
+ST27_TH.setDefaultValue(0.0)
+
+ST28_TH = Function("ST28_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION28_THICKNESS"'))
+ST28_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION28_THICKNESS"',',',(0,None)))
+ST28_TH.addValueEvalStep(deform)
+ST28_TH.addValueEvalStep(geometryW)
+ST28_TH.setDefaultValue(0.0)
+
+ST29_TH = Function("ST29_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION29_THICKNESS"'))
+ST29_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION29_THICKNESS"',',',(0,None)))
+ST29_TH.addValueEvalStep(deform)
+ST29_TH.addValueEvalStep(geometryW)
+ST29_TH.setDefaultValue(0.0)
+
+ST30_TH = Function("ST30_TH","GEOMETRY_WING/of_func.csv",LabeledTableReader('"STATION30_THICKNESS"'))
+ST30_TH.addInputVariable(ffd,"GEOMETRY_WING/of_grad.csv",LabeledTableReader('"STATION30_THICKNESS"',',',(0,None)))
+ST30_TH.addValueEvalStep(deform)
+ST30_TH.addValueEvalStep(geometryW)
+ST30_TH.setDefaultValue(0.0)
+
+
+
 # SCALING PARAMETERS ------------------------------------------------------------ #
 GlobalScale = 1
 ConScale = 1
@@ -223,23 +345,63 @@ THK_BND = 0.25
 # Spanwise thickness values
 ST1_T = 0.71798
 
-ST2_T = 0.584143
+ST2_T = 0.666458
 
-ST3_T = 0.46134
+ST3_T = 0.619429
 
-ST4_T = 0.371725
+ST4_T = 0.57638
 
-ST5_T = 0.330749
+ST5_T = 0.536958
 
-ST6_T = 0.294421
+ST6_T = 0.500212 
 
-ST7_T = 0.26028
+ST7_T = 0.465626
 
-ST8_T = 0.228445
+ST8_T = 0.433001
 
-ST9_T = 0.197514
+ST9_T = 0.401324
 
-ST10_T = 0.0981716
+ST10_T = 0.377613
+
+ST11_T = 0.36399
+
+ST12_T = 0.351158
+
+ST13_T = 0.33917
+
+ST14_T = 0.327534
+
+ST15_T = 0.316256
+
+ST16_T = 0.30531
+
+ST17_T = 0.294641
+
+ST18_T = 0.28392
+
+ST19_T = 0.27332
+
+ST20_T = 0.263431
+
+ST21_T = 0.253488
+
+ST22_T = 0.243855
+
+ST23_T = 0.23416
+
+ST24_T = 0.224827
+
+ST25_T = 0.215315
+
+ST26_T = 0.206141
+
+ST27_T = 0.196775
+
+ST28_T = 0.187523
+
+ST29_T = 0.178255
+
+ST30_T = 0.169147
 
 
 # DRIVER IPOPT-------------------------------------------------------#
@@ -269,6 +431,28 @@ driver.addLowerBound(ST8_TH, ST8_T* THK_BND, GlobalScale)
 driver.addLowerBound(ST9_TH, ST9_T* THK_BND, GlobalScale)
 driver.addLowerBound(ST10_TH, ST10_T* THK_BND, GlobalScale)
 
+driver.addLowerBound(ST11_TH, ST11_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST12_TH, ST12_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST13_TH, ST13_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST14_TH, ST14_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST15_TH, ST15_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST16_TH, ST16_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST17_TH, ST17_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST18_TH, ST18_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST19_TH, ST19_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST20_TH, ST20_T* THK_BND, GlobalScale)
+
+driver.addLowerBound(ST21_TH, ST21_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST22_TH, ST22_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST23_TH, ST23_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST24_TH, ST24_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST25_TH, ST25_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST26_TH, ST26_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST27_TH, ST27_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST28_TH, ST28_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST29_TH, ST29_T* THK_BND, GlobalScale)
+driver.addLowerBound(ST30_TH, ST30_T* THK_BND, GlobalScale)
+
 
 driver.setWorkingDirectory("WORKDIR")
 driver.setEvaluationMode(False,2.0)
@@ -283,7 +467,7 @@ nlp = driver.getNLP()
 x0 = driver.getInitial()
 
 # Warm start parameters
-ncon = 11
+ncon = 31
 lbMult = np.zeros(nDV)
 ubMult= np.zeros(nDV)
 conMult = np.zeros(ncon)
