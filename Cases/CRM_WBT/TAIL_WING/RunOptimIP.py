@@ -12,7 +12,7 @@ import ipyopt
 from numpy import ones, array, zeros
 
 # Design Variables-----#
-nDV = 130
+nDV = 144
 x0 = np.zeros((nDV,))
 
 # Define InputVariable class object: ffd
@@ -209,7 +209,7 @@ GlobalScale = 1
 ConScale = 1
 FtolCr = 1E-12
 Ftol = FtolCr * GlobalScale
-OptIter = 0
+OptIter = 10
 
 
 BSL_WING_VOL = 0.260356    # 40 cores
