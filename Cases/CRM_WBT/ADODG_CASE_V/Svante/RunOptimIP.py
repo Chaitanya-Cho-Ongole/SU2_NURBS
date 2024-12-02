@@ -470,7 +470,7 @@ nlp = driver.getNLP()
 x0 = driver.getInitial()
 
 # Warm start parameters
-ncon = 2
+ncon = 32
 lbMult = np.zeros(nDV)
 ubMult= np.zeros(nDV)
 conMult = np.zeros(ncon)
