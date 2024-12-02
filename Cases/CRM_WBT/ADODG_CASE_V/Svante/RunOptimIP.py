@@ -334,7 +334,7 @@ OptIter = 50
 
 
 BSL_WING_VOL = 88.8998    # 48 cores
-FACTOR_WV = 1
+FACTOR_WV = 0.99
 TRG_WING_VOL = BSL_WING_VOL * FACTOR_WV
 
 # THICKNESS BOUND (xx % of BSL value)
@@ -421,7 +421,7 @@ driver.addLowerBound(mom, -0.001, GlobalScale , ConScale)
 driver.addUpperBound(mom, 0.001, GlobalScale , ConScale)
 
 # Wing volume constraint
-#driver.addLowerBound(WingVol, TRG_WING_VOL, GlobalScale)
+driver.addLowerBound(WingVol, TRG_WING_VOL, GlobalScale)
 
 # Span-wise thickness constraints
 driver.addLowerBound(ST1_TH, ST1_T* THK_BND, GlobalScale)
@@ -470,7 +470,7 @@ nlp = driver.getNLP()
 x0 = driver.getInitial()
 
 # Warm start parameters
-ncon = 32
+ncon = 33
 lbMult = np.zeros(nDV)
 ubMult= np.zeros(nDV)
 conMult = np.zeros(ncon)
