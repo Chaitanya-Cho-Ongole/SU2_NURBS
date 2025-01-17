@@ -1,11 +1,14 @@
 <p align="center">
-<img width="250" height="154" src="Docs/logoSU2small.png">
+<img width="250" height="250" src="Docs/logo.png">
 </p>
 
 
-# SU2 (ver. 8.0.1 "Harrier"): The Open-Source CFD Code
+# SU2-CalculiX (ver. 1.0.1 "Columbia"): Open-Source CFD-CSD Code
 
-Computational analysis tools have revolutionized the way we design engineering systems, but most established codes are proprietary, unavailable, or prohibitively expensive for many users. The SU2 team is changing this, making multiphysics analysis and design optimization freely available as open-source software and involving everyone in its creation and development.
+Achieving environmental sustainability in the aviation sector requires a holistic approach that combines technological innovation, seamless integration of key aircraft components—particularly airframes and propulsion systems—into synergistic designs, and transformative advancements in operations and energy sources.
+
+This repository hosts a high-fidelity aero-structural optimization framework built on a customized SU2 fork. It integrates SU2 with CalculiX to enhance its capabilities, enabling the solution of advanced aeroelastic topology optimization problems.
+
 
 For an overview of the technical details in SU2, please see the following AIAA Journal article:
 
@@ -33,6 +36,12 @@ You will find more information and the latest news in:
 - CFD Online: <http://www.cfd-online.com/Forums/su2/>
 - Twitter: <https://twitter.com/su2code>
 - Facebook: <https://www.facebook.com/su2code>
+
+# CalculiX Introduction
+
+CalculiX is an open-source finite element analysis (FEA) software suite designed for solving complex structural mechanics problems with high efficiency and accuracy. 
+
+The current implementation of CalculiX extendes wiith element-based density definition and filtering methods to solve topology optimization across structured and un-structured domains. 
 
 # SU2 Installation
 
