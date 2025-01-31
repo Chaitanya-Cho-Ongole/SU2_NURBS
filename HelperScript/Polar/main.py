@@ -2,6 +2,7 @@ import subprocess
 import os
 import shutil
 import glob
+import pandas as pd
 
 # Remove "Results" directory if it exists
 results_dir = "Results"
@@ -9,21 +10,73 @@ if os.path.exists(results_dir):
     print(f"Removing existing '{results_dir}' directory...")
     shutil.rmtree(results_dir)
 
-def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, next_cl_dir=None, update_restart=False):
+global_csv_path = "global_results.csv"  # Define global CSV file path
+
+def modify_su2_config(input_file, output_file, TARGET_CL, MACH):
+    """ Modifies an SU2 configuration file by setting FIXED_CL_MODE to YES and TARGET_CL. """
+    with open(input_file, "r") as file:
+        lines = file.readlines()
+
+    with open(output_file, "w") as file:
+        for line in lines:
+            stripped_line = line.strip()
+            if not stripped_line or stripped_line.startswith("%"):
+                file.write(line)
+                continue
+
+            if "=" in stripped_line:
+                key, value = map(str.strip, stripped_line.split("=", 1))
+                if key == "MACH_NUMBER":
+                    line = f"{key}= {MACH}\n"
+                elif key == "FIXED_CL_MODE":
+                    line = f"{key}= YES\n"
+                elif key == "TARGET_CL":
+                    line = f"{key}= {TARGET_CL}\n"
+                
+            file.write(line)
+
+    return output_file
+
+def process_su2_history(history_file, global_csv, mach_number):
+    """
+    Reads the SU2-generated history.csv file, extracts the last values of CD, CL, CMx, CMy, and CMz,
+    and appends these values along with the corresponding Mach number to a global CSV file.
+    """
+    try:
+        # Read the CSV file
+        df = pd.read_csv(history_file)
+        
+        # Clean column names (strip spaces and remove quotes)
+        df.columns = df.columns.str.strip().str.replace('"', '')
+
+        # Ensure required columns exist
+        required_columns = ["CD", "CL", "CMx", "CMy", "CMz"]
+        if not all(col in df.columns for col in required_columns):
+            print(f"Error: Missing required columns in {history_file}")
+            return
+
+        # Extract the last row values
+        last_values = df.iloc[-1][required_columns].to_dict()
+        last_values["Mach"] = mach_number  # Add Mach number
+
+        # Convert dictionary to DataFrame
+        result_df = pd.DataFrame([last_values])
+
+        # Append to global CSV file, creating if necessary
+        file_exists = os.path.isfile(global_csv)
+        result_df.to_csv(global_csv, mode='a', header=not file_exists, index=False)
+
+        print(f"Appended results from {history_file} to {global_csv}")
+    
+    except Exception as e:
+        print(f"Error processing {history_file}: {e}")
+
+
+def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, global_csv):
     """
     Runs SU2_CFD with the specified number of cores and configuration file in a structured directory.
     Logs output to a file instead of printing to screen. Moves 'solution.dat' to the next CL directory.
-
-    Parameters:
-    num_cores (int): Number of processor cores to use.
-    cfg_file (str): Name of the configuration file.
-    TARGET_CL (float): Target CL to append to configuration file.
-    MACH (float): Cruise Mach number.
-    next_cl_dir (str, optional): Directory for the next CL where 'solution.dat' will be moved.
-    update_restart (bool, optional): Whether to call update_restart_config() after moving solution.dat.
-
-    Returns:
-    str: The path to the log file.
+    Extracts data from history.csv and appends to a global results CSV.
     """
     # Create Results directory
     os.makedirs(results_dir, exist_ok=True)
@@ -60,101 +113,12 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, next_cl_dir=None, u
         )
         process.wait()  # Wait for the process to complete
     
-    update_restart_config(modified_cfg, modified_cfg)
-
-    # Move solution.dat and modified config to the next CL directory if applicable
-    solution_file = os.path.join(work_dir, "solution.dat")
-    if next_cl_dir:
-        os.makedirs(next_cl_dir, exist_ok=True)  # Ensure the next CL directory exists
-
-        # Move solution.dat
-        if os.path.exists(solution_file):
-            print(f"Moving 'solution.dat' to {next_cl_dir}")
-            shutil.move(solution_file, os.path.join(next_cl_dir, "solution.dat"))
-
-        # Copy modified configuration file to the next CL directory
-        next_cfg = os.path.join(next_cl_dir, "modified_" + os.path.basename(cfg_file))
-        shutil.copy(modified_cfg, next_cfg)  # Ensure next CL has the correct config file
-
-        # Update restart config in the next CL directory
-        if update_restart:
-            print(f"Updating restart config in {next_cl_dir}")
-            update_restart_config(next_cfg, next_cfg)
+    # Process and log results from history.csv
+    history_file = os.path.join(work_dir, "history.csv")
+    if os.path.exists(history_file):
+        process_su2_history(history_file, global_csv, MACH)
 
     return log_file_path  # Return the path to the log file
-
-
-# Define the function to modify the SU2 configuration file
-def modify_su2_config(input_file, output_file, TARGET_CL, MACH):
-    """
-    Modifies an SU2 configuration file by setting FIXED_CL_MODE to YES 
-    and TARGET_CL to the given value.
-
-    Parameters:
-        input_file (str): Path to the original SU2 configuration file.
-        output_file (str): Path to save the modified configuration file.
-        TARGET_CL (float): The value to set for TARGET_CL.
-        MACH (float): The value to set for MACH_NUMBER.
-
-    Returns:
-        str: Path to the modified configuration file.
-    """
-    with open(input_file, "r") as file:
-        lines = file.readlines()
-
-    with open(output_file, "w") as file:
-        for line in lines:
-            stripped_line = line.strip()
-            if not stripped_line or stripped_line.startswith("%"):
-                file.write(line)
-                continue
-
-            if "=" in stripped_line:
-                key, value = map(str.strip, stripped_line.split("=", 1))
-
-                if key == "MACH_NUMBER":
-                    line = f"{key}= {MACH}\n"
-                elif key == "FIXED_CL_MODE":
-                    line = f"{key}= YES\n"
-                elif key == "TARGET_CL":
-                    line = f"{key}= {TARGET_CL}\n"
-                elif key == "RESTART_SOL":
-                    line = f"{key}= NO\n"
-                
-            file.write(line)
-
-    return output_file
-
-def update_restart_config(input_file, output_file):
-    """
-    Sets the RESTART_SOL to YES
-
-    Parameters:
-        input_file (str): Path to the original SU2 configuration file.
-        Overwrite this file to prevent multiple .cfg files
-
-    Returns:
-        str: Path to the modified configuration file.
-    """
-    with open(input_file, "r") as file:
-        lines = file.readlines()
-
-    with open(output_file, "w") as file:
-        for line in lines:
-            stripped_line = line.strip()
-            if not stripped_line or stripped_line.startswith("%"):
-                file.write(line)
-                continue
-
-            if "=" in stripped_line:
-                key, value = map(str.strip, stripped_line.split("=", 1))
-                if key == "RESTART_SOL":
-                    line = f"{key}= YES\n"
-                
-            file.write(line)
-
-    return output_file
-
 
 # Example usage:
 ncores = 8
@@ -162,22 +126,11 @@ cfg_file = "inv_ONERAM6.cfg"
 
 # Define Mach and CL values for nested loops
 MACH_VALUES = [0.75]  # Outer loop (Mach numbers)
-CL_VALUES = [0.0, 0.1, 0.2]  # Inner loop (CL values)
+CL_VALUES = [0.0, 0.1]  # Inner loop (CL values)
 
 # Run simulations for all (MACH, CL) combinations
 for MACH in MACH_VALUES:
-    for i, TARGET_CL in enumerate(CL_VALUES):
+    for TARGET_CL in CL_VALUES:
         print(f"Running SU2_CFD for Mach={MACH}, CL={TARGET_CL}...", end=" ", flush=True)
-
-        # Determine next CL directory (except for the last CL value)
-        next_cl_dir = None
-        update_restart = False  # Do not update restart for the first CL
-
-        if i < len(CL_VALUES) - 1:
-            next_cl_dir = os.path.join(
-                "Results", f"MACH_{MACH:.2f}".replace(".", "_"), f"CL_{CL_VALUES[i+1]:.2f}".replace(".", "_")
-            )
-            update_restart = True  # Only update restart for the second CL onwards
-
-        log_path = run_su2_simulation(ncores, cfg_file, TARGET_CL, MACH, next_cl_dir, update_restart)
+        log_path = run_su2_simulation(ncores, cfg_file, TARGET_CL, MACH, global_csv_path)
         print("Done!")
