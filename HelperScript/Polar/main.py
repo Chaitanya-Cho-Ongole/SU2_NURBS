@@ -9,7 +9,7 @@ if os.path.exists(results_dir):
     print(f"Removing existing '{results_dir}' directory...")
     shutil.rmtree(results_dir)
 
-def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, next_cl_dir=None):
+def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, next_cl_dir=None, update_restart=False):
     """
     Runs SU2_CFD with the specified number of cores and configuration file in a structured directory.
     Logs output to a file instead of printing to screen. Moves 'solution.dat' to the next CL directory.
@@ -20,6 +20,7 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, next_cl_dir=None):
     TARGET_CL (float): Target CL to append to configuration file.
     MACH (float): Cruise Mach number.
     next_cl_dir (str, optional): Directory for the next CL where 'solution.dat' will be moved.
+    update_restart (bool, optional): Whether to call update_restart_config() after moving solution.dat.
 
     Returns:
     str: The path to the log file.
@@ -61,13 +62,24 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, next_cl_dir=None):
     
     update_restart_config(modified_cfg, modified_cfg)
 
-    # Move solution.dat to the next CL directory if applicable
+    # Move solution.dat and modified config to the next CL directory if applicable
     solution_file = os.path.join(work_dir, "solution.dat")
     if next_cl_dir:
         os.makedirs(next_cl_dir, exist_ok=True)  # Ensure the next CL directory exists
+
+        # Move solution.dat
         if os.path.exists(solution_file):
             print(f"Moving 'solution.dat' to {next_cl_dir}")
             shutil.move(solution_file, os.path.join(next_cl_dir, "solution.dat"))
+
+        # Copy modified configuration file to the next CL directory
+        next_cfg = os.path.join(next_cl_dir, "modified_" + os.path.basename(cfg_file))
+        shutil.copy(modified_cfg, next_cfg)  # Ensure next CL has the correct config file
+
+        # Update restart config in the next CL directory
+        if update_restart:
+            print(f"Updating restart config in {next_cl_dir}")
+            update_restart_config(next_cfg, next_cfg)
 
     return log_file_path  # Return the path to the log file
 
@@ -145,8 +157,8 @@ def update_restart_config(input_file, output_file):
 
 
 # Example usage:
-ncores = 4
-cfg_file = "Euler_CRM_FBT.cfg"
+ncores = 8
+cfg_file = "inv_ONERAM6.cfg"
 
 # Define Mach and CL values for nested loops
 MACH_VALUES = [0.75]  # Outer loop (Mach numbers)
@@ -159,10 +171,13 @@ for MACH in MACH_VALUES:
 
         # Determine next CL directory (except for the last CL value)
         next_cl_dir = None
+        update_restart = False  # Do not update restart for the first CL
+
         if i < len(CL_VALUES) - 1:
             next_cl_dir = os.path.join(
                 "Results", f"MACH_{MACH:.2f}".replace(".", "_"), f"CL_{CL_VALUES[i+1]:.2f}".replace(".", "_")
             )
+            update_restart = True  # Only update restart for the second CL onwards
 
-        log_path = run_su2_simulation(ncores, cfg_file, TARGET_CL, MACH, next_cl_dir)
+        log_path = run_su2_simulation(ncores, cfg_file, TARGET_CL, MACH, next_cl_dir, update_restart)
         print("Done!")
