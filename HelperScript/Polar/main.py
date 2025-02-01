@@ -5,7 +5,39 @@ import glob
 import pandas as pd
 import os
 
-from postProcess import *
+def process_su2_history(history_file, global_csv, mach_number):
+    """
+    Reads the SU2-generated history.csv file, extracts the last values of CD, CL, CMx, CMy, and CMz,
+    and appends these values along with the corresponding Mach number to a global CSV file.
+    """
+    try:
+        # Read the CSV file
+        df = pd.read_csv(history_file)
+        
+        # Clean column names (strip spaces and remove quotes)
+        df.columns = df.columns.str.strip().str.replace('"', '')
+
+        # Ensure required columns exist
+        required_columns = ["CD", "CL", "CMx", "CMy", "CMz"]
+        if not all(col in df.columns for col in required_columns):
+            print(f"Error: Missing required columns in {history_file}")
+            return
+
+        # Extract the last row values
+        last_values = df.iloc[-1][required_columns].to_dict()
+        last_values["Mach"] = mach_number  # Add Mach number
+
+        # Convert dictionary to DataFrame
+        result_df = pd.DataFrame([last_values])
+
+        # Append to global CSV file, creating if necessary
+        file_exists = os.path.isfile(global_csv)
+        result_df.to_csv(global_csv, mode='a', header=not file_exists, index=False)
+
+        print(f"Appended results from {history_file} to {global_csv}")
+    
+    except Exception as e:
+        print(f"Error processing {history_file}: {e}")
 
 
 # Remove "Results" directory if it exists
@@ -13,8 +45,14 @@ results_dir = "Results"
 if os.path.exists(results_dir):
     print(f"Removing existing '{results_dir}' directory...")
     shutil.rmtree(results_dir)
+    
+global_csv_path = "Polar_results.csv"  # Define global CSV file path
+    
+# Remove global_results.csv if it exists
+if os.path.exists(global_csv_path):
+    print(f"Removing existing '{global_csv_path}' file...")
+    os.remove(global_csv_path)
 
-global_csv_path = "global_results.csv"  # Define global CSV file path
 
 def modify_su2_config(input_file, output_file, TARGET_CL, MACH, restart=False):
     """ Modifies an SU2 configuration file by setting FIXED_CL_MODE to YES, TARGET_CL, and RESTART_SOL. """
@@ -102,9 +140,13 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next
             command, cwd=work_dir, stdout=log_file, stderr=log_file, text=True
         )
         process.wait()
+    
+    history_file = os.path.join(work_dir, "history.csv")
+    process_su2_history(history_file, global_csv_path, MACH)
 
     # Move solution.dat to the next CL directory if applicable
     solution_file = os.path.join(work_dir, "solution.dat")
+    flow_meta_file = os.path.join(work_dir, "flow.meta")
     if next_cl_dir:
         os.makedirs(next_cl_dir, exist_ok=True)
 
@@ -113,6 +155,11 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next
             print(f"Moving 'solution.dat' to {next_cl_dir}")
             shutil.move(solution_file, os.path.join(next_cl_dir, "solution.dat"))
 
+        # Move flow.meta
+        if os.path.exists(flow_meta_file):
+            print(f"Moving 'flow.meta' to {next_cl_dir}")
+            shutil.move(flow_meta_file, os.path.join(next_cl_dir, "flow.meta"))
+            
         # Copy modified configuration file to the next CL directory
         next_cfg = os.path.join(next_cl_dir, "modified_" + os.path.basename(cfg_file))
         shutil.copy(modified_cfg, next_cfg)
@@ -127,8 +174,8 @@ ncores = 8
 cfg_file = "inv_ONERAM6.cfg"
 
 # Define Mach and CL values for nested loops
-MACH_VALUES = [0.75]  # Outer loop (Mach numbers)
-CL_VALUES = [0.0, 0.1]  # Inner loop (CL values)
+MACH_VALUES = [0.60, 0.65, 0.70]  # Outer loop (Mach numbers)
+CL_VALUES = [0.0, 0.1, 0.2, 0.3]  # Inner loop (CL values)
 
 # Run simulations for all (MACH, CL) combinations
 for i, MACH in enumerate(MACH_VALUES):
