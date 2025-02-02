@@ -3,7 +3,48 @@ import os
 import shutil
 import glob
 import pandas as pd
-import os
+import numpy as np
+
+#import run as rn
+
+
+# Remove "Results" directory if it exists
+results_dir = "Results"
+if os.path.exists(results_dir):
+    print(f"Removing existing '{results_dir}' directory...")
+    shutil.rmtree(results_dir)
+    
+global_csv_path = "Polar_results.csv"  # Define global CSV file path
+    
+# Remove global_results.csv if it exists
+if os.path.exists(global_csv_path):
+    print(f"Removing existing '{global_csv_path}' file...")
+    os.remove(global_csv_path)
+    
+
+
+def get_moment(history_file):
+    """
+    Reads the SU2-generated history.csv file, extracts the pitching moment value.
+    """
+    try:
+        # Read the CSV file
+        df = pd.read_csv(history_file)
+        
+        # Clean column names (strip spaces and remove quotes)
+        df.columns = df.columns.str.strip().str.replace('"', '', regex=True)
+
+        # Ensure required columns exist
+        if "CMy" not in df.columns:
+            print(f"Error: Missing pitching moment (CMy) in {history_file}")
+            return None
+
+        # Extract the last row value
+        return df.iloc[-1]["CMy"]
+
+    except Exception as e:
+        print(f"Error processing {history_file}: {e}")
+        return None
 
 def process_su2_history(history_file, global_csv, mach_number):
     """
@@ -38,20 +79,6 @@ def process_su2_history(history_file, global_csv, mach_number):
     
     except Exception as e:
         print(f"Error processing {history_file}: {e}")
-
-
-# Remove "Results" directory if it exists
-results_dir = "Results"
-if os.path.exists(results_dir):
-    print(f"Removing existing '{results_dir}' directory...")
-    shutil.rmtree(results_dir)
-    
-global_csv_path = "Polar_results.csv"  # Define global CSV file path
-    
-# Remove global_results.csv if it exists
-if os.path.exists(global_csv_path):
-    print(f"Removing existing '{global_csv_path}' file...")
-    os.remove(global_csv_path)
 
 
 def modify_su2_config(input_file, output_file, TARGET_CL, MACH, restart=False):
@@ -103,9 +130,9 @@ def update_restart_config(input_file):
     os.replace(temp_file, input_file)  # Overwrite the original file
     print(f"Updated restart configuration in {input_file}")
 
-def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next_cl_dir=None):
+def run_su2_simulation_trim(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next_cl_dir=None, max_retries=3):
     """
-    Runs SU2_CFD, logs results, and prepares the next CL case with RESTART_SOL=YES.
+    Runs SU2_CFD, logs results, and ensures the aircraft is balanced by re-running if necessary.
     """
     os.makedirs(results_dir, exist_ok=True)
 
@@ -133,20 +160,50 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next
     modified_cfg = os.path.join(work_dir, "modified_" + os.path.basename(cfg_file))
     modify_su2_config(cfg_dest, modified_cfg, TARGET_CL, MACH, restart)
 
-    # Run SU2_CFD with mpirun
-    command = ["mpirun", "-np", str(num_cores), "SU2_CFD", os.path.basename(modified_cfg)]
-    with open(log_file_path, "w") as log_file:
-        process = subprocess.Popen(
-            command, cwd=work_dir, stdout=log_file, stderr=log_file, text=True
-        )
-        process.wait()
-    
-    history_file = os.path.join(work_dir, "history.csv")
+    attempt = 0
+    target_pitching_moment = 0.0
+
+    while attempt < max_retries:
+        print(f"Running SU2_CFD (attempt {attempt + 1}/{max_retries})...")
+
+        # Run SU2_CFD with mpirun
+        command = ["mpirun", "-np", str(num_cores), "SU2_CFD", os.path.basename(modified_cfg)]
+        with open(log_file_path, "w") as log_file:
+            process = subprocess.Popen(command, cwd=work_dir, stdout=log_file, stderr=log_file, text=True)
+            process.wait()
+        
+        # Identify history.csv in WORKDIR
+        history_file = os.path.join(work_dir, "history.csv")
+
+        if not os.path.exists(history_file):
+            print(f"Error: {history_file} not found.")
+            return log_file_path
+        
+        pitching_moment = get_moment(history_file)
+
+        if pitching_moment is None:
+            print("Error: Could not retrieve valid pitching moment. Stopping execution.")
+            return log_file_path
+
+        print(f"CMy = {pitching_moment}")
+
+        if abs(pitching_moment - target_pitching_moment) <= 0.001:
+            print("Aircraft is balanced.")
+            break  # Exit the loop if balanced
+
+        print("Aircraft not balanced! Re-running SU2_CFD...")
+        attempt += 1
+
+    if attempt == max_retries:
+        print(f"Warning: Aircraft not balanced after {max_retries} attempts.")
+
+    # Extract aerodynamic coefficients from history.csv
     process_su2_history(history_file, global_csv_path, MACH)
 
     # Move solution.dat to the next CL directory if applicable
     solution_file = os.path.join(work_dir, "solution.dat")
     flow_meta_file = os.path.join(work_dir, "flow.meta")
+    
     if next_cl_dir:
         os.makedirs(next_cl_dir, exist_ok=True)
 
@@ -169,13 +226,17 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next
 
     return log_file_path
 
+
 # Example usage:
-ncores = 8
+ncores = 6
 cfg_file = "inv_ONERAM6.cfg"
 
 # Define Mach and CL values for nested loops
-MACH_VALUES = [0.60, 0.65, 0.70]  # Outer loop (Mach numbers)
-CL_VALUES = [0.0, 0.1, 0.2, 0.3]  # Inner loop (CL values)
+#MACH_VALUES = [0.60, 0.65, 0.70]  # Outer loop (Mach numbers)
+#CL_VALUES = [0.0, 0.1, 0.2, 0.3]  # Inner loop (CL values)
+
+MACH_VALUES = np.arange(0.50, 0.85 + 0.01, 0.1)  # Mach from 0.50 to 0.85 in steps of 0.1
+CL_VALUES = np.arange(0.0, 0.7 + 0.01, 0.01)  # CL from 0.0 to 0.7 in steps of 0.01
 
 # Run simulations for all (MACH, CL) combinations
 for i, MACH in enumerate(MACH_VALUES):
@@ -190,5 +251,5 @@ for i, MACH in enumerate(MACH_VALUES):
                 "Results", f"MACH_{MACH:.2f}".replace(".", "_"), f"CL_{CL_VALUES[j+1]:.2f}".replace(".", "_")
             )
 
-        log_path = run_su2_simulation(ncores, cfg_file, TARGET_CL, MACH, restart, next_cl_dir)
+        log_path = run_su2_simulation_trim(ncores, cfg_file, TARGET_CL, MACH, restart, next_cl_dir)
         print("Done!")
