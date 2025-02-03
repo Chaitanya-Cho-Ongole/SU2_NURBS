@@ -4,6 +4,7 @@ import shutil
 import glob
 import pandas as pd
 import os
+import numpy as np
 
 def process_su2_history(history_file, global_csv, mach_number):
     """
@@ -34,7 +35,7 @@ def process_su2_history(history_file, global_csv, mach_number):
         file_exists = os.path.isfile(global_csv)
         result_df.to_csv(global_csv, mode='a', header=not file_exists, index=False)
 
-        print(f"Appended results from {history_file} to {global_csv}")
+        #print(f"Appended results from {history_file} to {global_csv}")
     
     except Exception as e:
         print(f"Error processing {history_file}: {e}")
@@ -43,14 +44,14 @@ def process_su2_history(history_file, global_csv, mach_number):
 # Remove "Results" directory if it exists
 results_dir = "Results"
 if os.path.exists(results_dir):
-    print(f"Removing existing '{results_dir}' directory...")
+    #print(f"Removing existing '{results_dir}' directory...")
     shutil.rmtree(results_dir)
     
 global_csv_path = "Polar_results.csv"  # Define global CSV file path
     
 # Remove global_results.csv if it exists
 if os.path.exists(global_csv_path):
-    print(f"Removing existing '{global_csv_path}' file...")
+    #print(f"Removing existing '{global_csv_path}' file...")
     os.remove(global_csv_path)
 
 
@@ -101,7 +102,7 @@ def update_restart_config(input_file):
             temp.write(line)
 
     os.replace(temp_file, input_file)  # Overwrite the original file
-    print(f"Updated restart configuration in {input_file}")
+    #print(f"Updated restart configuration in {input_file}")
 
 def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next_cl_dir=None):
     """
@@ -152,12 +153,12 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next
 
         # Move solution.dat
         if os.path.exists(solution_file):
-            print(f"Moving 'solution.dat' to {next_cl_dir}")
+            #print(f"Moving 'solution.dat' to {next_cl_dir}")
             shutil.move(solution_file, os.path.join(next_cl_dir, "solution.dat"))
 
         # Move flow.meta
         if os.path.exists(flow_meta_file):
-            print(f"Moving 'flow.meta' to {next_cl_dir}")
+            #print(f"Moving 'flow.meta' to {next_cl_dir}")
             shutil.move(flow_meta_file, os.path.join(next_cl_dir, "flow.meta"))
             
         # Copy modified configuration file to the next CL directory
@@ -170,17 +171,21 @@ def run_su2_simulation(num_cores, cfg_file, TARGET_CL, MACH, restart=False, next
     return log_file_path
 
 # Example usage:
-ncores = 240
-cfg_file = "turb_B738.cfg"
+ncores = 4
+cfg_file = "inv_ONERAM6.cfg"
+
+# Define step sizes
+mach_step = 0.1  # Change this to adjust Mach increments
+cl_step = 0.1  # Change this to adjust CL increments
 
 # Define Mach and CL values for nested loops
-MACH_VALUES = [0.50, 0.60, 0.70, 0.80, 0.85]  # Outer loop (Mach numbers)
-CL_VALUES = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7]  # Inner loop (CL values)
+MACH_VALUES = np.arange(0.50, 0.85 + mach_step, mach_step)  # Mach from 0.50 to 0.85 in steps of n
+CL_VALUES = np.arange(0.0, 0.7 + cl_step, cl_step)  # CL from 0.0 to 0.7 in steps of n
 
 # Run simulations for all (MACH, CL) combinations
 for i, MACH in enumerate(MACH_VALUES):
     for j, TARGET_CL in enumerate(CL_VALUES):
-        print(f"Running SU2_CFD for Mach={MACH}, CL={TARGET_CL}...", end=" ", flush=True)
+        print(f"Running SU2_CFD for Mach={MACH}, CL={TARGET_CL} ...", end=" ", flush=True)
 
         next_cl_dir = None
         restart = j > 0  # Restart from the second CL onwards
@@ -192,3 +197,4 @@ for i, MACH in enumerate(MACH_VALUES):
 
         log_path = run_su2_simulation(ncores, cfg_file, TARGET_CL, MACH, restart, next_cl_dir)
         print("Done!")
+    print("\n")
