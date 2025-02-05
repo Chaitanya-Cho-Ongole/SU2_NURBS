@@ -19,7 +19,7 @@ def process_su2_history(history_file, global_csv, mach_number):
         df.columns = df.columns.str.strip().str.replace('"', '')
 
         # Ensure required columns exist
-        required_columns = ["CD", "CL", "CMx", "CMy", "CMz"]
+        required_columns = ["CD", "CL", "CMx", "CMy", "CMz", "AOA"]
         if not all(col in df.columns for col in required_columns):
             print(f"Error: Missing required columns in {history_file}")
             return
@@ -175,8 +175,8 @@ ncores = 4
 cfg_file = "inv_ONERAM6.cfg"
 
 # Define step sizes
-mach_step = 0.1  # Change this to adjust Mach increments
-cl_step = 0.1  # Change this to adjust CL increments
+mach_step = 0.05  # Change this to adjust Mach increments
+cl_step = 0.05  # Change this to adjust CL increments
 
 # Define Mach and CL values for nested loops
 MACH_VALUES = np.arange(0.50, 0.85 + mach_step, mach_step)  # Mach from 0.50 to 0.85 in steps of n
