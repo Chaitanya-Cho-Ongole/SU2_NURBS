@@ -11,10 +11,12 @@ def print_decimal_values(count):
 
 if __name__ == "__main__":
     
-    count = 726
+    count = 858
     
     
     print(generate_ffd_string(count))
+    
+    print("\n")
     
     print_decimal_values(count+1)
     
