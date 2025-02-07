@@ -2416,7 +2416,9 @@ bool CSurfaceMovement::SetFFDThickness(CGeometry* geometry, CConfig* config, CFr
 }
 
 bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFormDefBox* FFDBox,
-                                   CFreeFormDefBox** ResetFFDBox, unsigned short iDV, bool ResetDef) const {
+                                   CFreeFormDefBox** ResetFFDBox, unsigned short iDV, bool ResetDef) const 
+                                   
+                                   {
   unsigned short iOrder, jOrder, kOrder;
   su2double x, y, z, movement[3], Segment_P0[3], Segment_P1[3], Plane_P0[3], Plane_Normal[3], Variable_P0, Variable_P1,
       Intersection[3], Variable_Interp;
@@ -2427,26 +2429,33 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
   /*--- Set control points to its original value (even if the
    design variable is not in this box) ---*/
 
-  if (ResetDef) {
+  if (ResetDef) 
+  {
+    /*--- All FFD boxes are reset to their original control points---*/
     for (iFFDBox = 0; iFFDBox < nFFDBox; iFFDBox++) ResetFFDBox[iFFDBox]->SetOriginalControlPoints();
   }
 
   design_FFDBox = config->GetFFDTag(iDV);
 
-  if (design_FFDBox.compare(FFDBox->GetTag()) == 0) {
+  /*--- Check if the design variable applies to this FFD box---*/
+  if (design_FFDBox.compare(FFDBox->GetTag()) == 0) 
+  {
     /*--- Check that it is possible to move the control point ---*/
 
     jOrder = SU2_TYPE::Int(config->GetParamDV(iDV, 1));
-    for (iPlane = 0; iPlane < FFDBox->Get_nFix_JPlane(); iPlane++) {
+    for (iPlane = 0; iPlane < FFDBox->Get_nFix_JPlane(); iPlane++) 
+    {
       if (jOrder == FFDBox->Get_Fix_JPlane(iPlane)) return false;
     }
 
     /*--- Line plane intersection to find the origin of rotation ---*/
 
+    /*--- P0: First point on the line---*/
     Segment_P0[0] = config->GetParamDV(iDV, 2);
     Segment_P0[1] = config->GetParamDV(iDV, 3);
     Segment_P0[2] = config->GetParamDV(iDV, 4);
 
+    /*--- P1: Last point on the line---*/
     Segment_P1[0] = config->GetParamDV(iDV, 5);
     Segment_P1[1] = config->GetParamDV(iDV, 6);
     Segment_P1[2] = config->GetParamDV(iDV, 7);
@@ -2455,9 +2464,13 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
     jOrder = SU2_TYPE::Int(config->GetParamDV(iDV, 1));
     kOrder = 0;
     su2double* coord = FFDBox->GetCoordControlPoints(iOrder, jOrder, kOrder);
+
+    /*--- Get an arbitrary point on the plane ---*/
     Plane_P0[0] = coord[0];
     Plane_P0[1] = coord[1];
     Plane_P0[2] = coord[2];
+
+    /*---Reference plane is spanwise normal [0,1,0]---*/
     Plane_Normal[0] = 0.0;
     Plane_Normal[1] = 1.0;
     Plane_Normal[2] = 0.0;
@@ -2469,9 +2482,11 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
     Intersection[1] = 0.0;
     Intersection[2] = 0.0;
 
+    /*--- COmpute the intersection between the line segment and the plane---*/
     bool result = geometry->SegmentIntersectsPlane(Segment_P0, Segment_P1, Variable_P0, Variable_P1, Plane_P0,
                                                    Plane_Normal, Intersection, Variable_Interp);
 
+    /*--- result is true if scalar t is greater than 0 ---*/
     if (result) {
       /*--- xyz-coordinates of a point on the line of rotation. ---*/
 
@@ -2480,6 +2495,7 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
       su2double c = Intersection[2];
 
       /*--- xyz-coordinate of the line's direction vector. ---*/
+      /*--- This is set by default as normal to the spanwise plane -> [0, 1, 0] ---*/
 
       su2double u = Plane_Normal[0];
       su2double v = Plane_Normal[1];
@@ -2516,6 +2532,14 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
 
           cosT = cos(theta);
           sinT = sin(theta);
+
+          /*--- Apply Rodrigues' formula to compute the rotation---*/
+
+          /*  (x,y,z) -> original FFD control point
+              (a,b,c) -> intersection point of line and normal plane -> origin of rotation
+              (u,v,w) -> rotation axis [0,1,0]
+              cosT, sinT -> rotation magnitude
+           */
 
           movement[0] = a * (v2 + w2) + u * (-b * v - c * w + u * x + v * y + w * z) +
                         (-a * (v2 + w2) + u * (b * v + c * w - v * y - w * z) + (v2 + w2) * x) * cosT +
