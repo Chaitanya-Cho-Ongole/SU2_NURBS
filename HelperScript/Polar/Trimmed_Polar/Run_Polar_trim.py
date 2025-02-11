@@ -63,7 +63,7 @@ def process_su2_history(history_file, global_csv, mach_number):
         df.columns = df.columns.str.strip().str.replace('"', '')
 
         # Ensure required columns exist
-        required_columns = ["CD", "CL", "CMx", "CMy", "CMz"]
+        required_columns = ["CD", "CL", "CMx", "CMy", "CMz", "AoA"]
         if not all(col in df.columns for col in required_columns):
             print(f"Error: Missing required columns in {history_file}")
             return

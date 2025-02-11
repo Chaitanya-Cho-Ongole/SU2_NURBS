@@ -214,7 +214,7 @@ if options.dim == 3:
     iVariable = 0
     dvList = "DEFINITION_DV= "
     for kIndex in range(options.kOrder):
-        for jIndex in range(1 + options.jOrder / 2):
+        for jIndex in range(1 + int(options.jOrder / 2)):
             for iIndex in range(options.iOrder):
                 iVariable = iVariable + 1
                 dvList = (
@@ -249,7 +249,7 @@ if options.dim == 3:
     iVariable = 0
     dvList = "DEFINITION_DV= "
     for kIndex in range(options.kOrder):
-        for jIndex in range(1 + options.jOrder / 2):
+        for jIndex in range(1 + int(options.jOrder / 2)):
             for iIndex in range(options.iOrder):
                 iVariable = iVariable + 1
                 dvList = (

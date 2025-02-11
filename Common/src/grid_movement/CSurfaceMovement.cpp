@@ -2470,10 +2470,37 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
     Plane_P0[1] = coord[1];
     Plane_P0[2] = coord[2];
 
+
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "*** Line origin x: " <<  Segment_P0[0] << std::endl;
+      std::cout << "*** Line origin y: " <<  Segment_P0[1] << std::endl;
+      std::cout << "*** Line origin z: " <<  Segment_P0[2] << std::endl;
+    }
+
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "*** Line end x: " <<  Segment_P1[0] << std::endl;
+      std::cout << "*** Line end y: " <<  Segment_P1[1] << std::endl;
+      std::cout << "*** Line end z: " <<  Segment_P1[2] << std::endl;
+    }
+
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "Twist FFD point x: " <<  Plane_P0[0] << std::endl;
+      std::cout << "Twist FFD point y: " <<  Plane_P0[1] << std::endl;
+      std::cout << "Twist FFD point z: " <<  Plane_P0[2] << std::endl;
+    }
+
     /*---Reference plane is spanwise normal [0,1,0]---*/
     Plane_Normal[0] = 0.0;
     Plane_Normal[1] = 1.0;
     Plane_Normal[2] = 0.0;
+
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "Current FIXED normal:  [0 1 0]" << std::endl;
+    }
 
     Variable_P0 = 0.0;
     Variable_P1 = 0.0;
@@ -2487,7 +2514,13 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
                                                    Plane_Normal, Intersection, Variable_Interp);
 
     /*--- result is true if scalar t is greater than 0 ---*/
-    if (result) {
+    if (result) 
+    {
+
+      if (rank == MASTER_NODE)
+      {
+        std::cout << "*** Found rotation point at current FFD plane" << std::endl;
+      }
       /*--- xyz-coordinates of a point on the line of rotation. ---*/
 
       su2double a = Intersection[0];
@@ -2577,8 +2610,13 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
           FFDBox->SetControlPoints(index, movement);
         }
     }
-
-  } else {
+  }
+   else 
+   {
+    if (rank == MASTER_NODE)
+    {
+      std::cout << "*** No rotation point found! " << std::endl;
+    }
     return false;
   }
 

@@ -1,3 +1,40 @@
+"""
+SU2 Polar Sweep Automation Script
+
+Author: Prateek Ranjan, Ph.D
+Department of Aeronautics & Astronautics
+Massachusetts Institute of Technology
+
+Description:
+This script automates the execution of SU2 CFD simulations for various Mach numbers
+and lift coefficient (CL) values. It manages configuration modifications, runs simulations,
+and processes results efficiently.
+
+Features:
+- Automates SU2 CFD runs across a range of Mach and CL values.
+- Modifies SU2 configuration files dynamically.
+- Extracts and stores aerodynamic coefficients from history files.
+- Organizes simulation results in a structured directory format.
+- Supports restart functionality for consecutive CL cases.
+- Executes SU2_CFD in parallel using mpirun.
+
+Dependencies:
+- Python 3
+- SU2 CFD (https://su2code.github.io/)
+- MPI (mpirun)
+- Required Python packages: pandas, numpy
+
+Usage:
+Run the script with:
+    python script.py
+
+Configuration Parameters:
+- Number of CPU cores
+- Mach step size
+- CL step size
+
+"""
+
 import subprocess
 import os
 import shutil
@@ -19,7 +56,7 @@ def process_su2_history(history_file, global_csv, mach_number):
         df.columns = df.columns.str.strip().str.replace('"', '')
 
         # Ensure required columns exist
-        required_columns = ["CD", "CL", "CMx", "CMy", "CMz", "AOA"]
+        required_columns = ["CD", "CL", "CMx", "CMy", "CMz", "AoA"]
         if not all(col in df.columns for col in required_columns):
             print(f"Error: Missing required columns in {history_file}")
             return
@@ -185,7 +222,7 @@ CL_VALUES = np.arange(0.0, 0.7 + cl_step, cl_step)  # CL from 0.0 to 0.7 in step
 # Run simulations for all (MACH, CL) combinations
 for i, MACH in enumerate(MACH_VALUES):
     for j, TARGET_CL in enumerate(CL_VALUES):
-        print(f"Running SU2_CFD for Mach={MACH}, CL={TARGET_CL} ...", end=" ", flush=True)
+        print(f"Running SU2_CFD for Mach={MACH:.2f}, CL={TARGET_CL:.2f} ...", end=" ", flush=True)
 
         next_cl_dir = None
         restart = j > 0  # Restart from the second CL onwards
