@@ -2469,16 +2469,11 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
     Plane_P0[0] = coord[0];
     Plane_P0[1] = coord[1];
     Plane_P0[2] = coord[2];
-    
+
     /*---Reference plane is spanwise normal [0,1,0]---*/
     Plane_Normal[0] = 0.0;
     Plane_Normal[1] = 1.0;
     Plane_Normal[2] = 0.0;
-
-    if (rank == MASTER_NODE)
-    {
-      std::cout << "Current FIXED normal:  [0 1 0]" << std::endl;
-    }
 
     Variable_P0 = 0.0;
     Variable_P1 = 0.0;
@@ -2590,7 +2585,7 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
       if (rank == MASTER_NODE)
       {
         std::cout << "*****************************" << std::endl;
-        std::cout << "*** Segment does not intersect FFD plane: No rotation point found! " << std::endl;
+        std::cout << " SEGMENT DOES NOT INTERSECT FFD PLANE: NO ROTTION POINT FOUND!" << std::endl;
         std::cout << " Control point location: " << Plane_P0[0] <<" , "<< Plane_P0[1] <<" , "<<Plane_P0[2] << std::endl;
         std::cout << " Segment start location: " << Segment_P0[0] <<" , "<< Segment_P0[1] <<" , "<< Segment_P0[2] << std::endl;
         std::cout << " Segment end location: " << Segment_P1[0] <<" , "<< Segment_P1[1]<<" , "<< Segment_P1[2] << std::endl;

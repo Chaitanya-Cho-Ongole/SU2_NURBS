@@ -90,18 +90,21 @@ def print_sampled_points_corrected(sampled_points):
         print("Not enough points to format output.")
         return
     
+    # NOTE: The Y-min and Y-max for each FFD control point must span the entire wing. 
+    #       The X and Z coordinates are local for each segment to ensure the reference axis traces the wing dihedral.
+    
     output_series = []
     param_series = []
     for i in range(len(sampled_points)):
         if i < len(sampled_points) - 1:
             next_point = sampled_points[i + 1]  # Normal case: use the next point
             output_series.append(
-                f"( 15, 1.0 | wing | WING_TST, {i}, {sampled_points[0][0]:.2f}, {sampled_points[i][1]:.2f}, {sampled_points[i][2]:.2f}, "
-                f"{next_point[0]:.2f}, {next_point[1]:.2f}, {next_point[2]:.2f} );"
+                f"( 15, 1.0 | wing | WING_TST, {i}, {sampled_points[i][0]:.2f}, {sampled_points[0][1]:.2f}, {sampled_points[i][2]:.2f}, "
+                f"{next_point[0]:.2f}, {sampled_points[-1][1]:.2f}, {next_point[2]:.2f} );"
             )
             param_series.append(
-                f"(WING_TST, {i}, {sampled_points[0][0]:.2f}, {sampled_points[i][1]:.2f}, {sampled_points[i][2]:.2f}, "
-                f"{next_point[0]:.2f}, {next_point[1]:.2f}, {next_point[2]:.2f} );"
+                f"(WING_TST, {i}, {sampled_points[i][0]:.2f}, {sampled_points[0][1]:.2f}, {sampled_points[i][2]:.2f}, "
+                f"{next_point[0]:.2f}, {sampled_points[-1][1]:.2f}, {next_point[2]:.2f} );"
             )
         else:
             # Last point: use the first sampled point as the starting coordinate and itself as the ending coordinate
