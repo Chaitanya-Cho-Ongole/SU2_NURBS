@@ -78,9 +78,10 @@ def plot_xy_zy_planes_with_spline(csv_file, num_points):
     
     return sampled_points
 
-def print_sampled_points_explicit(sampled_points):
+def print_sampled_points_corrected(sampled_points):
     """
-    Prints the sampled points in a specific format, explicitly handling the last sampled point.
+    Prints the sampled points in a specific format, ensuring the last sampled point 
+    uses the first sampled point as the starting coordinate and itself as the ending coordinate.
     
     Parameters:
     - sampled_points (list of tuples): List of (X, Y, Z) coordinates of the sampled points.
@@ -90,27 +91,41 @@ def print_sampled_points_explicit(sampled_points):
         return
     
     output_series = []
+    param_series = []
     for i in range(len(sampled_points)):
         if i < len(sampled_points) - 1:
             next_point = sampled_points[i + 1]  # Normal case: use the next point
+            output_series.append(
+                f"( 15, 1.0 | wing | WING_TST, {i}, {sampled_points[0][0]:.2f}, {sampled_points[i][1]:.2f}, {sampled_points[i][2]:.2f}, "
+                f"{next_point[0]:.2f}, {next_point[1]:.2f}, {next_point[2]:.2f} );"
+            )
+            param_series.append(
+                f"(WING_TST, {i}, {sampled_points[0][0]:.2f}, {sampled_points[i][1]:.2f}, {sampled_points[i][2]:.2f}, "
+                f"{next_point[0]:.2f}, {next_point[1]:.2f}, {next_point[2]:.2f} );"
+            )
         else:
-            next_point = sampled_points[i]  # Last point: use itself
-        
-        output_series.append(
-            f"( 15, 1.0 | wing | WING, {i}, {sampled_points[0][0]}, {sampled_points[0][1]}, {sampled_points[0][2]}, "
-            f"{next_point[0]}, {next_point[1]}, {next_point[2]} );"
-        )
-    
+            # Last point: use the first sampled point as the starting coordinate and itself as the ending coordinate
+            output_series.append(
+                f"( 15, 1.0 | wing | WING_TST, {i}, {sampled_points[0][0]:.2f}, {sampled_points[0][1]:.2f}, {sampled_points[0][2]:.2f}, "
+                f"{sampled_points[-1][0]:.2f}, {sampled_points[-1][1]:.2f}, {sampled_points[-1][2]:.2f} );"
+            )
+            param_series.append(
+                f"(WING_TST, {i}, {sampled_points[0][0]:.2f}, {sampled_points[0][1]:.2f}, {sampled_points[0][2]:.2f}, "
+                f"{sampled_points[-1][0]:.2f}, {sampled_points[-1][1]:.2f}, {sampled_points[-1][2]:.2f} );"
+            )
     print("\n")
     print(" ".join(output_series))
+    print("\n")
+    print(" ".join(param_series))
     print("\n")
 
 # Run the explicit last-point handling function on the sampled points
 
 
+DV_DEGREE_Y = 8
 
 # Example usage:
-sampled_points = plot_xy_zy_planes_with_spline("QuarterChordCoords.csv", num_points=5)
+sampled_points = plot_xy_zy_planes_with_spline("QuarterChordCoords.csv", num_points = DV_DEGREE_Y+1)
 
-print_sampled_points_explicit(sampled_points)
+print_sampled_points_corrected(sampled_points)
 

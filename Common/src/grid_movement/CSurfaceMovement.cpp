@@ -2469,29 +2469,7 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
     Plane_P0[0] = coord[0];
     Plane_P0[1] = coord[1];
     Plane_P0[2] = coord[2];
-
-
-    if (rank == MASTER_NODE)
-    {
-      std::cout << "*** Line origin x: " <<  Segment_P0[0] << std::endl;
-      std::cout << "*** Line origin y: " <<  Segment_P0[1] << std::endl;
-      std::cout << "*** Line origin z: " <<  Segment_P0[2] << std::endl;
-    }
-
-    if (rank == MASTER_NODE)
-    {
-      std::cout << "*** Line end x: " <<  Segment_P1[0] << std::endl;
-      std::cout << "*** Line end y: " <<  Segment_P1[1] << std::endl;
-      std::cout << "*** Line end z: " <<  Segment_P1[2] << std::endl;
-    }
-
-    if (rank == MASTER_NODE)
-    {
-      std::cout << "Twist FFD point x: " <<  Plane_P0[0] << std::endl;
-      std::cout << "Twist FFD point y: " <<  Plane_P0[1] << std::endl;
-      std::cout << "Twist FFD point z: " <<  Plane_P0[2] << std::endl;
-    }
-
+    
     /*---Reference plane is spanwise normal [0,1,0]---*/
     Plane_Normal[0] = 0.0;
     Plane_Normal[1] = 1.0;
@@ -2516,11 +2494,6 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
     /*--- result is true if scalar t is greater than 0 ---*/
     if (result) 
     {
-
-      if (rank == MASTER_NODE)
-      {
-        std::cout << "*** Found rotation point at current FFD plane" << std::endl;
-      }
       /*--- xyz-coordinates of a point on the line of rotation. ---*/
 
       su2double a = Intersection[0];
@@ -2610,13 +2583,24 @@ bool CSurfaceMovement::SetFFDTwist(CGeometry* geometry, CConfig* config, CFreeFo
           FFDBox->SetControlPoints(index, movement);
         }
     }
+
+    /* Print out the twist planes where no rotation was found! */
+    if (!result)
+    {
+      if (rank == MASTER_NODE)
+      {
+        std::cout << "*****************************" << std::endl;
+        std::cout << "*** Segment does not intersect FFD plane: No rotation point found! " << std::endl;
+        std::cout << " Control point location: " << Plane_P0[0] <<" , "<< Plane_P0[1] <<" , "<<Plane_P0[2] << std::endl;
+        std::cout << " Segment start location: " << Segment_P0[0] <<" , "<< Segment_P0[1] <<" , "<< Segment_P0[2] << std::endl;
+        std::cout << " Segment end location: " << Segment_P1[0] <<" , "<< Segment_P1[1]<<" , "<< Segment_P1[2] << std::endl;
+        std::cout << "*****************************" << std::endl;
+      }
+    }
   }
    else 
    {
-    if (rank == MASTER_NODE)
-    {
-      std::cout << "*** No rotation point found! " << std::endl;
-    }
+   
     return false;
   }
 
