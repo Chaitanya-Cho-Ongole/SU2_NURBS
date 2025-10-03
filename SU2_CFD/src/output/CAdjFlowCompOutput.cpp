@@ -276,8 +276,16 @@ void CAdjFlowCompOutput::SetVolumeOutputFields(CConfig *config) {
   if (nDim == 3)
     /// DESCRIPTION: Sensitivity z-component.
     AddVolumeOutput("SENSITIVITY-Z", "Sensitivity_z", "SENSITIVITY", "z-component of the sensitivity vector");
-  /// DESCRIPTION: Sensitivity in normal direction.
+    /// DESCRIPTION: Sensitivity in normal direction.
   AddVolumeOutput("SENSITIVITY", "Surface_Sensitivity", "SENSITIVITY", "sensitivity in normal direction");
+  
+  
+  // AddVolumeOutput("NORMAL-Y", "Normal_y", "SENSITIVITY", "y-component of the surface normal vector");
+
+  
+  
+  
+  
   /// END_GROUP
 
 }
@@ -314,6 +322,8 @@ void CAdjFlowCompOutput::LoadVolumeData(CConfig *config, CGeometry *geometry, CS
   }
 
   SetVolumeOutputValue("SENSITIVITY-X", iPoint, Node_AdjFlow->GetSensitivity(iPoint, 0));
+  
+
   SetVolumeOutputValue("SENSITIVITY-Y", iPoint, Node_AdjFlow->GetSensitivity(iPoint, 1));
   if (nDim == 3)
     SetVolumeOutputValue("SENSITIVITY-Z", iPoint, Node_AdjFlow->GetSensitivity(iPoint, 2));
@@ -324,7 +334,14 @@ void CAdjFlowCompOutput::LoadVolumeData(CConfig *config, CGeometry *geometry, CS
 void CAdjFlowCompOutput::LoadSurfaceData(CConfig *config, CGeometry *geometry, CSolver **solver, unsigned long iPoint, unsigned short iMarker, unsigned long iVertex) {
 
   SetVolumeOutputValue("SENSITIVITY", iPoint, solver[ADJFLOW_SOL]->GetCSensitivity(iMarker, iVertex));
-
+  // Get the normal vector for this surface point and output its y-component.
+  auto i = 5;
+  // const auto Normal = geometry->vertex[iMarker][iPoint]->GetNormal();
+  i++;
+  // std::cout<<"I CAME INTO LoadSurfaceData"<<std::endl;
+  // std::cout<<"NORMAL-Y"<< Normal[1] <<std::endl;
+  
+  // SetVolumeOutputValue("NORMAL-Y", iPoint, Normal[1]);
 }
 
 
