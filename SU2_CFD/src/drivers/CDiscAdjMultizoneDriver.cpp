@@ -36,6 +36,19 @@ CDiscAdjMultizoneDriver::CDiscAdjMultizoneDriver(char* confFile,
                                                  SU2_Comm MPICommunicator)
 
                         : CMultizoneDriver(confFile, val_nZone, MPICommunicator) {
+  
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:DiscAdjMultizoneDriver::CDiscAdjMultizoneDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:DiscAdjMultizoneDriver::CDiscAdjMultizoneDriver"<<std::endl;
+  }
+  counter++;
 
   direct_nInst.resize(nZone,1);
   nInnerIter.resize(nZone);
@@ -111,6 +124,19 @@ CDiscAdjMultizoneDriver::CDiscAdjMultizoneDriver(char* confFile,
 
 CDiscAdjMultizoneDriver::~CDiscAdjMultizoneDriver(){
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::~CDiscAdjMultizoneDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::~CDiscAdjMultizoneDriver"<<std::endl;
+  }
+  counter++;
+
   for (iZone = 0; iZone < nZone; iZone++){
     for (iInst = 0; iInst < direct_nInst[iZone]; iInst++){
       delete direct_iteration[iZone][iInst];
@@ -125,6 +151,19 @@ CDiscAdjMultizoneDriver::~CDiscAdjMultizoneDriver(){
 }
 
 void CDiscAdjMultizoneDriver::Preprocess(unsigned long TimeIter) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Preprocess"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Preprocess"<<std::endl;
+  }
+  counter++;
+  
 
   const bool time_domain = driver_config->GetTime_Domain();
 
@@ -158,6 +197,19 @@ void CDiscAdjMultizoneDriver::Preprocess(unsigned long TimeIter) {
 }
 
 void CDiscAdjMultizoneDriver::StartSolver() {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::StartSolver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::StartSolver"<<std::endl;
+  }
+  counter++;
 
   const bool time_domain = driver_config->GetTime_Domain();
 
@@ -218,7 +270,18 @@ void CDiscAdjMultizoneDriver::StartSolver() {
 }
 
 bool CDiscAdjMultizoneDriver::Iterate(unsigned short iZone, unsigned long iInnerIter, bool KrylovMode) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Iterate"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Iterate"<<std::endl;
+  }
+  counter++;
   config_container[iZone]->SetInnerIter(iInnerIter);
 
   /*--- Evaluate the tape section belonging to solvers in iZone.
@@ -254,6 +317,18 @@ bool CDiscAdjMultizoneDriver::Iterate(unsigned short iZone, unsigned long iInner
 }
 
 void CDiscAdjMultizoneDriver::KrylovInnerIters(unsigned short iZone) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::KrylovInnerIters"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::KrylovInnerIters"<<std::endl;
+  }
+  counter++;
 
   /*--- Use FGMRES to solve the adjoint system, the RHS is -External,
    * the solution are the iZone adjoint variables + External,
@@ -305,6 +380,18 @@ void CDiscAdjMultizoneDriver::KrylovInnerIters(unsigned short iZone) {
 }
 
 void CDiscAdjMultizoneDriver::Run() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Run"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Run"<<std::endl;
+  }
+  counter++;
 
   const unsigned long nOuterIter = driver_config->GetnOuter_Iter();
   const bool time_domain = driver_config->GetTime_Domain();
@@ -462,6 +549,18 @@ void CDiscAdjMultizoneDriver::Run() {
 }
 
 bool CDiscAdjMultizoneDriver::EvaluateObjectiveFunctionGradient() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::EvaluateObjectiveFunctionGradient"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::EvaluateObjectiveFunctionGradient"<<std::endl;
+  }
+  counter++;
 
   /*--- Evaluate the objective function gradient w.r.t. the solutions of all zones. ---*/
 
@@ -495,7 +594,18 @@ bool CDiscAdjMultizoneDriver::EvaluateObjectiveFunctionGradient() {
 }
 
 void CDiscAdjMultizoneDriver::EvaluateSensitivities(unsigned long Iter, bool force_writing) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::EvaluateSensitivities"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::EvaluateSensitivities"<<std::endl;
+  }
+  counter++;
   /*--- SetRecording stores the computational graph on one iteration of the direct problem. Calling it with NONE
    *    as argument ensures that all information from a previous recording is removed. ---*/
 
@@ -567,7 +677,18 @@ void CDiscAdjMultizoneDriver::EvaluateSensitivities(unsigned long Iter, bool for
 }
 
 void CDiscAdjMultizoneDriver::SetRecording(RECORDING kind_recording, Kind_Tape tape_type, unsigned short record_zone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetRecording"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetRecording"<<std::endl;
+  }
+  counter++;
   AD::Reset();
 
   /*--- Prepare for recording by resetting the solution to the initial converged solution. ---*/
@@ -691,7 +812,18 @@ void CDiscAdjMultizoneDriver::SetRecording(RECORDING kind_recording, Kind_Tape t
 }
 
 void CDiscAdjMultizoneDriver::DirectIteration(unsigned short iZone, RECORDING kind_recording) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::DirectIteration"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::DirectIteration"<<std::endl;
+  }
+  counter++;
   /*--- Do one iteration of the direct solver ---*/
   direct_iteration[iZone][INST_0]->Preprocess(output_container[iZone], integration_container, geometry_container,
                                               solver_container, numerics_container, config_container,
@@ -705,7 +837,18 @@ void CDiscAdjMultizoneDriver::DirectIteration(unsigned short iZone, RECORDING ki
 }
 
 void CDiscAdjMultizoneDriver::SetObjFunction(RECORDING kind_recording) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetObjFunction"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetObjFunction"<<std::endl;
+  }
+  counter++;
   ObjFunc = 0.0;
 
   /*--- Call objective function calculations. ---*/
@@ -764,6 +907,18 @@ void CDiscAdjMultizoneDriver::SetObjFunction(RECORDING kind_recording) {
 }
 
 void CDiscAdjMultizoneDriver::SetAdjObjFunction() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetAdjObjFunction"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetAdjObjFunction"<<std::endl;
+  }
+  counter++;
   su2double seeding = 1.0;
 
   if (config_container[ZONE_0]->GetTime_Domain()) {
@@ -788,7 +943,18 @@ void CDiscAdjMultizoneDriver::SetAdjObjFunction() {
 }
 
 void CDiscAdjMultizoneDriver::ComputeAdjoints(unsigned short iZone, bool eval_transfer) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::ComputeAdjoints"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::ComputeAdjoints"<<std::endl;
+  }
+  counter++;
 #if defined(CODI_INDEX_REUSE)
   if (nZone > 1 && rank == MASTER_NODE) {
     std::cout << "WARNING: AD types that reuse indices do not support multiple zones." << std::endl;
@@ -824,7 +990,18 @@ void CDiscAdjMultizoneDriver::ComputeAdjoints(unsigned short iZone, bool eval_tr
 }
 
 void CDiscAdjMultizoneDriver::InitializeCrossTerms() {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::InitializeCrossTerms"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::InitializeCrossTerms"<<std::endl;
+  }
+  counter++;
   if (Cross_Terms.empty()) {
     Cross_Terms.resize(nZone, vector<vector<su2passivematrix> >(nZone));
   }
@@ -854,6 +1031,18 @@ void CDiscAdjMultizoneDriver::InitializeCrossTerms() {
 }
 
 void CDiscAdjMultizoneDriver::HandleDataTransfer() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::HandleDataTransfer"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::HandleDataTransfer"<<std::endl;
+  }
+  counter++;
 
   for(iZone = 0; iZone < nZone; iZone++) {
 
@@ -877,7 +1066,18 @@ void CDiscAdjMultizoneDriver::HandleDataTransfer() {
 }
 
 void CDiscAdjMultizoneDriver::AddSolutionToExternal(unsigned short iZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::AddSolutionToExternal"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::AddSolutionToExternal"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
@@ -886,7 +1086,18 @@ void CDiscAdjMultizoneDriver::AddSolutionToExternal(unsigned short iZone) {
 }
 
 void CDiscAdjMultizoneDriver::SetExternalToDualTimeDer() {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetExternalToDualTimeDer"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetExternalToDualTimeDer"<<std::endl;
+  }
+  counter++;
   for (unsigned short iZone = 0; iZone < nZone; iZone++) {
     for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
       auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
@@ -897,7 +1108,18 @@ void CDiscAdjMultizoneDriver::SetExternalToDualTimeDer() {
 }
 
 void CDiscAdjMultizoneDriver::AddExternalToSolution(unsigned short iZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::AddExternalToSolution"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::AddExternalToSolution"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
@@ -906,7 +1128,18 @@ void CDiscAdjMultizoneDriver::AddExternalToSolution(unsigned short iZone) {
 }
 
 void CDiscAdjMultizoneDriver::SetSolutionOldToSolution(unsigned short iZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetSolutionOldToSolution"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetSolutionOldToSolution"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
@@ -915,7 +1148,18 @@ void CDiscAdjMultizoneDriver::SetSolutionOldToSolution(unsigned short iZone) {
 }
 
 void CDiscAdjMultizoneDriver::UpdateCrossTerm(unsigned short iZone, unsigned short jZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::UpdateCrossTerm"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::UpdateCrossTerm"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[jZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
@@ -924,7 +1168,18 @@ void CDiscAdjMultizoneDriver::UpdateCrossTerm(unsigned short iZone, unsigned sho
 }
 
 void CDiscAdjMultizoneDriver::Set_Solution_To_BGSSolution_k(unsigned short iZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Set_Solution_To_BGSSolution_k"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Set_Solution_To_BGSSolution_k"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
@@ -933,7 +1188,18 @@ void CDiscAdjMultizoneDriver::Set_Solution_To_BGSSolution_k(unsigned short iZone
 }
 
 void CDiscAdjMultizoneDriver::Set_BGSSolution_k_To_Solution(unsigned short iZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Set_BGSSolution_k_To_Solution"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::Set_BGSSolution_k_To_Solution"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
@@ -942,7 +1208,18 @@ void CDiscAdjMultizoneDriver::Set_BGSSolution_k_To_Solution(unsigned short iZone
 }
 
 void CDiscAdjMultizoneDriver::SetResidual_BGS(unsigned short iZone) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetResidual_BGS"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjMultizoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjMultizoneDriver::SetResidual_BGS"<<std::endl;
+  }
+  counter++;
   for (unsigned short iSol=0; iSol < MAX_SOLS; iSol++) {
     auto solver = solver_container[iZone][INST_0][MESH_0][iSol];
     if (solver && solver->GetAdjoint())
