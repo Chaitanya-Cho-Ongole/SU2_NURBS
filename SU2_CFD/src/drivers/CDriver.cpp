@@ -105,7 +105,18 @@
 
 CDriver::CDriver(char* confFile, unsigned short val_nZone, SU2_Comm MPICommunicator, bool dummy_geo) :
 CDriverBase(confFile, val_nZone, MPICommunicator), StopCalc(false), fsi(false), fem_solver(false), dry_run(dummy_geo) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::CDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::CDriver"<<std::endl;
+  }
+  counter++; 
   /*--- Start timer to track preprocessing for benchmarking. ---*/
 
   StartTime = SU2_MPI::Wtime();
@@ -295,6 +306,18 @@ CDriverBase(confFile, val_nZone, MPICommunicator), StopCalc(false), fsi(false), 
 }
 
 void CDriver::InitializeContainers(){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeContainers"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeContainers"<<std::endl;
+  }
+  counter++; 
 
   /*--- Create pointers to all of the classes that may be used throughout
    the SU2_CFD code. In general, the pointers are instantiated down a
@@ -343,6 +366,18 @@ void CDriver::InitializeContainers(){
 
 
 void CDriver::Finalize() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::Finalize"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::Finalize"<<std::endl;
+  }
+  counter++; 
 
   const bool wrt_perf = config_container[ZONE_0]->GetWrt_Performance();
 
@@ -546,6 +581,18 @@ void CDriver::Finalize() {
 
 
 void CDriver::PreprocessInput(CConfig **&config, CConfig *&driver_config) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessInput"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessInput"<<std::endl;
+  }
+  counter++; 
 
   char zone_file_name[MAX_STRING_SIZE];
 
@@ -598,7 +645,18 @@ void CDriver::PreprocessInput(CConfig **&config, CConfig *&driver_config) {
 }
 
 void CDriver::InitializeGeometry(CConfig* config, CGeometry **&geometry, bool dummy){
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeGeometry"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeGeometry"<<std::endl;
+  }
+  counter++; 
   if (!dummy){
     if (rank == MASTER_NODE)
       cout << endl <<"------------------- Geometry Preprocessing ( Zone " << config->GetiZone() <<" ) -------------------" << endl;
@@ -699,6 +757,18 @@ void CDriver::InitializeGeometry(CConfig* config, CGeometry **&geometry, bool du
 }
 
 void CDriver::InitializeGeometryFVM(CConfig *config, CGeometry **&geometry) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeGeometryFVM"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeGeometryFVM"<<std::endl;
+  }
+  counter++; 
 
   unsigned short iZone = config->GetiZone(), iMGlevel;
   unsigned short requestedMGlevels = config->GetnMGLevels();
@@ -919,7 +989,18 @@ void CDriver::InitializeGeometryFVM(CConfig *config, CGeometry **&geometry) {
 }
 
 void CDriver::InitializeGeometryDGFEM(CConfig* config, CGeometry **&geometry) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeGeometryDGFEM"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeGeometryDGFEM"<<std::endl;
+  }
+  counter++; 
   /*--- Definition of the geometry class to store the primal grid in the partitioning process. ---*/
   /*--- All ranks process the grid and call ParMETIS for partitioning ---*/
 
@@ -1011,7 +1092,18 @@ void CDriver::InitializeGeometryDGFEM(CConfig* config, CGeometry **&geometry) {
 }
 
 void CDriver::InitializeSolver(CConfig* config, CGeometry** geometry, CSolver ***&solver) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeSolver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeSolver"<<std::endl;
+  }
+  counter++; 
   MAIN_SOLVER kindSolver = config->GetKind_Solver();
 
   if (rank == MASTER_NODE)
@@ -1042,7 +1134,18 @@ void CDriver::InitializeSolver(CConfig* config, CGeometry** geometry, CSolver **
 }
 
 void CDriver::PreprocessInlet(CSolver ***solver, CGeometry **geometry, CConfig *config) const {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessInlet"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessInlet"<<std::endl;
+  }
+  counter++;
   /*--- Adjust iteration number for unsteady restarts. ---*/
 
   const bool adjoint = config->GetDiscrete_Adjoint() || config->GetContinuous_Adjoint();
@@ -1114,7 +1217,19 @@ void CDriver::PreprocessInlet(CSolver ***solver, CGeometry **geometry, CConfig *
 
 void CDriver::RestartSolver(CSolver ***solver, CGeometry **geometry,
                              CConfig *config, bool update_geo) {
-
+  
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::RestartSolver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::RestartSolver"<<std::endl;
+  }
+  counter++;
   /*--- Check for restarts and use the LoadRestart() routines. ---*/
 
   const bool restart = config->GetRestart();
@@ -1170,6 +1285,19 @@ void CDriver::RestartSolver(CSolver ***solver, CGeometry **geometry,
 void CDriver::FinalizeSolver(CSolver ****solver, CGeometry **geometry,
                                     CConfig *config, unsigned short val_iInst) {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::FinalizeSolver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::FinalizeSolver"<<std::endl;
+  }
+  counter++;
+
   for (int iMGlevel = 0; iMGlevel <= config->GetnMGLevels(); iMGlevel++) {
     for (unsigned int iSol = 0; iSol < MAX_SOLS; iSol++){
       delete solver[val_iInst][iMGlevel][iSol];
@@ -1183,7 +1311,18 @@ void CDriver::FinalizeSolver(CSolver ****solver, CGeometry **geometry,
 }
 
 void CDriver::InitializeIntegration(CConfig *config, CSolver **solver, CIntegration **&integration) const {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeIntegration"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeIntegration"<<std::endl;
+  }
+  counter++;
   if (rank == MASTER_NODE)
     cout << endl <<"----------------- Integration Preprocessing ( Zone " << config->GetiZone() <<" ) ------------------" << endl;
 
@@ -1194,7 +1333,18 @@ void CDriver::InitializeIntegration(CConfig *config, CSolver **solver, CIntegrat
 }
 
 void CDriver::FinalizeIntegration(CIntegration ***integration, CGeometry **geometry, CConfig *config, unsigned short val_iInst) {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::FinalizeIntegration"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::FinalizeIntegration"<<std::endl;
+  }
+  counter++;
   for (unsigned int iSol = 0; iSol < MAX_SOLS; iSol++){
     delete integration[val_iInst][iSol];
   }
@@ -1206,6 +1356,20 @@ void CDriver::FinalizeIntegration(CIntegration ***integration, CGeometry **geome
 template <class Indices>
 void CDriver::InstantiateTurbulentNumerics(unsigned short nVar_Turb, int offset, const CConfig *config,
                                            const CSolver* turb_solver, CNumerics ****&numerics) const {
+  
+  
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InstantiateTurbulentNumerics"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InstantiateTurbulentNumerics"<<std::endl;
+  }
+  counter++;
   const int conv_term = CONV_TERM + offset;
   const int visc_term = VISC_TERM + offset;
 
@@ -1388,6 +1552,18 @@ template void CDriver::InstantiateTransitionNumerics<CNEMOEulerVariable::CIndice
 template <class Indices>
 void CDriver::InstantiateSpeciesNumerics(unsigned short nVar_Species, int offset, const CConfig *config,
                                          const CSolver* species_solver, CNumerics ****&numerics) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InstantiateSpeciesNumerics"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InstantiateSpeciesNumerics"<<std::endl;
+  }
+  counter++;
   const int conv_term = CONV_TERM + offset;
   const int visc_term = VISC_TERM + offset;
 
@@ -1444,7 +1620,18 @@ template void CDriver::InstantiateSpeciesNumerics<CNEMOEulerVariable::CIndices<u
     unsigned short, int, const CConfig*, const CSolver*, CNumerics****&) const;
 
 void CDriver::InitializeNumerics(CConfig *config, CGeometry **geometry, CSolver ***solver, CNumerics ****&numerics) const {
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeNumerics"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeNumerics"<<std::endl;
+  }
+  counter++;
   if (rank == MASTER_NODE)
     cout << endl <<"------------------- Numerics Preprocessing ( Zone " << config->GetiZone() <<" ) -------------------" << endl;
 
@@ -2351,6 +2538,19 @@ void CDriver::InitializeNumerics(CConfig *config, CGeometry **geometry, CSolver 
 
 void CDriver::FinalizeNumerics(CNumerics *****numerics, CSolver***, CGeometry**,
                                       CConfig *config, unsigned short val_iInst) {
+  
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::FinalizeNumerics"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::FinalizeNumerics"<<std::endl;
+  }
+  counter++;
 
   for (unsigned short iMGlevel = 0; iMGlevel <= config->GetnMGLevels(); iMGlevel++) {
 
@@ -2370,6 +2570,18 @@ void CDriver::FinalizeNumerics(CNumerics *****numerics, CSolver***, CGeometry**,
 
 void CDriver::PreprocessIteration(CConfig* config, CIteration *&iteration) const {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessIteration"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessIteration"<<std::endl;
+  }
+  counter++;
   if (rank == MASTER_NODE)
     cout << endl <<"------------------- Iteration Preprocessing ( Zone " << config->GetiZone() <<" ) ------------------" << endl;
 
@@ -2380,7 +2592,19 @@ void CDriver::PreprocessIteration(CConfig* config, CIteration *&iteration) const
 void CDriver::PreprocessDynamicMesh(CConfig *config, CGeometry **geometry, CSolver ***solver, CIteration* iteration,
                                         CVolumetricMovement *&grid_movement, CSurfaceMovement *&surface_movement) const{
 
-  /*--- Instantiate the geometry movement classes for the solution of unsteady
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessDynamicMesh"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessDynamicMesh"<<std::endl;
+  }
+  counter++;
+                                          /*--- Instantiate the geometry movement classes for the solution of unsteady
    flows on dynamic meshes, including rigid mesh transformations, dynamically
    deforming meshes, and preprocessing of harmonic balance. ---*/
 
@@ -2423,6 +2647,18 @@ void CDriver::InitializeInterface(CConfig **config, CSolver***** solver, CGeomet
                                       vector<vector<unique_ptr<CInterpolator> > >& interpolation) {
 
   /*--- Setup interpolation and transfer for all possible donor/target pairs. ---*/
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeInterface"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::InitializeInterface"<<std::endl;
+  }
+  counter++;
 
   for (auto target = 0u; target < nZone; target++) {
 
@@ -2547,6 +2783,18 @@ void CDriver::InitializeInterface(CConfig **config, CSolver***** solver, CGeomet
 
 void CDriver::PreprocessStaticMesh(const CConfig *config, CGeometry** geometry){
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessStaticMesh"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessStaticMesh"<<std::endl;
+  }
+  counter++;
   unsigned short iMGlevel, iMGfine;
 
   unsigned short iZone = config->GetiZone();
@@ -2592,6 +2840,18 @@ void CDriver::PreprocessStaticMesh(const CConfig *config, CGeometry** geometry){
 
 void CDriver::PreprocessOutput(CConfig **config, CConfig *driver_config, COutput **&output, COutput *&driver_output){
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessOutput"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessOutput"<<std::endl;
+  }
+  counter++;
   /*--- Definition of the output class (one for each zone). The output class
    manages the writing of all restart, volume solution, surface solution,
    surface comma-separated value, and convergence history files (both in serial
@@ -2631,7 +2891,18 @@ void CDriver::PreprocessOutput(CConfig **config, CConfig *driver_config, COutput
 
 void CDriver::PreprocessTurbomachinery(CConfig** config, CGeometry**** geometry, CSolver***** solver,
                                            CInterface*** interface, bool dummy){
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessTurbomachinery"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PreprocessTurbomachinery"<<std::endl;
+  }
+  counter++;                                          
   unsigned short donorZone,targetZone, nMarkerInt, iMarkerInt;
   unsigned short nSpanMax = 0;
   bool restart   = (config[ZONE_0]->GetRestart() || config[ZONE_0]->GetRestart_Flow());
@@ -2762,6 +3033,19 @@ CDriver::~CDriver() = default;
 
 void CDriver::PrintDirectResidual(RECORDING kind_recording) {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PrintDirectResidual"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDriver::PrintDirectResidual"<<std::endl;
+  }
+  counter++;  
+
   if (rank != MASTER_NODE || kind_recording != RECORDING::SOLUTION_VARIABLES) return;
 
   const bool multizone = config_container[ZONE_0]->GetMultizone_Problem();
@@ -2876,6 +3160,18 @@ void CDriver::PrintDirectResidual(RECORDING kind_recording) {
 
 
 CFluidDriver::CFluidDriver(char* confFile, unsigned short val_nZone, SU2_Comm MPICommunicator) : CDriver(confFile, val_nZone, MPICommunicator, false) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::CFluidDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::CFluidDriver"<<std::endl;
+  }
+  counter++; 
   Max_Iter = config_container[ZONE_0]->GetnInner_Iter();
 }
 
@@ -2942,6 +3238,19 @@ void CFluidDriver::StartSolver(){
 
 void CFluidDriver::Preprocess(unsigned long Iter) {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Preprocess"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Preprocess"<<std::endl;
+  }
+  counter++; 
+
   /*--- Set the value of the external iteration and physical time. ---*/
 
   for (iZone = 0; iZone < nZone; iZone++) {
@@ -2968,6 +3277,18 @@ void CFluidDriver::Preprocess(unsigned long Iter) {
 }
 
 void CFluidDriver::Run() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Run"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Run"<<std::endl;
+  }
+  counter++; 
 
   unsigned short iZone, jZone;
   unsigned long IntIter, nIntIter;
@@ -3028,6 +3349,18 @@ void CFluidDriver::Run() {
 
 void CFluidDriver::TransferData(unsigned short donorZone, unsigned short targetZone) {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::TransferData"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::TransferData"<<std::endl;
+  }
+  counter++; 
   auto BroadcastData = [&](unsigned int solIdx) {
     interface_container[donorZone][targetZone]->BroadcastData(*interpolator_container[donorZone][targetZone].get(),
       solver_container[donorZone][INST_0][MESH_0][solIdx], solver_container[targetZone][INST_0][MESH_0][solIdx],
@@ -3046,6 +3379,19 @@ void CFluidDriver::TransferData(unsigned short donorZone, unsigned short targetZ
 
 void CFluidDriver::Update() {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Update"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Update"<<std::endl;
+  }
+  counter++; 
+
   for(iZone = 0; iZone < nZone; iZone++)
     iteration_container[iZone][INST_0]->Update(output_container[iZone], integration_container, geometry_container,
          solver_container, numerics_container, config_container,
@@ -3053,6 +3399,19 @@ void CFluidDriver::Update() {
 }
 
 void CFluidDriver::DynamicMeshUpdate(unsigned long TimeIter) {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::DynamicMeshUpdate"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::DynamicMeshUpdate"<<std::endl;
+  }
+  counter++; 
 
   bool harmonic_balance;
 
@@ -3067,6 +3426,19 @@ void CFluidDriver::DynamicMeshUpdate(unsigned long TimeIter) {
 }
 
 bool CFluidDriver::Monitor(unsigned long ExtIter) {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Monitor"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Monitor"<<std::endl;
+  }
+  counter++; 
 
   /*--- Synchronization point after a single solver iteration. Compute the
    wall clock time required. ---*/
@@ -3090,6 +3462,18 @@ bool CFluidDriver::Monitor(unsigned long ExtIter) {
 }
 
 void CFluidDriver::Output(unsigned long InnerIter) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Output"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CFluidDriver::Output"<<std::endl;
+  }
+  counter++; 
 
   for (iZone = 0; iZone < nZone; iZone++) {
     const auto inst = config_container[iZone]->GetiInst();
@@ -3111,6 +3495,19 @@ CHBDriver::CHBDriver(char* confFile,
     SU2_Comm MPICommunicator) : CFluidDriver(confFile,
         val_nZone,
         MPICommunicator) {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::CHBDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::CHBDriver"<<std::endl;
+  }
+  counter++; 
   unsigned short kInst;
 
   nInstHB = nInst[ZONE_0];
@@ -3122,6 +3519,19 @@ CHBDriver::CHBDriver(char* confFile,
 
 CHBDriver::~CHBDriver() {
 
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::~CHBDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::~CHBDriver"<<std::endl;
+  }
+  counter++; 
+
   unsigned short kInst;
 
   /*--- delete dynamic memory for the Harmonic Balance operator ---*/
@@ -3131,6 +3541,19 @@ CHBDriver::~CHBDriver() {
 
 
 void CHBDriver::Run() {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CHBDriver::Run"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::Run"<<std::endl;
+  }
+  counter++; 
 
   /*--- Run a single iteration of a Harmonic Balance problem. Preprocess all
    all zones before beginning the iteration. ---*/
@@ -3153,6 +3576,19 @@ void CHBDriver::Run() {
 }
 
 void CHBDriver::Update() {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CHBDriver::Update"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::Update"<<std::endl;
+  }
+  counter++; 
 
   for (iInst = 0; iInst < nInstHB; iInst++) {
     /*--- Compute the harmonic balance terms across all zones ---*/
@@ -3178,6 +3614,19 @@ void CHBDriver::Update() {
 }
 
 void CHBDriver::SetHarmonicBalance(unsigned short iInst) {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CHBDriver::SetHarmonicBalance"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::SetHarmonicBalance"<<std::endl;
+  }
+  counter++; 
 
   unsigned short iVar, jInst, iMGlevel;
   unsigned short nVar = solver_container[ZONE_0][INST_0][MESH_0][FLOW_SOL]->GetnVar();
@@ -3301,6 +3750,19 @@ void CHBDriver::SetHarmonicBalance(unsigned short iInst) {
 }
 
 void CHBDriver::StabilizeHarmonicBalance() {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CHBDriver::StabilizeHarmonicBalance"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::StabilizeHarmonicBalance"<<std::endl;
+  }
+  counter++; 
 
   unsigned short i, j, k, iVar, iInst, jInst, iMGlevel;
   unsigned short nVar = solver_container[ZONE_0][INST_0][MESH_0][FLOW_SOL]->GetnVar();
@@ -3461,6 +3923,19 @@ void CHBDriver::StabilizeHarmonicBalance() {
 }
 
 void CHBDriver::ComputeHBOperator() {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CHBDriver::ComputeHBOperator"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CHBDriver::ComputeHBOperator"<<std::endl;
+  }
+  counter++; 
 
   const   complex<su2double> J(0.0,1.0);
   unsigned short i, j, k, iInst;

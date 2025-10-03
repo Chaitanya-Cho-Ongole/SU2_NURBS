@@ -39,7 +39,18 @@ CDiscAdjSinglezoneDriver::CDiscAdjSinglezoneDriver(char* confFile,
                                                                                                  val_nZone,
                                                                                                  MPICommunicator) {
 
-
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::CDiscAdjSinglezoneDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::CDiscAdjSinglezoneDriver"<<std::endl;
+  }
+  counter++;                                                                                               
   /*--- Store the number of internal iterations that will be run by the adjoint solver ---*/
   nAdjoint_Iter = config_container[ZONE_0]->GetnInner_Iter();
 
@@ -121,6 +132,18 @@ CDiscAdjSinglezoneDriver::CDiscAdjSinglezoneDriver(char* confFile,
 }
 
 CDiscAdjSinglezoneDriver::~CDiscAdjSinglezoneDriver() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::~CDiscAdjSinglezoneDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::~CDiscAdjSinglezoneDriver"<<std::endl;
+  }
+  counter++; 
 
   delete direct_iteration;
   delete direct_output;
@@ -128,6 +151,18 @@ CDiscAdjSinglezoneDriver::~CDiscAdjSinglezoneDriver() {
 }
 
 void CDiscAdjSinglezoneDriver::Preprocess(unsigned long TimeIter) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::Preprocess"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::Preprocess"<<std::endl;
+  }
+  counter++; 
 
   /*--- Set the current time iteration in the config and also in the driver
    * because the python interface doesn't offer an explicit way of doing it. ---*/
@@ -152,6 +187,18 @@ void CDiscAdjSinglezoneDriver::Preprocess(unsigned long TimeIter) {
 }
 
 void CDiscAdjSinglezoneDriver::Run() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::Run"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::Run"<<std::endl;
+  }
+  counter++; 
 
   CQuasiNewtonInvLeastSquares<passivedouble> fixPtCorrector;
   if (config->GetnQuasiNewtonSamples() > 1) {
@@ -217,6 +264,18 @@ void CDiscAdjSinglezoneDriver::Run() {
 }
 
 void CDiscAdjSinglezoneDriver::Postprocess() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::Postprocess"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::Postprocess"<<std::endl;
+  }
+  counter++; 
 
   switch(config->GetKind_Solver())
   {
@@ -246,6 +305,18 @@ void CDiscAdjSinglezoneDriver::Postprocess() {
 }
 
 void CDiscAdjSinglezoneDriver::SetRecording(RECORDING kind_recording){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SetRecording"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SetRecording"<<std::endl;
+  }
+  counter++; 
 
   AD::Reset();
 
@@ -325,6 +396,19 @@ void CDiscAdjSinglezoneDriver::SetRecording(RECORDING kind_recording){
 }
 
 void CDiscAdjSinglezoneDriver::SetAdjObjFunction(){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SetAdjObjFunction"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SetAdjObjFunction"<<std::endl;
+  }
+  counter++; 
+
   su2double seeding = 1.0;
 
   if (config->GetTime_Domain()) {
@@ -347,6 +431,19 @@ void CDiscAdjSinglezoneDriver::SetAdjObjFunction(){
 }
 
 void CDiscAdjSinglezoneDriver::SetObjFunction(){
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SetObjFunction"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SetObjFunction"<<std::endl;
+  }
+  counter++; 
 
   ObjFunc = 0.0;
 
@@ -389,6 +486,18 @@ void CDiscAdjSinglezoneDriver::SetObjFunction(){
 }
 
 void CDiscAdjSinglezoneDriver::DirectRun(RECORDING kind_recording){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::DirectRun"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::DirectRun"<<std::endl;
+  }
+  counter++; 
 
   /*--- Mesh movement ---*/
 
@@ -413,6 +522,18 @@ void CDiscAdjSinglezoneDriver::DirectRun(RECORDING kind_recording){
 }
 
 void CDiscAdjSinglezoneDriver::MainRecording(){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::MainRecording"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::MainRecording"<<std::endl;
+  }
+  counter++; 
   /*--- SetRecording stores the computational graph on one iteration of the direct problem. Calling it with
    *    RECORDING::CLEAR_INDICES as argument ensures that all information from a previous recording is removed. ---*/
 
@@ -425,6 +546,19 @@ void CDiscAdjSinglezoneDriver::MainRecording(){
 }
 
 void CDiscAdjSinglezoneDriver::SecondaryRecording(){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SecondaryRecording"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDiscAdjSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION:CDiscAdjSinglezoneDriver::SecondaryRecording"<<std::endl;
+  }
+  counter++; 
+  
   /*--- SetRecording stores the computational graph on one iteration of the direct problem. Calling it with
    *    RECORDING::CLEAR_INDICES as argument ensures that all information from a previous recording is removed. ---*/
 
