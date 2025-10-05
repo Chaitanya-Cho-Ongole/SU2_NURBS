@@ -25,56 +25,82 @@
  * License along with SU2. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../../include/integration/CIntegrationFactory.hpp"
-#include "../../include/integration/CSingleGridIntegration.hpp"
-#include "../../include/integration/CMultiGridIntegration.hpp"
-#include "../../include/integration/CNewtonIntegration.hpp"
-#include "../../include/integration/CStructuralIntegration.hpp"
-#include "../../include/integration/CFEM_DG_Integration.hpp"
-
-CIntegration** CIntegrationFactory::CreateIntegrationContainer(MAIN_SOLVER kindMainSolver,
-                                                               const CSolver* const* solver_container){
-
-  auto **integration = new CIntegration* [MAX_SOLS]();
-
-  for (unsigned int iSol = 0; iSol < MAX_SOLS; iSol++){
-    if (solver_container[iSol] != nullptr){
-      const SolverMetaData &solverInfo = CSolverFactory::GetSolverMeta(solver_container[iSol]);
-      integration[iSol] = CreateIntegration(solverInfo.integrationType);
-    }
-  }
-
-  return integration;
-}
-
-CIntegration* CIntegrationFactory::CreateIntegration(INTEGRATION_TYPE integrationType){
-
-  CIntegration *integration = nullptr;
-
-  switch(integrationType){
-    case INTEGRATION_TYPE::DEFAULT:
-      integration = new CIntegration();
-      break;
-    case INTEGRATION_TYPE::SINGLEGRID:
-      integration = new CSingleGridIntegration();
-      break;
-    case INTEGRATION_TYPE::MULTIGRID:
-      integration = new CMultiGridIntegration();
-      break;
-    case INTEGRATION_TYPE::NEWTON:
-      integration = new CNewtonIntegration();
-      break;
-    case INTEGRATION_TYPE::STRUCTURAL:
-      integration = new CStructuralIntegration();
-      break;
-    case INTEGRATION_TYPE::FEM_DG:
-      integration = new CFEM_DG_Integration();
-      break;
-    case INTEGRATION_TYPE::NONE:
-      integration = nullptr;
-      break;
-  }
-
-  return integration;
-
-}
+ #include "../../include/integration/CIntegrationFactory.hpp"
+ #include "../../include/integration/CSingleGridIntegration.hpp"
+ #include "../../include/integration/CMultiGridIntegration.hpp"
+ #include "../../include/integration/CNewtonIntegration.hpp"
+ #include "../../include/integration/CStructuralIntegration.hpp"
+ #include "../../include/integration/CFEM_DG_Integration.hpp"
+ 
+ CIntegration** CIntegrationFactory::CreateIntegrationContainer(MAIN_SOLVER kindMainSolver,
+                                                                const CSolver* const* solver_container){
+   
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/integration/CIntegrationFactory.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CIntegrationFactory::CreateIntegrationContainer"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/integration/CIntegrationFactory.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CIntegrationFactory::CreateIntegrationContainer"<<std::endl;
+   }
+   counter++; 
+ 
+   auto **integration = new CIntegration* [MAX_SOLS]();
+ 
+   for (unsigned int iSol = 0; iSol < MAX_SOLS; iSol++){
+     if (solver_container[iSol] != nullptr){
+       const SolverMetaData &solverInfo = CSolverFactory::GetSolverMeta(solver_container[iSol]);
+       integration[iSol] = CreateIntegration(solverInfo.integrationType);
+     }
+   }
+ 
+   return integration;
+ }
+ 
+ CIntegration* CIntegrationFactory::CreateIntegration(INTEGRATION_TYPE integrationType){
+ 
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/integration/CIntegrationFactory.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CIntegrationFactory::CreateIntegration"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/integration/CIntegrationFactory.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CIntegrationFactory::CreateIntegration"<<std::endl;
+   }
+   counter++; 
+ 
+   CIntegration *integration = nullptr;
+ 
+   switch(integrationType){
+     case INTEGRATION_TYPE::DEFAULT:
+       integration = new CIntegration();
+       break;
+     case INTEGRATION_TYPE::SINGLEGRID:
+       integration = new CSingleGridIntegration();
+       break;
+     case INTEGRATION_TYPE::MULTIGRID:
+       integration = new CMultiGridIntegration();
+       break;
+     case INTEGRATION_TYPE::NEWTON:
+       integration = new CNewtonIntegration();
+       break;
+     case INTEGRATION_TYPE::STRUCTURAL:
+       integration = new CStructuralIntegration();
+       break;
+     case INTEGRATION_TYPE::FEM_DG:
+       integration = new CFEM_DG_Integration();
+       break;
+     case INTEGRATION_TYPE::NONE:
+       integration = nullptr;
+       break;
+   }
+ 
+   return integration;
+ 
+ }
