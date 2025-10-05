@@ -28,12 +28,36 @@
 #include "../../include/fluid/CVanDerWaalsGas.hpp"
 
 CVanDerWaalsGas::CVanDerWaalsGas(su2double gamma, su2double R, su2double Pstar, su2double Tstar) : CIdealGas(gamma, R) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::CVanDerWaalsGas"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::CVanDerWaalsGas"<<std::endl;
+  }
+  counter++;
   a = 27.0 / 64.0 * Gas_Constant * Gas_Constant * Tstar * Tstar / Pstar;
   b = 1.0 / 8.0 * Gas_Constant * Tstar / Pstar;
   Zed = 1.0;
 }
 
 void CVanDerWaalsGas::SetTDState_rhoe(su2double rho, su2double e) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_rhoe"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_rhoe"<<std::endl;
+  }
+  counter++;
   Density = rho;
   StaticEnergy = e;
 
@@ -54,6 +78,18 @@ void CVanDerWaalsGas::SetTDState_rhoe(su2double rho, su2double e) {
 }
 
 void CVanDerWaalsGas::SetTDState_PT(su2double P, su2double T) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_PT"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_PT"<<std::endl;
+  }
+  counter++;
   su2double toll = 1e-5;
   unsigned short nmax = 20, count = 0;
   su2double A, B, Z, DZ = 1.0, F, F1;
@@ -88,11 +124,35 @@ void CVanDerWaalsGas::SetTDState_PT(su2double P, su2double T) {
 }
 
 void CVanDerWaalsGas::SetTDState_Prho(su2double P, su2double rho) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_Prho"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_Prho"<<std::endl;
+  }
+  counter++;
   SetEnergy_Prho(P, rho);
   SetTDState_rhoe(rho, StaticEnergy);
 }
 
 void CVanDerWaalsGas::SetTDState_hs(su2double h, su2double s) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_hs"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_hs"<<std::endl;
+  }
+  counter++;
   su2double v, T, rho, f, fmid, rtb;
   su2double x1, x2, xmid, dx, fx1, fx2;
   su2double toll = 1e-5, FACTOR = 0.2;
@@ -157,16 +217,52 @@ void CVanDerWaalsGas::SetTDState_hs(su2double h, su2double s) {
 }
 
 void CVanDerWaalsGas::SetEnergy_Prho(su2double P, su2double rho) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetEnergy_Prho"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetEnergy_Prho"<<std::endl;
+  }
+  counter++;
   su2double T = (P + rho * rho * a) * (1 - rho * b) / (rho * Gas_Constant);
   StaticEnergy = T * Gas_Constant / Gamma_Minus_One - rho * a;
 }
 
 void CVanDerWaalsGas::SetTDState_rhoT(su2double rho, su2double T) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_rhoT"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_rhoT"<<std::endl;
+  }
+  counter++;
   su2double e = T * Gas_Constant / Gamma_Minus_One - a * rho;
   SetTDState_rhoe(rho, e);
 }
 
 void CVanDerWaalsGas::SetTDState_Ps(su2double P, su2double s) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_Ps"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::SetTDState_Ps"<<std::endl;
+  }
+  counter++;
   su2double T, rho, cons_P, cons_s;
   su2double x1, x2, fx1, fx2, f, fmid, T1, T2, rtb, dx, xmid;
   su2double toll = 1e-5, FACTOR = 0.2;
@@ -236,6 +332,18 @@ void CVanDerWaalsGas::SetTDState_Ps(su2double P, su2double s) {
 }
 
 void CVanDerWaalsGas::ComputeDerivativeNRBC_Prho(su2double P, su2double rho) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::ComputeDerivativeNRBC_Prho"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CVanDerWaalsGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CVanDerWaalsGas::ComputeDerivativeNRBC_Prho"<<std::endl;
+  }
+  counter++;
   su2double dPdT_rho, dPdrho_T, dPds_rho;
 
   SetTDState_Prho(P, rho);

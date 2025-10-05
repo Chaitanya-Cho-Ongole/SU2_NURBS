@@ -28,6 +28,18 @@
 #include "../../include/fluid/CIdealGas.hpp"
 
 CIdealGas::CIdealGas(su2double gamma, su2double R, bool CompEntropy) : CFluidModel() {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::CIdealGas"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::CIdealGas"<<std::endl;
+  }
+  counter++;
   Gamma = gamma;
   Gamma_Minus_One = Gamma - 1.0;
   Gas_Constant = R;
@@ -38,6 +50,18 @@ CIdealGas::CIdealGas(su2double gamma, su2double R, bool CompEntropy) : CFluidMod
 }
 
 void CIdealGas::SetTDState_rhoe(su2double rho, su2double e) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_rhoe"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_rhoe"<<std::endl;
+  }
+  counter++;
   Density = rho;
   StaticEnergy = e;
   Pressure = Gamma_Minus_One * Density * StaticEnergy;
@@ -52,19 +76,69 @@ void CIdealGas::SetTDState_rhoe(su2double rho, su2double e) {
 }
 
 void CIdealGas::SetTDState_PT(su2double P, su2double T) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_PT"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_PT"<<std::endl;
+  }
+  counter++;
   su2double e = T * Gas_Constant / Gamma_Minus_One;
   su2double rho = P / (T * Gas_Constant);
   SetTDState_rhoe(rho, e);
 }
 
 void CIdealGas::SetTDState_Prho(su2double P, su2double rho) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_Prho"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_Prho"<<std::endl;
+  }
+  counter++;
   su2double e = P / (Gamma_Minus_One * rho);
   SetTDState_rhoe(rho, e);
 }
 
-void CIdealGas::SetEnergy_Prho(su2double P, su2double rho) { StaticEnergy = P / (rho * Gamma_Minus_One); }
+void CIdealGas::SetEnergy_Prho(su2double P, su2double rho) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetEnergy_Prho"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetEnergy_Prho"<<std::endl;
+  }
+  counter++;
+  StaticEnergy = P / (rho * Gamma_Minus_One);
+}
 
 void CIdealGas::SetTDState_hs(su2double h, su2double s) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_hs"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_hs"<<std::endl;
+  }
+  counter++;
   su2double T = h * Gamma_Minus_One / Gas_Constant / Gamma;
   su2double e = h / Gamma;
   su2double v = exp(-1 / Gamma_Minus_One * log(T) + s / Gas_Constant);
@@ -73,6 +147,18 @@ void CIdealGas::SetTDState_hs(su2double h, su2double s) {
 }
 
 void CIdealGas::SetTDState_Ps(su2double P, su2double s) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_Ps"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_Ps"<<std::endl;
+  }
+  counter++;
   su2double T = exp(Gamma_Minus_One / Gamma * (s / Gas_Constant + log(P) - log(Gas_Constant)));
   su2double rho = P / (T * Gas_Constant);
 
@@ -80,11 +166,35 @@ void CIdealGas::SetTDState_Ps(su2double P, su2double s) {
 }
 
 void CIdealGas::SetTDState_rhoT(su2double rho, su2double T) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_rhoT"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::SetTDState_rhoT"<<std::endl;
+  }
+  counter++;
   su2double e = T * Gas_Constant / Gamma_Minus_One;
   SetTDState_rhoe(rho, e);
 }
 
 void CIdealGas::ComputeDerivativeNRBC_Prho(su2double P, su2double rho) {
+  static int counter=0;
+  if (counter==0){
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::ComputeDerivativeNRBC_Prho"<<std::endl;
+  }
+
+  if (counter==1){
+  std::cout<<"REPEATED EVALS"<<std::endl;
+  std::cout<<"FILE:SU2_CFD/src/fluid/CIdealGas.cpp"<<std::endl;
+  std::cout<<"FUNCTION:CIdealGas::ComputeDerivativeNRBC_Prho"<<std::endl;
+  }
+  counter++;
   su2double dPdT_rho, dPdrho_T, dPds_rho;
 
   SetTDState_Prho(P, rho);

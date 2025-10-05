@@ -47,6 +47,18 @@
 #include "../../include/fluid/CCoolPropConductivity.hpp"
 
 unique_ptr<CViscosityModel> CFluidModel::MakeLaminarViscosityModel(const CConfig* config, unsigned short iSpecies) {
+  static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::MakeLaminarViscosityModel"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::MakeLaminarViscosityModel"<<std::endl;
+   }
+   counter++;
   switch (config->GetKind_ViscosityModel()) {
     case VISCOSITYMODEL::CONSTANT:
       return unique_ptr<CConstantViscosity>(new CConstantViscosity(config->GetMu_ConstantND(iSpecies)));
@@ -69,11 +81,35 @@ unique_ptr<CViscosityModel> CFluidModel::MakeLaminarViscosityModel(const CConfig
 }
 
 void CFluidModel::SetLaminarViscosityModel(const CConfig* config) {
+  static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::SetLaminarViscosityModel"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::SetLaminarViscosityModel"<<std::endl;
+   }
+   counter++;
   LaminarViscosity = MakeLaminarViscosityModel(config, 0);
 }
 
 unique_ptr<CConductivityModel> CFluidModel::MakeThermalConductivityModel(const CConfig* config,
                                                                          unsigned short iSpecies) {
+  static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::MakeThermalConductivityModel"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::MakeThermalConductivityModel"<<std::endl;
+   }
+   counter++;
   switch (config->GetKind_ConductivityModel()) {
     case CONDUCTIVITYMODEL::CONSTANT:
       if (config->GetKind_ConductivityModel_Turb() == CONDUCTIVITYMODEL_TURB::CONSTANT_PRANDTL) {
@@ -122,10 +158,34 @@ unique_ptr<CConductivityModel> CFluidModel::MakeThermalConductivityModel(const C
 }
 
 void CFluidModel::SetThermalConductivityModel(const CConfig* config) {
+  static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::SetThermalConductivityModel"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::SetThermalConductivityModel"<<std::endl;
+   }
+   counter++;
   ThermalConductivity = MakeThermalConductivityModel(config, 0);
 }
 
 unique_ptr<CDiffusivityModel> CFluidModel::MakeMassDiffusivityModel(const CConfig* config, unsigned short iSpecies) {
+  static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::MakeMassDiffusivityModel"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::MakeMassDiffusivityModel"<<std::endl;
+   }
+   counter++;
   switch (config->GetKind_Diffusivity_Model()) {
     case DIFFUSIVITYMODEL::CONSTANT_DIFFUSIVITY:
       return unique_ptr<CConstantDiffusivity>(new CConstantDiffusivity(config->GetDiffusivity_ConstantND()));
@@ -151,5 +211,17 @@ unique_ptr<CDiffusivityModel> CFluidModel::MakeMassDiffusivityModel(const CConfi
 }
 
 void CFluidModel::SetMassDiffusivityModel(const CConfig* config) {
+  static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::SetMassDiffusivityModel"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/fluid/CFluidModel.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CFluidModel::SetMassDiffusivityModel"<<std::endl;
+   }
+   counter++;
   MassDiffusivity = MakeMassDiffusivityModel(config, 0);
 }
