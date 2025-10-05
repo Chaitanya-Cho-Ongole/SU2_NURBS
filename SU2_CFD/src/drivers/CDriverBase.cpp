@@ -1,5 +1,5 @@
 /*!
- * \file CDriverBase.hpp
+ * \file CDriverBase.cpp
  * \brief Base class template for all drivers.
  * \author H. Patel, A. Gastaldi
  * \version 8.0.1 "Harrier"
@@ -36,6 +36,19 @@ using namespace std;
 CDriverBase::CDriverBase(char* confFile, unsigned short val_nZone, SU2_Comm MPICommunicator)
     : config_file_name(confFile), StartTime(0.0), StopTime(0.0), UsedTime(0.0), TimeIter(0), nZone(val_nZone) {
 
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::CDriverBase"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::CDriverBase"<<std::endl;
+  }
+  counter++; 
   /*--- Some initializations are placed here so that they are also seen by the python wrapper. Note that the python
    * wrapper instantiates a driver directly. ---*/
 
@@ -62,9 +75,34 @@ CDriverBase::CDriverBase(char* confFile, unsigned short val_nZone, SU2_Comm MPIC
   AD::Initialize();
 }
 
-CDriverBase::~CDriverBase() = default;
+CDriverBase::~CDriverBase() {
+    static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::~CDriverBase"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::~CDriverBase"<<std::endl;
+  }
+  counter++; 
+}
 
 void CDriverBase::InitializeContainers() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::InitializeContainers"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::InitializeContainers"<<std::endl;
+  }
+  counter++; 
   /*--- Create pointers to all the classes that may be used by drivers. In general, the pointers are instantiated
    * down a hierarchy over all zones, multi-grid levels, equation sets, and equation terms as described in the comments
    * below. ---*/
@@ -85,6 +123,19 @@ void CDriverBase::InitializeContainers() {
 }
 
 void CDriverBase::CommonFinalize() {
+
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::CommonFinalize"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::CommonFinalize"<<std::endl;
+  }
+  counter++; 
 
   if (numerics_container != nullptr) {
     for (iZone = 0; iZone < nZone; iZone++) {
@@ -158,18 +209,85 @@ void CDriverBase::CommonFinalize() {
 }
 
 unsigned short CDriverBase::GetNumberDesignVariables() const 
-{
+{  
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberDesignVariables"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberDesignVariables"<<std::endl;
+  }
+  counter++; 
+
    std::cout << " Number of design vars:"  << main_config->GetnDV() << std::endl;
    return main_config->GetnDV(); 
 }
 
-unsigned short CDriverBase::GetNumberFFDBoxes() const { return main_config->GetnFFDBox(); }
+unsigned short CDriverBase::GetNumberFFDBoxes() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberFFDBoxes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberFFDBoxes"<<std::endl;
+  }
+  counter++; 
+  return main_config->GetnFFDBox();
+}
 
-unsigned long CDriverBase::GetNumberDimensions() const { return main_geometry->GetnDim(); }
+unsigned long CDriverBase::GetNumberDimensions() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberDimensions"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberDimensions"<<std::endl;
+  }
+  counter++; 
+  return main_geometry->GetnDim();
+}
 
-unsigned long CDriverBase::GetNumberElements() const { return main_geometry->GetnElem(); }
+unsigned long CDriverBase::GetNumberElements() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberElements"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberElements"<<std::endl;
+  }
+  counter++; 
+  return main_geometry->GetnElem();
+}
 
 unsigned long CDriverBase::GetElementGlobalIndex(unsigned long iElem) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetElementGlobalIndex"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetElementGlobalIndex"<<std::endl;
+  }
+  counter++; 
   if (iElem >= GetNumberElements()) {
     SU2_MPI::Error("Element index exceeds size.", CURRENT_FUNCTION);
   }
@@ -177,6 +295,18 @@ unsigned long CDriverBase::GetElementGlobalIndex(unsigned long iElem) const {
 }
 
 vector<unsigned long> CDriverBase::GetElementNodes(unsigned long iElem) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetElementNodes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetElementNodes"<<std::endl;
+  }
+  counter++; 
   if (iElem >= GetNumberElements()) {
     SU2_MPI::Error("Element index exceeds size.", CURRENT_FUNCTION);
   }
@@ -189,13 +319,51 @@ vector<unsigned long> CDriverBase::GetElementNodes(unsigned long iElem) const {
   return values;
 }
 
-unsigned long CDriverBase::GetNumberNodes() const { return main_geometry->GetnPoint(); }
+unsigned long CDriverBase::GetNumberNodes() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberNodes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberNodes"<<std::endl;
+  }
+  counter++; 
+  return main_geometry->GetnPoint();
+}
 
 unsigned long CDriverBase::GetNumberHaloNodes() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberHaloNodes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberHaloNodes"<<std::endl;
+  }
+  counter++; 
   return main_geometry->GetnPoint() - main_geometry->GetnPointDomain();
 }
 
 unsigned long CDriverBase::GetNodeGlobalIndex(unsigned long iPoint) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNodeGlobalIndex"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNodeGlobalIndex"<<std::endl;
+  }
+  counter++; 
   if (iPoint >= GetNumberNodes()) {
     SU2_MPI::Error("Node index exceeds mesh size.", CURRENT_FUNCTION);
   }
@@ -203,15 +371,53 @@ unsigned long CDriverBase::GetNodeGlobalIndex(unsigned long iPoint) const {
 }
 
 bool CDriverBase::GetNodeDomain(unsigned long iPoint) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNodeDomain"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNodeDomain"<<std::endl;
+  }
+  counter++; 
   if (iPoint >= GetNumberNodes()) {
     SU2_MPI::Error("Node index exceeds mesh size.", CURRENT_FUNCTION);
   }
   return main_geometry->nodes->GetDomain(iPoint);
 }
 
-unsigned short CDriverBase::GetNumberMarkers() const { return main_config->GetnMarker_All(); }
+unsigned short CDriverBase::GetNumberMarkers() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberMarkers"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberMarkers"<<std::endl;
+  }
+  counter++; 
+  return main_config->GetnMarker_All();
+}
 
 map<string, unsigned short> CDriverBase::GetMarkerIndices() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerIndices"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerIndices"<<std::endl;
+  }
+  counter++; 
   const auto nMarker = main_config->GetnMarker_All();
   map<string, unsigned short> indexMap;
 
@@ -222,6 +428,18 @@ map<string, unsigned short> CDriverBase::GetMarkerIndices() const {
 }
 
 map<string, string> CDriverBase::GetMarkerTypes() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerTypes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerTypes"<<std::endl;
+  }
+  counter++; 
   map<string, string> typeMap;
   string type;
 
@@ -288,6 +506,18 @@ map<string, string> CDriverBase::GetMarkerTypes() const {
 }
 
 vector<string> CDriverBase::GetMarkerTags() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerTags"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerTags"<<std::endl;
+  }
+  counter++; 
   const auto nMarker = main_config->GetnMarker_All();
   vector<string> tags(nMarker);
 
@@ -298,6 +528,18 @@ vector<string> CDriverBase::GetMarkerTags() const {
 }
 
 vector<string> CDriverBase::GetDeformableMarkerTags() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetDeformableMarkerTags"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetDeformableMarkerTags"<<std::endl;
+  }
+  counter++; 
   const auto nMarker = main_config->GetnMarker_Deform_Mesh();
   vector<string> tags(nMarker);
 
@@ -308,6 +550,18 @@ vector<string> CDriverBase::GetDeformableMarkerTags() const {
 }
 
 vector<string> CDriverBase::GetCHTMarkerTags() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetCHTMarkerTags"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetCHTMarkerTags"<<std::endl;
+  }
+  counter++; 
   vector<string> tags;
   const auto nMarker = main_config->GetnMarker_All();
 
@@ -323,6 +577,18 @@ vector<string> CDriverBase::GetCHTMarkerTags() const {
 }
 
 vector<string> CDriverBase::GetInletMarkerTags() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetInletMarkerTags"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetInletMarkerTags"<<std::endl;
+  }
+  counter++; 
   vector<string> tags;
   const auto nMarker = main_config->GetnMarker_All();
 
@@ -338,6 +604,18 @@ vector<string> CDriverBase::GetInletMarkerTags() const {
 }
 
 unsigned long CDriverBase::GetNumberMarkerElements(unsigned short iMarker) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberMarkerElements"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberMarkerElements"<<std::endl;
+  }
+  counter++; 
   if (iMarker >= GetNumberMarkers()) {
     SU2_MPI::Error("Marker index exceeds size.", CURRENT_FUNCTION);
   }
@@ -345,6 +623,18 @@ unsigned long CDriverBase::GetNumberMarkerElements(unsigned short iMarker) const
 }
 
 unsigned long CDriverBase::GetMarkerElementGlobalIndex(unsigned short iMarker, unsigned long iElem) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerElementGlobalIndex"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerElementGlobalIndex"<<std::endl;
+  }
+  counter++; 
   if (iElem >= GetNumberMarkerElements(iMarker)) {
     SU2_MPI::Error("Marker element index exceeds size.", CURRENT_FUNCTION);
   }
@@ -352,6 +642,18 @@ unsigned long CDriverBase::GetMarkerElementGlobalIndex(unsigned short iMarker, u
 }
 
 vector<unsigned long> CDriverBase::GetMarkerElementNodes(unsigned short iMarker, unsigned long iElem) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerElementNodes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerElementNodes"<<std::endl;
+  }
+  counter++; 
   if (iElem >= GetNumberMarkerElements(iMarker)) {
     SU2_MPI::Error("Marker element index exceeds size.", CURRENT_FUNCTION);
   }
@@ -365,6 +667,18 @@ vector<unsigned long> CDriverBase::GetMarkerElementNodes(unsigned short iMarker,
 }
 
 unsigned long CDriverBase::GetNumberMarkerNodes(unsigned short iMarker) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberMarkerNodes"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetNumberMarkerNodes"<<std::endl;
+  }
+  counter++; 
   if (iMarker >= GetNumberMarkers()) {
     SU2_MPI::Error("Marker index exceeds size.", CURRENT_FUNCTION);
   }
@@ -372,6 +686,18 @@ unsigned long CDriverBase::GetNumberMarkerNodes(unsigned short iMarker) const {
 }
 
 unsigned long CDriverBase::GetMarkerNode(unsigned short iMarker, unsigned long iVertex) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerNode"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerNode"<<std::endl;
+  }
+  counter++; 
   if (iVertex >= GetNumberMarkerNodes(iMarker)) {
     SU2_MPI::Error("Vertex index exceeds marker size.", CURRENT_FUNCTION);
   }
@@ -380,6 +706,18 @@ unsigned long CDriverBase::GetMarkerNode(unsigned short iMarker, unsigned long i
 
 vector<passivedouble> CDriverBase::GetMarkerVertexNormals(unsigned short iMarker, unsigned long iVertex,
                                                           bool normalize) const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerVertexNormals"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetMarkerVertexNormals"<<std::endl;
+  }
+  counter++; 
   if (iVertex >= GetNumberMarkerNodes(iMarker)) {
     SU2_MPI::Error("Vertex index exceeds marker size.", CURRENT_FUNCTION);
   }
@@ -395,11 +733,35 @@ vector<passivedouble> CDriverBase::GetMarkerVertexNormals(unsigned short iMarker
 }
 
 void CDriverBase::CommunicateMeshDisplacements() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::CommunicateMeshDisplacements"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::CommunicateMeshDisplacements"<<std::endl;
+  }
+  counter++; 
   solver_container[selected_zone][INST_0][MESH_0][MESH_SOL]->InitiateComms(main_geometry, main_config, MESH_DISPLACEMENTS);
   solver_container[selected_zone][INST_0][MESH_0][MESH_SOL]->CompleteComms(main_geometry, main_config, MESH_DISPLACEMENTS);
 }
 
 map<string, unsigned short> CDriverBase::GetSolverIndices() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetSolverIndices"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetSolverIndices"<<std::endl;
+  }
+  counter++; 
   map<string, unsigned short> indexMap;
   for (auto iSol = 0u; iSol < MAX_SOLS; iSol++) {
     const auto* solver = solver_container[selected_zone][INST_0][MESH_0][iSol];
@@ -412,6 +774,18 @@ map<string, unsigned short> CDriverBase::GetSolverIndices() const {
 }
 
 std::map<string, unsigned short> CDriverBase::GetFEASolutionIndices() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetFEASolutionIndices"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetFEASolutionIndices"<<std::endl;
+  }
+  counter++; 
   if (solver_container[selected_zone][INST_0][MESH_0][FEA_SOL] == nullptr) {
     SU2_MPI::Error("The FEA solver does not exist.", CURRENT_FUNCTION);
   }
@@ -433,6 +807,18 @@ std::map<string, unsigned short> CDriverBase::GetFEASolutionIndices() const {
 }
 
 map<string, unsigned short> CDriverBase::GetPrimitiveIndices() const {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetPrimitiveIndices"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE:SU2_CFD/src/drivers/CDriverBase.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CDriverBase::GetPrimitiveIndices"<<std::endl;
+  }
+  counter++; 
   if (solver_container[selected_zone][INST_0][MESH_0][FLOW_SOL] == nullptr) {
     SU2_MPI::Error("The flow solver does not exist.", CURRENT_FUNCTION);
   }

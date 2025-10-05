@@ -36,14 +36,52 @@ CSinglezoneDriver::CSinglezoneDriver(char* confFile,
                                                           val_nZone,
                                                           MPICommunicator,
                                                           false) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::CSinglezoneDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::CSinglezoneDriver"<<std::endl;
+  }
+  counter++;
 
   /*--- Initialize the counter for TimeIter ---*/
   TimeIter = 0;
 }
 
-CSinglezoneDriver::~CSinglezoneDriver() = default;
+CSinglezoneDriver::~CSinglezoneDriver() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::~CSinglezoneDriver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::~CSinglezoneDriver"<<std::endl;
+  }
+  counter++;
+  // default implementation was here, now explicit due to added lines.
+}
 
 void CSinglezoneDriver::StartSolver() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::StartSolver"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::StartSolver"<<std::endl;
+  }
+  counter++;
 
   StartTime = SU2_MPI::Wtime();
 
@@ -103,6 +141,18 @@ void CSinglezoneDriver::StartSolver() {
 }
 
 void CSinglezoneDriver::Preprocess(unsigned long TimeIter) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Preprocess"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Preprocess"<<std::endl;
+  }
+  counter++;
 
   /*--- Set the current time iteration in the config and also in the driver
    * because the python interface doesn't offer an explicit way of doing it. ---*/
@@ -154,6 +204,18 @@ void CSinglezoneDriver::Preprocess(unsigned long TimeIter) {
 }
 
 void CSinglezoneDriver::Run() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Run"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Run"<<std::endl;
+  }
+  counter++;
 
   unsigned long OuterIter = 0;
   config_container[ZONE_0]->SetOuterIter(OuterIter);
@@ -165,6 +227,18 @@ void CSinglezoneDriver::Run() {
 }
 
 void CSinglezoneDriver::Postprocess() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Postprocess"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Postprocess"<<std::endl;
+  }
+  counter++;
 
   iteration_container[ZONE_0][INST_0]->Postprocess(output_container[ZONE_0], integration_container, geometry_container, solver_container,
       numerics_container, config_container, surface_movement, grid_movement, FFDBox, ZONE_0, INST_0);
@@ -178,6 +252,18 @@ void CSinglezoneDriver::Postprocess() {
 }
 
 void CSinglezoneDriver::Update() {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Update"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Update"<<std::endl;
+  }
+  counter++;
 
   iteration_container[ZONE_0][INST_0]->Update(output_container[ZONE_0], integration_container, geometry_container,
         solver_container, numerics_container, config_container,
@@ -186,6 +272,18 @@ void CSinglezoneDriver::Update() {
 }
 
 void CSinglezoneDriver::Output(unsigned long TimeIter) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Output"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Output"<<std::endl;
+  }
+  counter++;
 
   /*--- Time the output for performance benchmarking. ---*/
 
@@ -222,6 +320,18 @@ void CSinglezoneDriver::Output(unsigned long TimeIter) {
 }
 
 void CSinglezoneDriver::DynamicMeshUpdate(unsigned long TimeIter) {
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::DynamicMeshUpdate"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::DynamicMeshUpdate"<<std::endl;
+  }
+  counter++;
 
   auto iteration = iteration_container[ZONE_0][INST_0];
 
@@ -247,6 +357,18 @@ void CSinglezoneDriver::DynamicMeshUpdate(unsigned long TimeIter) {
 }
 
 bool CSinglezoneDriver::Monitor(unsigned long TimeIter){
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Monitor"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::Monitor"<<std::endl;
+  }
+  counter++;
 
   unsigned long nInnerIter, InnerIter, nTimeIter;
   su2double MaxTime, CurTime;
@@ -310,5 +432,18 @@ bool CSinglezoneDriver::Monitor(unsigned long TimeIter){
 }
 
 bool CSinglezoneDriver::GetTimeConvergence() const{
+  static int counter=0;
+  if (counter==0){
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::GetTimeConvergence"<<std::endl;
+  }
+  
+  if (counter==1){
+    std::cout<<"REPEATED EVALS"<<std::endl;
+    std::cout<<"FILE: SU2_CFD/src/drivers/CSinglezoneDriver.cpp"<<std::endl;
+    std::cout<<"FUNCTION: CSinglezoneDriver::GetTimeConvergence"<<std::endl;
+  }
+  counter++;
+
   return output_container[ZONE_0]->GetCauchyCorrectedTimeConvergence(config_container[ZONE_0]);
 }
