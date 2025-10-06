@@ -25,42 +25,78 @@
  * License along with SU2. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../../include/iteration/CTurboIteration.hpp"
-#include "../../include/output/COutput.hpp"
-#include "../../include/output/CTurboOutput.hpp"
-
-void CTurboIteration::Preprocess(COutput* output, CIntegration**** integration, CGeometry**** geometry,
-                                 CSolver***** solver, CNumerics****** numerics, CConfig** config,
-                                 CSurfaceMovement** surface_movement, CVolumetricMovement*** grid_movement,
-                                 CFreeFormDefBox*** FFDBox, unsigned short val_iZone, unsigned short val_iInst) {
-  /*--- Average quantities at the inflow and outflow boundaries ---*/
-  solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
-      solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], INFLOW);
-  solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
-      solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], OUTFLOW);
-
-  if (config[val_iZone]->GetBoolTurbomachinery()) {
-    InitTurboPerformance(geometry[val_iZone][INST_0][MESH_0], config,
-                         solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->GetFluidModel());
-  }
-}
-
-void CTurboIteration::Postprocess(COutput* output, CIntegration**** integration, CGeometry**** geometry,
+ #include "../../include/iteration/CTurboIteration.hpp"
+ #include "../../include/output/COutput.hpp"
+ #include "../../include/output/CTurboOutput.hpp"
+ 
+ void CTurboIteration::Preprocess(COutput* output, CIntegration**** integration, CGeometry**** geometry,
                                   CSolver***** solver, CNumerics****** numerics, CConfig** config,
                                   CSurfaceMovement** surface_movement, CVolumetricMovement*** grid_movement,
                                   CFreeFormDefBox*** FFDBox, unsigned short val_iZone, unsigned short val_iInst) {
-  /*--- Average quantities at the inflow and outflow boundaries ---*/
-  solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
-      solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], INFLOW);
-  solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
-      solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], OUTFLOW);
-
-  /*--- Gather Inflow and Outflow quantities on the Master Node to compute performance ---*/
-  solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->GatherInOutAverageValues(config[val_iZone],
-                                                                           geometry[val_iZone][val_iInst][MESH_0]);
-}
-
-void CTurboIteration::InitTurboPerformance(CGeometry* geometry, CConfig** config, CFluidModel* fluid) {
-  TurbomachineryPerformance = std::make_shared<CTurboOutput>(config, *geometry, *fluid);
-  TurbomachineryStagePerformance = std::make_shared<CTurbomachineryStagePerformance>(*fluid);
-}
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/iteration/CTurboIteration.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CTurboIteration::Preprocess"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/iteration/CTurboIteration.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CTurboIteration::Preprocess"<<std::endl;
+   }
+   counter++; 
+   /*--- Average quantities at the inflow and outflow boundaries ---*/
+   solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
+       solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], INFLOW);
+   solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
+       solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], OUTFLOW);
+ 
+   if (config[val_iZone]->GetBoolTurbomachinery()) {
+     InitTurboPerformance(geometry[val_iZone][INST_0][MESH_0], config,
+                          solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->GetFluidModel());
+   }
+ }
+ 
+ void CTurboIteration::Postprocess(COutput* output, CIntegration**** integration, CGeometry**** geometry,
+                                   CSolver***** solver, CNumerics****** numerics, CConfig** config,
+                                   CSurfaceMovement** surface_movement, CVolumetricMovement*** grid_movement,
+                                   CFreeFormDefBox*** FFDBox, unsigned short val_iZone, unsigned short val_iInst) {
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/iteration/CTurboIteration.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CTurboIteration::Postprocess"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/iteration/CTurboIteration.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CTurboIteration::Postprocess"<<std::endl;
+   }
+   counter++; 
+   /*--- Average quantities at the inflow and outflow boundaries ---*/
+   solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
+       solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], INFLOW);
+   solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->TurboAverageProcess(
+       solver[val_iZone][val_iInst][MESH_0], geometry[val_iZone][val_iInst][MESH_0], config[val_iZone], OUTFLOW);
+ 
+   /*--- Gather Inflow and Outflow quantities on the Master Node to compute performance ---*/
+   solver[val_iZone][val_iInst][MESH_0][FLOW_SOL]->GatherInOutAverageValues(config[val_iZone],
+                                                                            geometry[val_iZone][val_iInst][MESH_0]);
+ }
+ 
+ void CTurboIteration::InitTurboPerformance(CGeometry* geometry, CConfig** config, CFluidModel* fluid) {
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/iteration/CTurboIteration.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CTurboIteration::InitTurboPerformance"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/iteration/CTurboIteration.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CTurboIteration::InitTurboPerformance"<<std::endl;
+   }
+   counter++; 
+   TurbomachineryPerformance = std::make_shared<CTurboOutput>(config, *geometry, *fluid);
+   TurbomachineryStagePerformance = std::make_shared<CTurbomachineryStagePerformance>(*fluid);
+ }

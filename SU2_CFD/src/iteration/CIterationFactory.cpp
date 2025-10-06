@@ -25,97 +25,109 @@
  * License along with SU2. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../../include/iteration/CIterationFactory.hpp"
-#include "../../include/iteration/CIteration.hpp"
-#include "../../include/iteration/CAdjFluidIteration.hpp"
-#include "../../include/iteration/CDiscAdjFEAIteration.hpp"
-#include "../../include/iteration/CDiscAdjFluidIteration.hpp"
-#include "../../include/iteration/CDiscAdjHeatIteration.hpp"
-#include "../../include/iteration/CFluidIteration.hpp"
-#include "../../include/iteration/CFEMFluidIteration.hpp"
-#include "../../include/iteration/CTurboIteration.hpp"
-#include "../../include/iteration/CHeatIteration.hpp"
-#include "../../include/iteration/CFEAIteration.hpp"
-
-CIteration* CIterationFactory::CreateIteration(MAIN_SOLVER kindSolver, const CConfig* config){
-
-  CIteration *iteration = nullptr;
-
-  const auto rank = SU2_MPI::GetRank();
-
-  /*--- Loop over all zones and instantiate the physics iteration. ---*/
-
-  switch (kindSolver) {
-
-    case MAIN_SOLVER::EULER: case MAIN_SOLVER::NAVIER_STOKES: case MAIN_SOLVER::RANS:
-    case MAIN_SOLVER::INC_EULER: case MAIN_SOLVER::INC_NAVIER_STOKES: case MAIN_SOLVER::INC_RANS:
-    case MAIN_SOLVER::NEMO_EULER: case MAIN_SOLVER::NEMO_NAVIER_STOKES:
-      if(config->GetBoolTurbomachinery()){
-        if (rank == MASTER_NODE)
-          cout << "Euler/Navier-Stokes/RANS turbomachinery fluid iteration." << endl;
-        iteration = new CTurboIteration(config);
-
-      }
-      else{
-        if (rank == MASTER_NODE)
-          cout << "Euler/Navier-Stokes/RANS fluid iteration." << endl;
-        iteration = new CFluidIteration(config);
-      }
-      break;
-
-    case MAIN_SOLVER::FEM_EULER: case MAIN_SOLVER::FEM_NAVIER_STOKES: case MAIN_SOLVER::FEM_RANS: case MAIN_SOLVER::FEM_LES:
-      if (rank == MASTER_NODE)
-        cout << "Finite element Euler/Navier-Stokes/RANS/LES flow iteration." << endl;
-      iteration = new CFEMFluidIteration(config);
-      break;
-
-    case MAIN_SOLVER::HEAT_EQUATION:
-      if (rank == MASTER_NODE)
-        cout << "Heat iteration (finite volume method)." << endl;
-      iteration = new CHeatIteration(config);
-      break;
-
-    case MAIN_SOLVER::FEM_ELASTICITY:
-      if (rank == MASTER_NODE)
-        cout << "FEM iteration." << endl;
-      iteration = new CFEAIteration(config);
-      break;
-
-    case MAIN_SOLVER::ADJ_EULER: case MAIN_SOLVER::ADJ_NAVIER_STOKES: case MAIN_SOLVER::ADJ_RANS:
-      if (rank == MASTER_NODE)
-        cout << "Adjoint Euler/Navier-Stokes/RANS fluid iteration." << endl;
-      iteration = new CAdjFluidIteration(config);
-      break;
-
-    case MAIN_SOLVER::DISC_ADJ_EULER: case MAIN_SOLVER::DISC_ADJ_NAVIER_STOKES: case MAIN_SOLVER::DISC_ADJ_RANS:
-    case MAIN_SOLVER::DISC_ADJ_INC_EULER: case MAIN_SOLVER::DISC_ADJ_INC_NAVIER_STOKES: case MAIN_SOLVER::DISC_ADJ_INC_RANS:
-      if (rank == MASTER_NODE)
-        cout << "Discrete adjoint Euler/Navier-Stokes/RANS fluid iteration." << endl;
-      iteration = new CDiscAdjFluidIteration(config);
-      break;
-
-    case MAIN_SOLVER::DISC_ADJ_FEM_EULER : case MAIN_SOLVER::DISC_ADJ_FEM_NS : case MAIN_SOLVER::DISC_ADJ_FEM_RANS :
-      if (rank == MASTER_NODE)
-        cout << "Discrete adjoint finite element Euler/Navier-Stokes/RANS fluid iteration." << endl;
-      iteration = new CDiscAdjFluidIteration(config);
-      break;
-
-    case MAIN_SOLVER::DISC_ADJ_FEM:
-      if (rank == MASTER_NODE)
-        cout << "Discrete adjoint FEM structural iteration." << endl;
-      iteration = new CDiscAdjFEAIteration(config);
-      break;
-
-    case MAIN_SOLVER::DISC_ADJ_HEAT:
-      if (rank == MASTER_NODE)
-        cout << "Discrete adjoint heat iteration." << endl;
-      iteration = new CDiscAdjHeatIteration(config);
-      break;
-
-    case MAIN_SOLVER::NONE: case MAIN_SOLVER::TEMPLATE_SOLVER: case MAIN_SOLVER::MULTIPHYSICS:
-      SU2_MPI::Error("No iteration found for specified solver.", CURRENT_FUNCTION);
-      break;
-  }
-
-  return iteration;
-}
+ #include "../../include/iteration/CIterationFactory.hpp"
+ #include "../../include/iteration/CIteration.hpp"
+ #include "../../include/iteration/CAdjFluidIteration.hpp"
+ #include "../../include/iteration/CDiscAdjFEAIteration.hpp"
+ #include "../../include/iteration/CDiscAdjFluidIteration.hpp"
+ #include "../../include/iteration/CDiscAdjHeatIteration.hpp"
+ #include "../../include/iteration/CFluidIteration.hpp"
+ #include "../../include/iteration/CFEMFluidIteration.hpp"
+ #include "../../include/iteration/CTurboIteration.hpp"
+ #include "../../include/iteration/CHeatIteration.hpp"
+ #include "../../include/iteration/CFEAIteration.hpp"
+ 
+ CIteration* CIterationFactory::CreateIteration(MAIN_SOLVER kindSolver, const CConfig* config){
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/iteration/CIterationFactory.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CIterationFactory::CreateIteration"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/iteration/CIterationFactory.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CIterationFactory::CreateIteration"<<std::endl;
+   }
+   counter++; 
+ 
+   CIteration *iteration = nullptr;
+ 
+   const auto rank = SU2_MPI::GetRank();
+ 
+   /*--- Loop over all zones and instantiate the physics iteration. ---*/
+ 
+   switch (kindSolver) {
+ 
+     case MAIN_SOLVER::EULER: case MAIN_SOLVER::NAVIER_STOKES: case MAIN_SOLVER::RANS:
+     case MAIN_SOLVER::INC_EULER: case MAIN_SOLVER::INC_NAVIER_STOKES: case MAIN_SOLVER::INC_RANS:
+     case MAIN_SOLVER::NEMO_EULER: case MAIN_SOLVER::NEMO_NAVIER_STOKES:
+       if(config->GetBoolTurbomachinery()){
+         if (rank == MASTER_NODE)
+           cout << "Euler/Navier-Stokes/RANS turbomachinery fluid iteration." << endl;
+         iteration = new CTurboIteration(config);
+ 
+       }
+       else{
+         if (rank == MASTER_NODE)
+           cout << "Euler/Navier-Stokes/RANS fluid iteration." << endl;
+         iteration = new CFluidIteration(config);
+       }
+       break;
+ 
+     case MAIN_SOLVER::FEM_EULER: case MAIN_SOLVER::FEM_NAVIER_STOKES: case MAIN_SOLVER::FEM_RANS: case MAIN_SOLVER::FEM_LES:
+       if (rank == MASTER_NODE)
+         cout << "Finite element Euler/Navier-Stokes/RANS/LES flow iteration." << endl;
+       iteration = new CFEMFluidIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::HEAT_EQUATION:
+       if (rank == MASTER_NODE)
+         cout << "Heat iteration (finite volume method)." << endl;
+       iteration = new CHeatIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::FEM_ELASTICITY:
+       if (rank == MASTER_NODE)
+         cout << "FEM iteration." << endl;
+       iteration = new CFEAIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::ADJ_EULER: case MAIN_SOLVER::ADJ_NAVIER_STOKES: case MAIN_SOLVER::ADJ_RANS:
+       if (rank == MASTER_NODE)
+         cout << "Adjoint Euler/Navier-Stokes/RANS fluid iteration." << endl;
+       iteration = new CAdjFluidIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::DISC_ADJ_EULER: case MAIN_SOLVER::DISC_ADJ_NAVIER_STOKES: case MAIN_SOLVER::DISC_ADJ_RANS:
+     case MAIN_SOLVER::DISC_ADJ_INC_EULER: case MAIN_SOLVER::DISC_ADJ_INC_NAVIER_STOKES: case MAIN_SOLVER::DISC_ADJ_INC_RANS:
+       if (rank == MASTER_NODE)
+         cout << "Discrete adjoint Euler/Navier-Stokes/RANS fluid iteration." << endl;
+       iteration = new CDiscAdjFluidIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::DISC_ADJ_FEM_EULER : case MAIN_SOLVER::DISC_ADJ_FEM_NS : case MAIN_SOLVER::DISC_ADJ_FEM_RANS :
+       if (rank == MASTER_NODE)
+         cout << "Discrete adjoint finite element Euler/Navier-Stokes/RANS fluid iteration." << endl;
+       iteration = new CDiscAdjFluidIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::DISC_ADJ_FEM:
+       if (rank == MASTER_NODE)
+         cout << "Discrete adjoint FEM structural iteration." << endl;
+       iteration = new CDiscAdjFEAIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::DISC_ADJ_HEAT:
+       if (rank == MASTER_NODE)
+         cout << "Discrete adjoint heat iteration." << endl;
+       iteration = new CDiscAdjHeatIteration(config);
+       break;
+ 
+     case MAIN_SOLVER::NONE: case MAIN_SOLVER::TEMPLATE_SOLVER: case MAIN_SOLVER::MULTIPHYSICS:
+       SU2_MPI::Error("No iteration found for specified solver.", CURRENT_FUNCTION);
+       break;
+   }
+ 
+   return iteration;
+ }

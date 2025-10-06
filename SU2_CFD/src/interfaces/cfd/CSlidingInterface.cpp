@@ -26,64 +26,112 @@
  * License along with SU2. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../../../include/interfaces/cfd/CSlidingInterface.hpp"
-#include "../../../../Common/include/CConfig.hpp"
-#include "../../../../Common/include/geometry/CGeometry.hpp"
-#include "../../../include/solvers/CSolver.hpp"
-
-CSlidingInterface::CSlidingInterface(unsigned short val_nVar, unsigned short val_nConst) : CInterface() {
-
-  Physical_Constants = new su2double[val_nConst] ();
-  Donor_Variable     = new su2double[val_nVar] ();
-  Target_Variable    = new su2double[val_nVar+1] ();
-
-  valAggregated      = false;
-
-  nVar = val_nVar;
-
-}
-
-void CSlidingInterface::GetDonor_Variable(CSolver *donor_solution, CGeometry *donor_geometry,
-                                          const CConfig *donor_config, unsigned long Marker_Donor,
-                                          unsigned long Vertex_Donor, unsigned long Point_Donor) {
-
-  const auto nDonorVar = donor_solution->GetnPrimVar();
-  /// TODO: Replace with approach compatible with any number of variables (e.g. encapsulate in a "solver info" object).
-  const bool turbulent = nDonorVar <= 2;
-  if (turbulent){
-    /*---  For turbulent solver retrieve solution variables and set then as the donor variables. ---*/
-    for (unsigned short iVar = 0; iVar < nDonorVar; iVar++) {
-      Donor_Variable[iVar] = donor_solution->GetNodes()->GetSolution(Point_Donor, iVar);
-    }
-  } else {
-    /*---  For flow solver retrieve primitive variables and set them as the donor variables. ---*/
-    for (unsigned short iVar = 0; iVar < nDonorVar; iVar++) {
-      Donor_Variable[iVar] = donor_solution->GetNodes()->GetPrimitive(Point_Donor, iVar);
-    }
-  }
-}
-
-void CSlidingInterface::InitializeTarget_Variable(CSolver *target_solution, unsigned long Marker_Target,
-                                                  unsigned long Vertex_Target, unsigned short nDonorPoints) {
-
-  target_solution->SetnSlidingStates(Marker_Target, Vertex_Target, nDonorPoints); // This is to allocate
-  target_solution->SetSlidingStateStructure(Marker_Target, Vertex_Target);
-  target_solution->SetnSlidingStates(Marker_Target, Vertex_Target, 0); // Reset counter to 0
-
-}
-
-void CSlidingInterface::SetTarget_Variable(CSolver *target_solution, CGeometry *target_geometry,
-                                           const CConfig *target_config, unsigned long Marker_Target,
-                                           unsigned long Vertex_Target, unsigned long Point_Target) {
-
-  unsigned short iVar, iDonorVertex, nTargetVar;
-  nTargetVar = target_solution->GetnPrimVar();
-  /*--- Set the Sliding solution with the value of the Target Variable ---*/
-
-  iDonorVertex = target_solution->GetnSlidingStates(Marker_Target, Vertex_Target);
-
-  for (iVar = 0; iVar < nTargetVar+1; iVar++)
-    target_solution->SetSlidingState(Marker_Target, Vertex_Target, iVar, iDonorVertex, Target_Variable[iVar]);
-
-  target_solution->SetnSlidingStates( Marker_Target, Vertex_Target, iDonorVertex + 1 );
-}
+ #include "../../../include/interfaces/cfd/CSlidingInterface.hpp"
+ #include "../../../../Common/include/CConfig.hpp"
+ #include "../../../../Common/include/geometry/CGeometry.hpp"
+ #include "../../../include/solvers/CSolver.hpp"
+ 
+ CSlidingInterface::CSlidingInterface(unsigned short val_nVar, unsigned short val_nConst) : CInterface() {
+   static int counter=0;
+     if (counter==0){
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::CSlidingInterface"<<std::endl;
+     }
+     
+     if (counter==1){
+       std::cout<<"REPEATED EVALS"<<std::endl;
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::CSlidingInterface"<<std::endl;
+     }
+     counter++; 
+ 
+   Physical_Constants = new su2double[val_nConst] ();
+   Donor_Variable     = new su2double[val_nVar] ();
+   Target_Variable    = new su2double[val_nVar+1] ();
+ 
+   valAggregated      = false;
+ 
+   nVar = val_nVar;
+ 
+ }
+ 
+ void CSlidingInterface::GetDonor_Variable(CSolver *donor_solution, CGeometry *donor_geometry,
+                                           const CConfig *donor_config, unsigned long Marker_Donor,
+                                           unsigned long Vertex_Donor, unsigned long Point_Donor) {
+ 
+   const auto nDonorVar = donor_solution->GetnPrimVar();
+   static int counter=0;
+     if (counter==0){
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::GetDonor_Variable"<<std::endl;
+     }
+     
+     if (counter==1){
+       std::cout<<"REPEATED EVALS"<<std::endl;
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::GetDonor_Variable"<<std::endl;
+     }
+     counter++; 
+   /// TODO: Replace with approach compatible with any number of variables (e.g. encapsulate in a "solver info" object).
+   const bool turbulent = nDonorVar <= 2;
+   if (turbulent){
+     /*---  For turbulent solver retrieve solution variables and set then as the donor variables. ---*/
+     for (unsigned short iVar = 0; iVar < nDonorVar; iVar++) {
+       Donor_Variable[iVar] = donor_solution->GetNodes()->GetSolution(Point_Donor, iVar);
+     }
+   } else {
+     /*---  For flow solver retrieve primitive variables and set them as the donor variables. ---*/
+     for (unsigned short iVar = 0; iVar < nDonorVar; iVar++) {
+       Donor_Variable[iVar] = donor_solution->GetNodes()->GetPrimitive(Point_Donor, iVar);
+     }
+   }
+ }
+ 
+ void CSlidingInterface::InitializeTarget_Variable(CSolver *target_solution, unsigned long Marker_Target,
+                                                   unsigned long Vertex_Target, unsigned short nDonorPoints) {
+   static int counter=0;
+     if (counter==0){
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::InitializeTarget_Variable"<<std::endl;
+     }
+     
+     if (counter==1){
+       std::cout<<"REPEATED EVALS"<<std::endl;
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::InitializeTarget_Variable"<<std::endl;
+     }
+     counter++; 
+ 
+   target_solution->SetnSlidingStates(Marker_Target, Vertex_Target, nDonorPoints); // This is to allocate
+   target_solution->SetSlidingStateStructure(Marker_Target, Vertex_Target);
+   target_solution->SetnSlidingStates(Marker_Target, Vertex_Target, 0); // Reset counter to 0
+ 
+ }
+ 
+ void CSlidingInterface::SetTarget_Variable(CSolver *target_solution, CGeometry *target_geometry,
+                                            const CConfig *target_config, unsigned long Marker_Target,
+                                            unsigned long Vertex_Target, unsigned long Point_Target) {
+   static int counter=0;
+     if (counter==0){
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::SetTarget_Variable"<<std::endl;
+     }
+     
+     if (counter==1){
+       std::cout<<"REPEATED EVALS"<<std::endl;
+       std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CSlidingInterface.cpp"<<std::endl;
+       std::cout<<"FUNCTION:CSlidingInterface::SetTarget_Variable"<<std::endl;
+     }
+     counter++; 
+ 
+   unsigned short iVar, iDonorVertex, nTargetVar;
+   nTargetVar = target_solution->GetnPrimVar();
+   /*--- Set the Sliding solution with the value of the Target Variable ---*/
+ 
+   iDonorVertex = target_solution->GetnSlidingStates(Marker_Target, Vertex_Target);
+ 
+   for (iVar = 0; iVar < nTargetVar+1; iVar++)
+     target_solution->SetSlidingState(Marker_Target, Vertex_Target, iVar, iDonorVertex, Target_Variable[iVar]);
+ 
+   target_solution->SetnSlidingStates( Marker_Target, Vertex_Target, iDonorVertex + 1 );
+ }

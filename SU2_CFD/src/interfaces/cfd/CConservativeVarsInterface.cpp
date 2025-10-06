@@ -26,29 +26,65 @@
  * License along with SU2. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "../../../include/interfaces/cfd/CConservativeVarsInterface.hpp"
-#include "../../../../Common/include/CConfig.hpp"
-#include "../../../../Common/include/geometry/CGeometry.hpp"
-#include "../../../include/solvers/CSolver.hpp"
-
-CConservativeVarsInterface::CConservativeVarsInterface(unsigned short val_nVar, unsigned short val_nConst) :
-  CInterface(val_nVar, val_nConst) {
-}
-
-void CConservativeVarsInterface::GetDonor_Variable(CSolver *donor_solution, CGeometry *donor_geometry,
-                                                   const CConfig *donor_config, unsigned long Marker_Donor,
-                                                   unsigned long Vertex_Donor, unsigned long Point_Donor) {
-  /*--- Retrieve solution and set it as the donor variable ---*/
-  auto Solution = donor_solution->GetNodes()->GetSolution(Point_Donor);
-
-  for (auto iVar = 0u; iVar < nVar; iVar++)
-    Donor_Variable[iVar] = Solution[iVar];
-}
-
-void CConservativeVarsInterface::SetTarget_Variable(CSolver *target_solution, CGeometry *target_geometry,
-                                                    const CConfig *target_config, unsigned long Marker_Target,
-                                                    unsigned long Vertex_Target, unsigned long Point_Target) {
-
-  /*--- Set the target solution with the value of the Target Variable ---*/
-  target_solution->GetNodes()->SetSolution(Point_Target,Target_Variable);
-}
+ #include "../../../include/interfaces/cfd/CConservativeVarsInterface.hpp"
+ #include "../../../../Common/include/CConfig.hpp"
+ #include "../../../../Common/include/geometry/CGeometry.hpp"
+ #include "../../../include/solvers/CSolver.hpp"
+ 
+ CConservativeVarsInterface::CConservativeVarsInterface(unsigned short val_nVar, unsigned short val_nConst) :
+   CInterface(val_nVar, val_nConst) {
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CConservativeVarsInterface.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CConservativeVarsInterface::CConservativeVarsInterface"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CConservativeVarsInterface.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CConservativeVarsInterface::CConservativeVarsInterface"<<std::endl;
+   }
+   counter++; 
+ }
+ 
+ void CConservativeVarsInterface::GetDonor_Variable(CSolver *donor_solution, CGeometry *donor_geometry,
+                                                    const CConfig *donor_config, unsigned long Marker_Donor,
+                                                    unsigned long Vertex_Donor, unsigned long Point_Donor) {
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CConservativeVarsInterface.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CConservativeVarsInterface::GetDonor_Variable"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CConservativeVarsInterface.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CConservativeVarsInterface::GetDonor_Variable"<<std::endl;
+   }
+   counter++; 
+   /*--- Retrieve solution and set it as the donor variable ---*/
+   auto Solution = donor_solution->GetNodes()->GetSolution(Point_Donor);
+ 
+   for (auto iVar = 0u; iVar < nVar; iVar++)
+     Donor_Variable[iVar] = Solution[iVar];
+ }
+ 
+ void CConservativeVarsInterface::SetTarget_Variable(CSolver *target_solution, CGeometry *target_geometry,
+                                                     const CConfig *target_config, unsigned long Marker_Target,
+                                                     unsigned long Vertex_Target, unsigned long Point_Target) {
+   static int counter=0;
+   if (counter==0){
+     std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CConservativeVarsInterface.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CConservativeVarsInterface::SetTarget_Variable"<<std::endl;
+   }
+   
+   if (counter==1){
+     std::cout<<"REPEATED EVALS"<<std::endl;
+     std::cout<<"FILE:SU2_CFD/src/interfaces/cfd/CConservativeVarsInterface.cpp"<<std::endl;
+     std::cout<<"FUNCTION:CConservativeVarsInterface::SetTarget_Variable"<<std::endl;
+   }
+   counter++; 
+ 
+   /*--- Set the target solution with the value of the Target Variable ---*/
+   target_solution->GetNodes()->SetSolution(Point_Target,Target_Variable);
+ }
